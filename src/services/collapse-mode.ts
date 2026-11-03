@@ -6,18 +6,16 @@ export const CollapseModeService = {
   init(): void {
     const saved = (localStorage.getItem('sidebery_collapse_mode') as CollapseMode | null) ?? 'auto'
     this.mode = saved
-    if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-collapse-mode', saved)
-      document.body.setAttribute('data-collapse-mode', saved)
-      const rootEl = document.getElementById('root')
-      if (rootEl) rootEl.setAttribute('data-collapse-mode', saved)
-    }
+    this.apply(saved)
   },
 
   set(mode: CollapseMode): void {
     this.mode = mode
     localStorage.setItem('sidebery_collapse_mode', mode)
+    this.apply(mode)
+  },
 
+  apply(mode: CollapseMode): void {
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-collapse-mode', mode)
       document.body.setAttribute('data-collapse-mode', mode)
@@ -25,16 +23,13 @@ export const CollapseModeService = {
       if (rootEl) rootEl.setAttribute('data-collapse-mode', mode)
     }
 
-    const panelFile =
-      mode === 'full'
-        ? 'sidebar/sidebar-full.html'
-        : mode === 'collapsed'
-        ? 'sidebar/sidebar-collapsed.html'
-        : 'sidebar/sidebar.html'
-
-    const sAction = (browser as any)?.sidebarAction
-    if (sAction?.setPanel) {
-      sAction.setPanel({ panel: panelFile })
+    const preface = mode === 'full' ? '[full] ' : mode === 'collapsed' ? '[compact] ' : ''
+    if (typeof browser !== 'undefined' && browser.windows) {
+      browser.windows.getCurrent().then(win => {
+        if (win?.id) {
+          browser.windows.update(win.id, { titlePreface: preface }).catch(() => {})
+        }
+      }).catch(() => {})
     }
   },
 

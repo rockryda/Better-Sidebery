@@ -21,7 +21,8 @@
       @contextmenu="onNavCtxMenu($event, item)")
 
   .static-btns(v-if="nav?.visibleStaticButtons")
-    .NavItem.-btn.collapse-toggle-btn(
+    .nav-item.-btn.collapse-toggle-btn(
+      data-class="btn"
       :title="collapseModeTooltip"
       @click.stop="onToggleCollapseMode")
       svg.icon: use(:xlink:href="collapseModeIcon")

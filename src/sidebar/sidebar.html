@@ -135,9 +135,24 @@
 
     /* Collapse mode toggle button */
     .collapse-toggle-btn {
-      cursor: pointer;
+      width: 28px !important;
+      height: 28px !important;
+      min-width: 28px !important;
+      max-width: 28px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
       opacity: 0.85;
+      border-radius: var(--floorp-border-radius) !important;
       transition: opacity 0.15s ease, background-color 0.15s ease;
+    }
+    .collapse-toggle-btn .icon {
+      width: 16px !important;
+      height: 16px !important;
+      max-width: 16px !important;
+      max-height: 16px !important;
+      fill: var(--toolbar-fg, currentColor) !important;
     }
     .collapse-toggle-btn:hover {
       opacity: 1;

@@ -18,7 +18,7 @@
 /* 1. Base Sidebar Layout */
 
 /* Mode 1: Full Width (Pinned, never collapses) */
-#sidebar-box:has(#sidebar[src*="sidebar-full"]):not([hidden="true"]) {
+:root[title*="[full]"] #sidebar-box:not([hidden="true"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 260px !important;
@@ -33,7 +33,7 @@
 }
 
 /* Mode 2: Collapsed Rail (Pinned 48px, no hover expand) */
-#sidebar-box:has(#sidebar[src*="sidebar-collapsed"]):not([hidden="true"]) {
+:root[title*="[compact]"] #sidebar-box:not([hidden="true"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 48px !important;
@@ -48,7 +48,7 @@
 }
 
 /* Mode 3: Auto-Expand on hover (Default: 48px rail, expands to 260px on hover with zero reflow) */
-#sidebar-box:not(:has(#sidebar[src*="sidebar-full"])):not(:has(#sidebar[src*="sidebar-collapsed"])):not([hidden="true"]) {
+:root:not([title*="[full]"]):not([title*="[compact]"]) #sidebar-box:not([hidden="true"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 48px !important;
@@ -66,8 +66,8 @@
               box-shadow 0.22s ease !important;
 }
 
-#sidebar-box:not(:has(#sidebar[src*="sidebar-full"])):not(:has(#sidebar[src*="sidebar-collapsed"])):not([hidden="true"]):hover,
-#sidebar-box:not(:has(#sidebar[src*="sidebar-full"])):not(:has(#sidebar[src*="sidebar-collapsed"])):not([hidden="true"]):focus-within {
+:root:not([title*="[full]"]):not([title*="[compact]"]) #sidebar-box:not([hidden="true"]):hover,
+:root:not([title*="[full]"]):not([title*="[compact]"]) #sidebar-box:not([hidden="true"]):focus-within {
   width: 260px !important;
   max-width: 260px !important;
   margin-inline-end: -212px !important;

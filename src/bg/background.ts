@@ -80,16 +80,10 @@ void (async function main() {
   WebReq.updateReqHandlers()
   WebReq.initSplitFrameHandler()
 
-  // Ensure sidebar panel points to a valid file without query parameters
+  // Always reset sidebar panel to clean standard path
   const sAction = (browser as any)?.sidebarAction
-  if (sAction?.getPanel && sAction?.setPanel) {
-    sAction.getPanel({}).then((panel: string) => {
-      if (panel && (panel.includes('?') || panel.includes('mode='))) {
-        sAction.setPanel({ panel: 'sidebar/sidebar.html' })
-      }
-    }).catch(() => {
-      sAction.setPanel({ panel: 'sidebar/sidebar.html' })
-    })
+  if (sAction?.setPanel) {
+    sAction.setPanel({ panel: 'sidebar/sidebar.html' }).catch(() => {})
   }
 
   Tabs.setupTabsListeners()
