@@ -38,26 +38,6 @@ if [ ! -f "$PROFILES_INI" ]; then
   exit 1
 fi
 
-# Find default or release profile directory
-PROFILE_PATH=$(awk -F= '/^Path=/{print $2}' "$PROFILES_INI" | grep -E "default|release" | head -n 1)
-
-# Fallback: take the first profile found if no default/release string matches
-if [ -z "$PROFILE_PATH" ]; then
-  PROFILE_PATH=$(awk -F= '/^Path=/{print $2}' "$PROFILES_INI" | head -n 1)
-fi
-
-TARGET_DIR="$FLOORP_DIR/$PROFILE_PATH"
-
-if [ ! -d "$TARGET_DIR" ]; then
-  echo "❌ Could not resolve target profile directory: $TARGET_DIR"
-  exit 1
-fi
-
-echo "📁 Found Floorp profile: $TARGET_DIR"
-
-CHROME_DIR="$TARGET_DIR/chrome"
-mkdir -p "$CHROME_DIR"
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_CSS="$SCRIPT_DIR/userChrome.css"
 
@@ -66,14 +46,20 @@ if [ ! -f "$SOURCE_CSS" ]; then
   exit 1
 fi
 
-# If userChrome.css already exists, create a backup
-if [ -f "$CHROME_DIR/userChrome.css" ]; then
-  echo "💾 Backing up existing userChrome.css to userChrome.css.bak..."
-  cp "$CHROME_DIR/userChrome.css" "$CHROME_DIR/userChrome.css.bak"
-fi
+# Install to ALL profiles in Floorp Profiles directory to ensure active profile is updated
+echo "📁 Installing userChrome.css to all Floorp profiles..."
+for P_DIR in "$FLOORP_DIR"/Profiles/*; do
+  if [ -d "$P_DIR" ]; then
+    CHROME_DIR="$P_DIR/chrome"
+    mkdir -p "$CHROME_DIR"
+    if [ -f "$CHROME_DIR/userChrome.css" ]; then
+      cp "$CHROME_DIR/userChrome.css" "$CHROME_DIR/userChrome.css.bak"
+    fi
+    cp "$SOURCE_CSS" "$CHROME_DIR/userChrome.css"
+    echo "  ✅ Installed to: $CHROME_DIR/userChrome.css"
+  fi
+done
 
-cp "$SOURCE_CSS" "$CHROME_DIR/userChrome.css"
-
-echo "✅ Successfully installed userChrome.css to $CHROME_DIR/userChrome.css!"
-echo "🔄 Please restart Floorp to apply the changes."
+echo "🎉 Installation complete!"
+echo "🔄 Please completely quit Floorp (Cmd + Q) and restart it to apply the changes."
 

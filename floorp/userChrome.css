@@ -1,41 +1,54 @@
 /* ==========================================================================
    Better-Sidebery companion userChrome.css for Floorp
-   - Auto-collapses Sidebery sidebar to a 48px icon rail
-   - Smoothly expands to 260px on hover over web content (zero page reflow)
-   - Full Floorp Zen Mode integration: edge-hover slide-over drawer
-   - Removes redundant sidebar headers and duplicate native tab bars
+   - 48px compact icon rail in normal flow (zero empty gap/layers)
+   - Zero-reflow hover expansion to 260px floating over web content
+   - Full Floorp Zen Mode edge-hover slide-over drawer
+   - Cleans up redundant headers and duplicate tab bars
    ========================================================================== */
 
-/* 1. Base Sidebar Layout (Docked Icon Rail + Expand on Hover) */
-#sidebar-box {
-  position: absolute !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  width: 48px !important;
+#browser {
+  position: relative !important;
+}
+
+/* Don't show sidebar if closed by user */
+#sidebar-box[hidden="true"] {
+  display: none !important;
+}
+
+/* 1. Base Sidebar Layout (Docked 48px Icon Rail in-flow) */
+#sidebar-box:not([hidden="true"]) {
+  display: flex !important;
   min-width: 48px !important;
-  max-width: 260px !important;
+  width: 48px !important;
+  max-width: 48px !important;
+  margin-right: 0 !important;
   z-index: 100 !important;
   overflow: hidden !important;
-  border-right: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.1)) !important;
-  background-color: light-dark(rgba(248, 249, 250, 0.8), rgba(20, 20, 22, 0.8)) !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
+  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  transition: width 0.22s cubic-bezier(0.2, 0, 0, 1),
-    box-shadow 0.22s ease,
-    margin-inline-start 0.25s cubic-bezier(0.2, 0, 0, 1),
-    opacity 0.2s ease !important;
+  transition: width 0.2s cubic-bezier(0.2, 0, 0, 1),
+              max-width 0.2s cubic-bezier(0.2, 0, 0, 1),
+              margin-right 0.2s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.2s ease,
+              margin-inline-start 0.25s cubic-bezier(0.2, 0, 0, 1),
+              opacity 0.2s ease !important;
 }
 
-/* Expand smoothly on hover / focus over web content */
-#sidebar-box:hover,
-#sidebar-box:focus-within {
+/* Zero-Reflow Expansion: Expands to 260px, negative margin keeps page layout at 48px */
+#sidebar-box:not([hidden="true"]):hover,
+#sidebar-box:not([hidden="true"]):focus-within {
   width: 260px !important;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
+  max-width: 260px !important;
+  margin-right: -212px !important; /* 260px - 212px = 48px layout footprint */
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Transparent internal browser sidebar frame */
-#sidebar {
+/* Inner sidebar iframe */
+#sidebar-box #sidebar {
+  min-width: 0 !important;
+  width: 100% !important;
   background-color: transparent !important;
 }
 
@@ -46,51 +59,53 @@
   display: none !important;
 }
 
-/* Align page content to start past the 48px docked icon rail */
+/* Ensure no artificial margins stack up on the content area */
 #appcontent,
+#tabbrowser-tabbox,
 #tabbrowser-tabpanels {
-  margin-inline-start: 48px !important;
+  margin-inline-start: 0 !important;
+  padding-inline-start: 0 !important;
 }
 
-/* ==========================================================================
-   2. Floorp Zen Mode Integration
-   Overrides Floorp's default :root[zenmode] #sidebar-box { display: none !important; }
-   Uses Floorp's native edge-detection attribute [zenmode-reveal-side]
-   ========================================================================== */
-:root[zenmode] #sidebar-box {
+/* 2. Floorp Zen Mode Integration */
+:root[zenmode] #sidebar-box:not([hidden="true"]) {
   display: flex !important;
   position: fixed !important;
   top: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
+  height: 100% !important;
   z-index: 1000 !important;
   width: 260px !important;
+  max-width: 260px !important;
   min-width: 0 !important;
+  margin-right: 0 !important;
   margin-inline-start: -264px !important;
   opacity: 0 !important;
   pointer-events: none !important;
   box-shadow: none !important;
 }
 
-/* Slide in smoothly when mouse reaches the left edge */
-:root[zenmode][zenmode-reveal-side] #sidebar-box,
-:root[zenmode] #sidebar-box:hover {
+/* Floorp edge-hover: slides in when mouse reaches left screen edge in Zen Mode */
+:root[zenmode][zenmode-reveal-side] #sidebar-box:not([hidden="true"]),
+:root[zenmode] #sidebar-box:not([hidden="true"]):hover {
   margin-inline-start: 0 !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* In Zen Mode, let the webpage use full 100% width */
 :root[zenmode] #appcontent,
+:root[zenmode] #tabbrowser-tabbox,
 :root[zenmode] #tabbrowser-tabpanels {
   margin-inline-start: 0 !important;
 }
 
-/* ==========================================================================
-   3. Clean Up Redundant Native Tab Elements (Optional / Recommended)
-   ========================================================================== */
-/* Hide native horizontal tab strip when using Sidebery vertical tabs */
+/* 3. Hide redundant native tab bars */
 #TabsToolbar {
   visibility: collapse !important;
+}
+
+#vertical-tabs {
+  display: none !important;
 }
