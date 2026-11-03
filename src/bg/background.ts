@@ -80,10 +80,10 @@ void (async function main() {
   WebReq.updateReqHandlers()
   WebReq.initSplitFrameHandler()
 
-  // Always reset sidebar panel to clean standard path
+  // Reset sidebar panel to default manifest panel
   const sAction = (browser as any)?.sidebarAction
   if (sAction?.setPanel) {
-    sAction.setPanel({ panel: 'sidebar/sidebar.html' }).catch(() => {})
+    sAction.setPanel({ panel: '' }).catch(() => {})
   }
 
   Tabs.setupTabsListeners()
