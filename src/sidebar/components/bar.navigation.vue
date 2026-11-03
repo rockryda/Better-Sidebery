@@ -104,7 +104,7 @@ import NavItemComponent from './nav-item.vue'
 const collapseMode = ref(CollapseModeService.mode)
 const collapseModeIcon = computed(() => {
   if (collapseMode.value === 'full') return '#icon_pin'
-  if (collapseMode.value === 'collapsed') return '#icon_collapse'
+  if (collapseMode.value === 'collapsed') return '#icon_collapse_all'
   return '#icon_expand'
 })
 const collapseModeTooltip = computed(() => {

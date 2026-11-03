@@ -17,8 +17,9 @@
 
 /* 1. Base Sidebar Layout */
 
-/* Mode 1: Full Width (Pinned, never collapses) */
-:root[title*="[full]"] #sidebar-box:not([hidden="true"]) {
+/* Mode 1: Full Width (Pinned 260px, never collapses) */
+#sidebar-box:not([hidden="true"])[src*="sidebar-full.html"],
+#sidebar-box:not([hidden="true"]):has(#sidebar[src*="sidebar-full.html"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 260px !important;
@@ -30,10 +31,13 @@
   background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
+  transition: none !important;
+  box-shadow: none !important;
 }
 
-/* Mode 2: Collapsed Rail (Pinned 48px, no hover expand) */
-:root[title*="[compact]"] #sidebar-box:not([hidden="true"]) {
+/* Mode 2: Collapsed Rail (Pinned 48px, never expands on hover) */
+#sidebar-box:not([hidden="true"])[src*="sidebar-collapsed.html"],
+#sidebar-box:not([hidden="true"]):has(#sidebar[src*="sidebar-collapsed.html"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 48px !important;
@@ -45,10 +49,12 @@
   background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
+  transition: none !important;
+  box-shadow: none !important;
 }
 
 /* Mode 3: Auto-Expand on hover (Default: 48px rail, expands to 260px on hover with zero reflow) */
-:root:not([title*="[full]"]):not([title*="[compact]"]) #sidebar-box:not([hidden="true"]) {
+#sidebar-box:not([hidden="true"]):not([src*="sidebar-full.html"]):not([src*="sidebar-collapsed.html"]):not(:has(#sidebar[src*="sidebar-full.html"])):not(:has(#sidebar[src*="sidebar-collapsed.html"])) {
   position: relative !important;
   z-index: 100 !important;
   width: 48px !important;
@@ -66,8 +72,8 @@
               box-shadow 0.22s ease !important;
 }
 
-:root:not([title*="[full]"]):not([title*="[compact]"]) #sidebar-box:not([hidden="true"]):hover,
-:root:not([title*="[full]"]):not([title*="[compact]"]) #sidebar-box:not([hidden="true"]):focus-within {
+#sidebar-box:not([hidden="true"]):not([src*="sidebar-full.html"]):not([src*="sidebar-collapsed.html"]):not(:has(#sidebar[src*="sidebar-full.html"])):not(:has(#sidebar[src*="sidebar-collapsed.html"])):hover,
+#sidebar-box:not([hidden="true"]):not([src*="sidebar-full.html"]):not([src*="sidebar-collapsed.html"]):not(:has(#sidebar[src*="sidebar-full.html"])):not(:has(#sidebar[src*="sidebar-collapsed.html"])):focus-within {
   width: 260px !important;
   max-width: 260px !important;
   margin-inline-end: -212px !important;

@@ -80,12 +80,6 @@ void (async function main() {
   WebReq.updateReqHandlers()
   WebReq.initSplitFrameHandler()
 
-  // Reset sidebar panel to default manifest panel
-  const sAction = (browser as any)?.sidebarAction
-  if (sAction?.setPanel) {
-    sAction.setPanel({ panel: '' }).catch(() => {})
-  }
-
   Tabs.setupTabsListeners()
   await Tabs.loadTabs()
 

@@ -4,32 +4,55 @@ export const CollapseModeService = {
   mode: 'auto' as CollapseMode,
 
   init(): void {
-    const saved = (localStorage.getItem('sidebery_collapse_mode') as CollapseMode | null) ?? 'auto'
-    this.mode = saved
-    this.apply(saved)
+    let currentMode: CollapseMode = 'auto'
+    if (typeof window !== 'undefined') {
+      const href = window.location.href
+      if (href.includes('sidebar-full.html')) currentMode = 'full'
+      else if (href.includes('sidebar-collapsed.html')) currentMode = 'collapsed'
+      else {
+        currentMode =
+          (localStorage.getItem('sidebery_collapse_mode') as CollapseMode | null) ?? 'auto'
+      }
+    }
+    this.mode = currentMode
+    localStorage.setItem('sidebery_collapse_mode', currentMode)
+    this.applyDOM(currentMode)
   },
 
   set(mode: CollapseMode): void {
     this.mode = mode
     localStorage.setItem('sidebery_collapse_mode', mode)
-    this.apply(mode)
+    this.applyDOM(mode)
+    this.applyPanel(mode)
   },
 
-  apply(mode: CollapseMode): void {
+  applyDOM(mode: CollapseMode): void {
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-collapse-mode', mode)
       document.body.setAttribute('data-collapse-mode', mode)
       const rootEl = document.getElementById('root')
       if (rootEl) rootEl.setAttribute('data-collapse-mode', mode)
     }
+  },
 
-    const preface = mode === 'full' ? '[full] ' : mode === 'collapsed' ? '[compact] ' : ''
-    if (typeof browser !== 'undefined' && browser.windows) {
-      browser.windows.getCurrent().then(win => {
-        if (win?.id) {
-          browser.windows.update(win.id, { titlePreface: preface }).catch(() => {})
-        }
-      }).catch(() => {})
+  applyPanel(mode: CollapseMode): void {
+    const file =
+      mode === 'full'
+        ? 'sidebar/sidebar-full.html'
+        : mode === 'collapsed'
+        ? 'sidebar/sidebar-collapsed.html'
+        : 'sidebar/sidebar.html'
+
+    const fullUrl =
+      typeof browser !== 'undefined' && browser.runtime?.getURL
+        ? browser.runtime.getURL(file)
+        : `/${file}`
+
+    const sAction = (browser as any)?.sidebarAction
+    if (sAction?.setPanel) {
+      sAction.setPanel({ panel: fullUrl }).catch(() => {
+        sAction.setPanel({ panel: `/${file}` }).catch(() => {})
+      })
     }
   },
 
@@ -40,3 +63,4 @@ export const CollapseModeService = {
     return next
   },
 }
+
