@@ -7,38 +7,145 @@
   <style>
     :root {
       color-scheme: light dark;
-      --zen-border-radius: 5px;
-      --zen-dialog-background: light-dark(#fdfdfd, #171718);
-      --zen-colors-primary-foreground: color-mix(in srgb, #bbb 80%, white 20%);
+      --floorp-border-radius: 8px;
+      --floorp-dialog-bg: light-dark(rgba(248, 249, 250, 0.75), rgba(23, 23, 24, 0.75));
+      --floorp-active-bg: light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.12));
+      --floorp-hover-bg: light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.07));
+      --floorp-fg: light-dark(#1f2328, #e6edf3);
     }
+
     #root.root {
-      --frame-bg: color-mix(in srgb, var(--zen-dialog-background) 30%, transparent);
-      --frame-fg: var(--zen-colors-primary-foreground);
+      --frame-bg: transparent;
+      --frame-fg: var(--floorp-fg);
       --frame-el-shadow: none;
-      background: linear-gradient(120deg, var(--frame-bg), transparent);
+      --general-border-radius: var(--floorp-border-radius);
+      --tabs-border-radius: var(--floorp-border-radius);
+      --nav-btn-border-radius: var(--floorp-border-radius);
+      --toolbar-bg: transparent;
+      --toolbar-el-overlay-hover-bg: var(--floorp-hover-bg);
+      --toolbar-el-overlay-active-bg: var(--floorp-active-bg);
+      --tabs-normal-bg: transparent;
+      --tabs-activated-bg: var(--floorp-active-bg);
+      --tabs-activated-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.2);
+      --ctx-menu-bg: var(--floorp-dialog-bg);
+      background: transparent;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
-    #root.root {--toolbar-el-overlay-active-bg: color-mix(in srgb, var(--zen-dialog-background) 20%, transparent);}
-    #root.root {--toolbar-bg: color-mix(in srgb, var(--zen-dialog-background) 0%, transparent);}
-    #root.root {--toolbar-el-overlay-hover-bg: color-mix(in srgb, var(--zen-dialog-background) 40%, transparent);}
-    #root.root {--nav-btn-border-radius: var(var(--zen-border-radius));}
-    #root.root {--tabs-progress-bg: color-mix(in srgb, var(--zen-dialog-background) 20%, transparent);}
-    #root.root {--tabs-normal-bg: color-mix(in srgb, var(--zen-dialog-background) 30%, transparent);}
-    #root.root {--tabs-activated-bg: color-mix(in srgb, var(--zen-dialog-background) 50%, transparent);}
-    #root.root {--tabs-border-radius: var(--zen-border-radius);}
-    #root.root {--ctx-menu-bg: var(--zen-dialog-background);}
+
     .HistoryPanel, .BookmarksSubPanel, .ClosedTabsSubPanel, .NavigationBar .hidden-panels-popup, .SubPanel[data-active=true] .header {
-      background-color: var(--zen-dialog-background);
-      --frame-bg: var(--zen-dialog-background);
+      background-color: var(--floorp-dialog-bg);
+      --frame-bg: var(--floorp-dialog-bg);
+      backdrop-filter: blur(16px);
+      border-radius: var(--floorp-border-radius);
     }
+
     .NavigationBar .hidden-panels-popup {
-      border-radius: var(--zen-border-radius);
+      border-radius: var(--floorp-border-radius);
     }
+
     .SubPanel[data-active=true] .header {
-      border-top-left-radius: var(--zen-border-radius);
-      border-top-right-radius: var(--zen-border-radius);
+      border-top-left-radius: var(--floorp-border-radius);
+      border-top-right-radius: var(--floorp-border-radius);
     }
+
     .TabsPanel .bottom-space, .TabsPanel .new-tab-btns, .TabsPanel .new-tab-btns::after {
       background-color: transparent;
+    }
+
+    /* Tab hover & animations */
+    .Tab {
+      transition: padding-left 0.22s cubic-bezier(0.2, 0, 0, 1), margin 0.22s, width 0.22s !important;
+    }
+
+    .Tab .body {
+      transition: background-color 0.15s ease, box-shadow 0.15s ease !important;
+      border-radius: var(--floorp-border-radius) !important;
+    }
+
+    .Tab:hover .body {
+      background-color: var(--floorp-hover-bg) !important;
+    }
+
+    .Tab .body .t-box {
+      transition: opacity 0.18s ease, transform 0.18s ease !important;
+    }
+
+    /* Auto-collapse to icon-only mode when sidebar width <= 68px */
+    @media (max-width: 68px) {
+      #search_bar,
+      .SearchBar,
+      .sub-list-title,
+      .TabsPanel .new-tab-btns {
+        display: none !important;
+      }
+
+      .Tab {
+        padding-left: 0 !important;
+        margin: 2px 4px !important;
+        width: calc(100% - 8px) !important;
+      }
+
+      .Tab .body {
+        justify-content: center !important;
+        padding: 0 !important;
+      }
+
+      .Tab .body .fav {
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+      }
+
+      .Tab .body .t-box,
+      .Tab .close,
+      .Tab .child-count,
+      .Tab .exp {
+        display: none !important;
+      }
+
+      /* Subtle depth indicator dot when collapsed */
+      .Tab[data-lvl]:not([data-lvl="0"]) .body::after {
+        content: '' !important;
+        position: absolute !important;
+        left: 2px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 3px !important;
+        height: 12px !important;
+        border-radius: 2px !important;
+        background-color: var(--tabs-normal-fg, currentColor) !important;
+        opacity: 0.45 !important;
+        display: block !important;
+      }
+
+      /* Container color strip on left edge */
+      .Tab[data-colorized="true"] .body .color-layer {
+        width: 3px !important;
+        border-radius: 2px !important;
+        opacity: 0.9 !important;
+      }
+
+      /* Audio badge overlay */
+      .Tab .body .audio {
+        position: absolute !important;
+        right: 1px !important;
+        bottom: 1px !important;
+        width: 13px !important;
+        height: 13px !important;
+        margin: 0 !important;
+      }
+
+      /* Compact vertical navigation */
+      .NavigationBar.-top {
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 4px 0 !important;
+      }
+
+      .NavigationBar .nav-item {
+        margin: 2px 0 !important;
+      }
     }
   </style>
 </head>

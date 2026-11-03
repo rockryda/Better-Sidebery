@@ -134,13 +134,13 @@ export const DEFAULT_SETTINGS: SettingsState = {
   inheritCustomColor: true,
 
   // Tabs preview
-  previewTabs: false,
-  previewTabsMode: 'i',
+  previewTabs: true,
+  previewTabsMode: 'p',
   previewTabsPageModeFallback: 'w',
   previewTabsInlineHeight: 70,
   previewTabsPopupWidth: 280,
   previewTabsSide: 'right',
-  previewTabsDelay: 500,
+  previewTabsDelay: 350,
   previewTabsFollowMouse: true,
   previewTabsWinOffsetY: 36,
   previewTabsWinOffsetX: 6,

@@ -14,12 +14,13 @@
     "build.html": "node build/html.js",
     "build.copy": "node build/copy.js",
     "build.scripts": "node build/scripts.js",
-    "build.ext": "web-ext build --source-dir ./addon -a dist/ -i __tests__",
+    "build.ext": "web-ext build --source-dir ./addon -a dist/ -i __tests__ --overwrite-dest",
     "build.run": "node build/webext.run.mjs",
     "build": "node build/all.js",
     "clear.npm": "rm -rf node_modules package-lock.json",
     "clear": "rm -rf addon",
-    "lint": "eslint ./src && web-ext lint -s ./addon"
+    "lint": "eslint ./src && web-ext lint -s ./addon",
+    "setup:floorp": "bash floorp/install.sh"
   },
   "author": "mbnuqw",
   "license": "MIT",
