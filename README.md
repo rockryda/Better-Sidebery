@@ -46,18 +46,37 @@ Sidebery is a highly configurable sidebar with panels of different types. Some o
 
 Sidebery may conflict with addons that handle position of new tabs (e.g. Tree Style Tabs) or addons that move/sort tabs, which may result in unexpected behavior or broken tabs state at initialization. To avoid potential issues, please, disable such addons in Add-ons Manager page (about:addons).
 
-## How to hide native (horizontal) tabs?
+## Better-Sidebery Features
 
-Firefox doesn't allow addons to hide native tabs, so you have two options:
+Better-Sidebery enhances Sidebery with native-feel productivity features out of the box:
 
-- You know CSS and can maintain it after Firefox updates: [Use userChrome.css hack](https://github.com/mbnuqw/sidebery/wiki/Firefox-Styles-Snippets-(via-userChrome.css)#completely-hide-native-tabs-strip)
-- Otherwise: [Use Floorp](https://floorp.app/) ([github](https://github.com/Floorp-Projects/Floorp))
-  - Install Sidebery
-  - In Floorp settings set:
-    - Design >> Tab Bar Style >> Horizontal Tab Bar
-    - Design >> Tab Bar >> Hide tabs on Horizontal Tab Bar
-    - [To hide the sidebar header] Design >> Tab Bar Style >> Collapse Tree Style Tab
-    - [To auto-hide sidebar] Use "Lepton UI" and check its settings
+- 🪟 **Dual Split View**: Split any two tabs side-by-side inside a single tab (50:50, 70:30, Swap, Detach) or tile into separate side-by-side windows.
+- ✏️ **Double-Click Title Editing**: Double-click any tab, split view, or group to rename its title instantly.
+- 🎨 **Full-Pill Container Colors**: Vibrant, full-width colored container tabs with high-contrast text.
+- 🌑 **High-Contrast Dark Menus**: Clean, legible context menu styling decoupled from theme color conflicts.
+- 📱 **Adaptive Collapsed Rail**: Centered active panel icon with live count badge (`[≡ count]`) when sidebar is narrow.
+
+## Zero-Config Setup for Floorp (No userChrome.css Required)
+
+Better-Sidebery is ready to go immediately upon install. For the cleanest vertical tabs experience in Floorp, set these two native 1-click toggles:
+
+1. **Hide Horizontal Tabs**:
+   Go to `Floorp Settings` ➔ `Design` ➔ `Tab Bar` ➔ toggle **"Hide tabs on Horizontal Tab Bar"**.
+2. **Hide Sidebar Header**:
+   Go to `Floorp Settings` ➔ `Design` ➔ `Tab Bar Style` ➔ select **"Collapse Tree Style Tab"**.
+
+*That's it! No code, no scripts, and no `userChrome.css` needed.*
+
+---
+
+## (Optional) Arc-Style Hover Rail Enhancement
+
+For power users who want an Arc-like experience where the sidebar docks as an icon rail and smoothly slides out over the webpage on hover with zero page reflow:
+
+```bash
+bash floorp/install.sh
+```
+*(To revert at any time, run `bash floorp/uninstall.sh`)*.
 
 ## Build
 

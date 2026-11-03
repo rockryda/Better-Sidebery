@@ -20,7 +20,8 @@
     "clear.npm": "rm -rf node_modules package-lock.json",
     "clear": "rm -rf addon",
     "lint": "eslint ./src && web-ext lint -s ./addon",
-    "setup:floorp": "bash floorp/install.sh"
+    "setup:floorp": "bash floorp/install.sh",
+    "unsetup:floorp": "bash floorp/uninstall.sh"
   },
   "author": "mbnuqw",
   "license": "MIT",
