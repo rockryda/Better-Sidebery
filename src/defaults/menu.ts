@@ -4,6 +4,10 @@ export const TABS_MENU: MenuConf = [
   { opts: ['undoRmTab', 'mute', 'reload', 'bookmark'] },
   'separator-1',
   {
+    name: '%menu.tab.split_sub_menu_name',
+    opts: ['splitTabRight', 'splitTabLeft', 'openInSplitTab'],
+  },
+  {
     name: '%menu.tab.move_to_sub_menu_name',
     opts: ['moveToNewWin', 'moveToWin', 'separator-5', 'moveToPanel', 'moveToNewPanel'],
   },

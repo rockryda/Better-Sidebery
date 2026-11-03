@@ -15,34 +15,31 @@
   display: none !important;
 }
 
-/* 1. Base Sidebar Layout (Docked 48px Icon Rail + Expand to 260px on Hover) */
+/* 1. Base Sidebar Layout (Docked 48px In-Flow Rail + Expand to 260px on Hover) */
 #sidebar-box:not([hidden="true"]) {
-  position: absolute !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  height: 100% !important;
+  position: relative !important;
+  z-index: 100 !important;
   width: 48px !important;
   min-width: 48px !important;
   max-width: 48px !important;
-  z-index: 100 !important;
+  margin-inline-end: 0 !important;
   overflow: hidden !important;
   border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
-  background-color: light-dark(rgba(248, 249, 250, 0.85), rgba(20, 20, 22, 0.85)) !important;
+  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   transition: width 0.22s cubic-bezier(0.2, 0, 0, 1),
               max-width 0.22s cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 0.22s ease,
-              margin-inline-start 0.25s cubic-bezier(0.2, 0, 0, 1),
-              opacity 0.2s ease !important;
+              margin-inline-end 0.22s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.22s ease !important;
 }
 
-/* Expand smoothly on hover / focus over web content */
+/* Expand smoothly on hover / focus over web content (zero content reflow) */
 #sidebar-box:not([hidden="true"]):hover,
 #sidebar-box:not([hidden="true"]):focus-within {
   width: 260px !important;
   max-width: 260px !important;
+  margin-inline-end: -212px !important;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
 }
 
@@ -60,11 +57,11 @@
   display: none !important;
 }
 
-/* Reserve space for the 48px docked rail so page content isn't covered */
+/* Ensure content containers have zero extra margins */
 #appcontent,
 #tabbrowser-tabbox,
 #tabbrowser-tabpanels {
-  margin-inline-start: 48px !important;
+  margin-inline-start: 0 !important;
 }
 
 /* 2. Floorp Zen Mode Integration */
@@ -80,9 +77,13 @@
   max-width: 260px !important;
   min-width: 0 !important;
   margin-inline-start: -264px !important;
+  margin-inline-end: 0 !important;
   opacity: 0 !important;
   pointer-events: none !important;
   box-shadow: none !important;
+  transition: margin-inline-start 0.25s cubic-bezier(0.2, 0, 0, 1),
+              opacity 0.2s ease,
+              box-shadow 0.2s ease !important;
 }
 
 /* Floorp edge-hover: slides in when mouse reaches left screen edge */
@@ -92,12 +93,6 @@
   opacity: 1 !important;
   pointer-events: auto !important;
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5) !important;
-}
-
-:root[zenmode] #appcontent,
-:root[zenmode] #tabbrowser-tabbox,
-:root[zenmode] #tabbrowser-tabpanels {
-  margin-inline-start: 0 !important;
 }
 
 /* 3. Hide redundant native tab strip */

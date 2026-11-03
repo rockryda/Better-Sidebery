@@ -22,6 +22,39 @@ export const tabsMenuOptions: Record<string, () => MenuOption | MenuOption[] | u
     onClick: () => Tabs.undoRmTab(),
   }),
 
+  splitTabRight: () => {
+    const tabId = Selection.getFirst()
+    return {
+      label: translate('menu.tab.split_tab_right'),
+      icon: 'icon_move_to_new_norm_win',
+      onClick: () => {
+        if (tabId !== undefined) Tabs.splitTabToWindow(tabId, 'right')
+      },
+    }
+  },
+
+  splitTabLeft: () => {
+    const tabId = Selection.getFirst()
+    return {
+      label: translate('menu.tab.split_tab_left'),
+      icon: 'icon_move_to_norm_win',
+      onClick: () => {
+        if (tabId !== undefined) Tabs.splitTabToWindow(tabId, 'left')
+      },
+    }
+  },
+
+  openInSplitTab: () => {
+    return {
+      label: translate('menu.tab.open_in_split_tab'),
+      icon: 'icon_tab',
+      onClick: () => {
+        const ids = Selection.get()
+        Tabs.openInSplitTab(ids)
+      },
+    }
+  },
+
   moveToNewWin: () => {
     return {
       label: translate(`menu.tab.move_to_new_${Windows.incognito ? 'priv_window' : 'window'}`),

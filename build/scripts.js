@@ -16,6 +16,7 @@ const BUNDLES = {
   'src/injections/url.ts': true,
   'src/injections/tab-preview.ts': { format: 'iife' },
   'src/popup.tab-preview/tab-preview.ts': true,
+  'src/page.split/split.ts': { format: 'iife' },
 }
 const IMPORT_RE = /(^|\n|\r\n|;)(im|ex)port\s?((?:\n|.)*?)\sfrom\s"(\.\.?|src|vue)(\/.+?)?"/g
 const ESBUILD_DEFINE = forChromium ? { browser: 'chrome' } : undefined

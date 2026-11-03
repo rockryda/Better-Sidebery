@@ -427,3 +427,37 @@ function turnOffBeforeSendHeadersHandler(): void {
     browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersHandler)
   }
 }
+
+///
+/// Split view frame header modifier (unblocks X-Frame-Options and frame-ancestors CSP)
+///
+
+function onHeadersReceivedHandler(
+  details: browser.webRequest.ReqDetails
+): browser.webRequest.BlockingResponse | void {
+  if (!details.responseHeaders) return
+  const responseHeaders = details.responseHeaders
+    .filter((h: browser.webRequest.HttpHeader) => h.name.toLowerCase() !== 'x-frame-options')
+    .map((h: browser.webRequest.HttpHeader) => {
+      if (h.name.toLowerCase() === 'content-security-policy') {
+        return {
+          name: h.name,
+          value: h.value?.replace(/frame-ancestors[^;]+(;|$)/gi, ''),
+        }
+      }
+      return h
+    })
+  return { responseHeaders }
+}
+
+export function initSplitFrameHandler(): void {
+  if (!browser.webRequest?.onHeadersReceived) return
+  const filter = { urls: ['<all_urls>'], types: ['sub_frame' as browser.webRequest.ResourceType] }
+  if (!browser.webRequest.onHeadersReceived.hasListener(onHeadersReceivedHandler)) {
+    browser.webRequest.onHeadersReceived.addListener(
+      onHeadersReceivedHandler,
+      filter,
+      ['blocking', 'responseHeaders']
+    )
+  }
+}

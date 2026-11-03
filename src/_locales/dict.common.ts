@@ -1154,6 +1154,18 @@ export const commonTranslations: Translations = {
     zh_TW: '將分頁加入書籤',
     ja: 'ブックマークに追加',
   },
+  'menu.tab.split_sub_menu_name': {
+    en: 'Split View',
+  },
+  'menu.tab.split_tab_right': {
+    en: 'Split to Right Window (Tiling)',
+  },
+  'menu.tab.split_tab_left': {
+    en: 'Split to Left Window (Tiling)',
+  },
+  'menu.tab.open_in_split_tab': {
+    en: 'Open in Dual Split Tab (In-Page)',
+  },
   'menu.tab.move_to_sub_menu_name': {
     en: 'Move to',
     de: 'Verschieben in',

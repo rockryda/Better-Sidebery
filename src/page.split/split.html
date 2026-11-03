@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" color-scheme="system-color">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Split View</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f8f9fa, #18181b);
+      --fg: light-dark(#1f2328, #f4f4f5);
+      --bar-bg: light-dark(rgba(240, 242, 245, 0.85), rgba(24, 24, 27, 0.85));
+      --border-color: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.12));
+      --accent: #22c55e;
+      --hover-bg: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.08));
+      --active-bg: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.14));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top control bar */
+    .split-toolbar {
+      height: 38px;
+      flex-shrink: 0;
+      background: var(--bar-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .pane-header {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .pane-header.right {
+      justify-content: flex-end;
+    }
+
+    .pane-title {
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 280px;
+      opacity: 0.85;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--fg);
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background: var(--hover-bg);
+      border-color: var(--accent);
+    }
+
+    .btn:active {
+      background: var(--active-bg);
+    }
+
+    .btn.icon-only {
+      width: 26px;
+      padding: 0;
+    }
+
+    /* Main split container */
+    .split-viewport {
+      flex: 1;
+      display: flex;
+      width: 100%;
+      height: calc(100% - 38px);
+      position: relative;
+    }
+
+    .pane-wrapper {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pane-wrapper.left {
+      width: 50%;
+    }
+
+    .pane-wrapper.right {
+      flex: 1;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #ffffff;
+    }
+
+    /* Draggable divider */
+    .resizer {
+      width: 8px;
+      height: 100%;
+      background: transparent;
+      cursor: col-resize;
+      position: relative;
+      flex-shrink: 0;
+      transition: background-color 0.15s ease;
+      user-select: none;
+      z-index: 5;
+    }
+
+    .resizer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 3px;
+      width: 2px;
+      background: var(--border-color);
+      transition: background-color 0.15s ease;
+    }
+
+    .resizer:hover::after,
+    .resizer.active::after {
+      background: var(--accent);
+      width: 4px;
+      left: 2px;
+    }
+
+    /* Shield to capture mouse moves over iframes during drag */
+    .drag-shield {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 100;
+      cursor: col-resize;
+    }
+
+    .drag-shield.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="split-toolbar">
+    <div class="pane-header left">
+      <button id="btn_reload_left" class="btn icon-only" title="Reload Left Pane">⟳</button>
+      <button id="btn_open_left" class="btn icon-only" title="Open in normal tab">↗</button>
+      <span id="title_left" class="pane-title">Loading...</span>
+    </div>
+
+    <div class="toolbar-actions">
+      <button id="btn_50_50" class="btn" title="50 / 50 Ratio">50:50</button>
+      <button id="btn_70_30" class="btn" title="70 / 30 Ratio">70:30</button>
+      <button id="btn_30_70" class="btn" title="30 / 70 Ratio">30:70</button>
+      <button id="btn_swap" class="btn" title="Swap Left & Right">⇄ Swap</button>
+      <button id="btn_detach" class="btn" title="Detach into Windows">↗ Detach</button>
+    </div>
+
+    <div class="pane-header right">
+      <span id="title_right" class="pane-title">Loading...</span>
+      <button id="btn_open_right" class="btn icon-only" title="Open in normal tab">↗</button>
+      <button id="btn_reload_right" class="btn icon-only" title="Reload Right Pane">⟳</button>
+    </div>
+  </div>
+
+  <div class="split-viewport" id="viewport">
+    <div class="drag-shield" id="drag_shield"></div>
+    <div class="pane-wrapper left" id="wrapper_left">
+      <iframe id="frame_left"></iframe>
+    </div>
+    <div class="resizer" id="resizer"></div>
+    <div class="pane-wrapper right" id="wrapper_right">
+      <iframe id="frame_right"></iframe>
+    </div>
+  </div>
+
+  <script src="split.js"></script>
+</body>
+
+</html>

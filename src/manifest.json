@@ -21,6 +21,9 @@
     "page": "page.setup/setup.html"
   },
   "permissions": [
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
     "activeTab",
     "tabs",
     "contextualIdentities",
@@ -34,10 +37,7 @@
     "theme"
   ],
   "optional_permissions": [
-    "<all_urls>",
     "proxy",
-    "webRequest",
-    "webRequestBlocking",
     "bookmarks",
     "tabHide",
     "clipboardWrite",

@@ -78,6 +78,7 @@ void (async function main() {
   Sidebar.setupListeners()
 
   WebReq.updateReqHandlers()
+  WebReq.initSplitFrameHandler()
 
   Tabs.setupTabsListeners()
   await Tabs.loadTabs()

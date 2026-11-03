@@ -2708,3 +2708,85 @@ function updateSuccession(exclude?: ID[]) {
     }
   }
 }
+
+/**
+ * Method 1: Split tab to companion side-by-side window
+ */
+export async function splitTabToWindow(tabId: ID, side: 'right' | 'left' = 'right'): Promise<void> {
+  const currentWin = await browser.windows.getCurrent()
+  if (!currentWin || currentWin.id === undefined) return
+
+  const screenWidth = window.screen.availWidth
+  const screenHeight = window.screen.availHeight
+  const screenLeft = (window.screen as unknown as { availLeft?: number }).availLeft ?? 0
+  const screenTop = (window.screen as unknown as { availTop?: number }).availTop ?? 0
+  const halfWidth = Math.floor(screenWidth / 2)
+
+  const curWinLeft = side === 'right' ? screenLeft : screenLeft + halfWidth
+  const newWinLeft = side === 'right' ? screenLeft + halfWidth : screenLeft
+
+  try {
+    await browser.windows.update(currentWin.id, {
+      state: 'normal',
+      left: curWinLeft,
+      top: screenTop,
+      width: halfWidth,
+      height: screenHeight,
+    })
+
+    await browser.windows.create({
+      tabId: tabId,
+      state: 'normal',
+      left: newWinLeft,
+      top: screenTop,
+      width: halfWidth,
+      height: screenHeight,
+      incognito: currentWin.incognito,
+    })
+  } catch (err) {
+    Logs.err('Tabs.splitTabToWindow: Failed to split to window', err)
+  }
+}
+
+/**
+ * Method 2: Open selected tabs in dual-pane split view
+ */
+export async function openInSplitTab(tabIds: ID[]): Promise<void> {
+  let leftUrl = 'about:blank'
+  let rightUrl = 'about:blank'
+  let leftTitle = 'Left Pane'
+  let rightTitle = 'Right Pane'
+
+  if (tabIds.length >= 2) {
+    const tab1 = Tabs.byId[tabIds[0]]
+    const tab2 = Tabs.byId[tabIds[1]]
+    if (tab1) {
+      leftUrl = tab1.url
+      leftTitle = tab1.title
+    }
+    if (tab2) {
+      rightUrl = tab2.url
+      rightTitle = tab2.title
+    }
+  } else if (tabIds.length === 1) {
+    const tab = Tabs.byId[tabIds[0]]
+    if (tab) {
+      leftUrl = tab.url
+      leftTitle = tab.title
+    }
+  }
+
+  const splitPageUrl = browser.runtime.getURL(
+    `page.split/split.html?left=${encodeURIComponent(leftUrl)}&right=${encodeURIComponent(rightUrl)}&title1=${encodeURIComponent(leftTitle)}&title2=${encodeURIComponent(rightTitle)}`
+  )
+
+  try {
+    await browser.tabs.create({
+      url: splitPageUrl,
+      active: true,
+    })
+  } catch (err) {
+    Logs.err('Tabs.openInSplitTab: Failed to open split tab', err)
+  }
+}
+
