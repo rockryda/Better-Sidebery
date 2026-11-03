@@ -53,6 +53,97 @@
       background-color: transparent;
     }
 
+    /* High-contrast context menu styling */
+    .CtxMenu {
+      --ctx-menu-fg: #f4f4f5 !important;
+      --ctx-menu-bg: #18181b !important;
+      --ctx-menu-separator: rgba(255, 255, 255, 0.15) !important;
+      --ctx-menu-shadow: 0 10px 36px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      background-color: #18181b !important;
+      color: #f4f4f5 !important;
+    }
+
+    .CtxMenu .container {
+      background-color: #18181b !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.75) !important;
+    }
+
+    .CtxMenu .opt {
+      color: #f4f4f5 !important;
+    }
+
+    .CtxMenu .opt .label {
+      color: #f4f4f5 !important;
+      font-weight: 500 !important;
+    }
+
+    .CtxMenu .opt .icon {
+      fill: #e4e4e7 !important;
+    }
+
+    .CtxMenu .opt:hover,
+    .CtxMenu .opt[data-selected="true"] {
+      background-color: rgba(255, 255, 255, 0.14) !important;
+    }
+
+    .CtxMenu .opt:hover .label,
+    .CtxMenu .opt[data-selected="true"] .label {
+      color: #ffffff !important;
+    }
+
+    .CtxMenu .opt:hover .icon,
+    .CtxMenu .opt[data-selected="true"] .icon {
+      fill: #ffffff !important;
+    }
+
+    .CtxMenu .opt[data-inactive="true"] .label {
+      color: rgba(255, 255, 255, 0.38) !important;
+    }
+
+    .CtxMenu .opt[data-inactive="true"] .icon {
+      fill: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .CtxMenu .separator {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .CtxMenu {
+        --ctx-menu-fg: #1f2328 !important;
+        --ctx-menu-bg: #ffffff !important;
+        --ctx-menu-separator: rgba(0, 0, 0, 0.1) !important;
+        --ctx-menu-shadow: 0 10px 30px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
+      }
+      .CtxMenu .container {
+        background-color: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.12) !important;
+      }
+      .CtxMenu .opt .label {
+        color: #1f2328 !important;
+      }
+      .CtxMenu .opt .icon {
+        fill: #374151 !important;
+      }
+      .CtxMenu .opt:hover {
+        background-color: rgba(0, 0, 0, 0.07) !important;
+      }
+    }
+
+    /* Collapse mode toggle button */
+    .collapse-toggle-btn {
+      cursor: pointer;
+      opacity: 0.85;
+      transition: opacity 0.15s ease, background-color 0.15s ease;
+    }
+    .collapse-toggle-btn:hover {
+      opacity: 1;
+      background-color: var(--floorp-hover-bg) !important;
+    }
+
     /* Tab hover & animations */
     .Tab {
       transition: padding-left 0.22s cubic-bezier(0.2, 0, 0, 1), margin 0.22s, width 0.22s !important;
@@ -71,13 +162,38 @@
       transition: opacity 0.18s ease, transform 0.18s ease !important;
     }
 
-    /* Auto-collapse to icon-only mode when sidebar width <= 68px */
+    /* Auto-collapse to icon-only mode when sidebar width <= 68px or data-collapse-mode="collapsed" */
     @media (max-width: 68px) {
       #search_bar,
       .SearchBar,
       .sub-list-title,
       .TabsPanel .new-tab-btns {
         display: none !important;
+      }
+
+      .NavigationBar {
+        justify-content: center !important;
+        padding: 4px 0 !important;
+      }
+
+      .NavigationBar .static-btns {
+        display: none !important;
+      }
+
+      .NavigationBar .main-items {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+      }
+
+      .NavigationBar .main-items .NavItem {
+        display: none !important;
+      }
+
+      /* Active tabs panel with its count badge stays prominently at the top */
+      .NavigationBar .main-items .NavItem[data-active="true"] {
+        display: flex !important;
+        margin: 0 auto !important;
       }
 
       .Tab {
@@ -129,23 +245,52 @@
       /* Audio badge overlay */
       .Tab .body .audio {
         position: absolute !important;
-        right: 1px !important;
-        bottom: 1px !important;
-        width: 13px !important;
-        height: 13px !important;
-        margin: 0 !important;
+        right: 2px !important;
+        bottom: 2px !important;
+        width: 14px !important;
+        height: 14px !important;
+        padding: 0 !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        border-radius: 4px !important;
       }
+    }
 
-      /* Compact vertical navigation */
-      .NavigationBar.-top {
-        flex-direction: column !important;
-        align-items: center !important;
-        padding: 4px 0 !important;
-      }
+    [data-collapse-mode="collapsed"] #search_bar,
+    [data-collapse-mode="collapsed"] .SearchBar,
+    [data-collapse-mode="collapsed"] .sub-list-title,
+    [data-collapse-mode="collapsed"] .TabsPanel .new-tab-btns {
+      display: none !important;
+    }
 
-      .NavigationBar .nav-item {
-        margin: 2px 0 !important;
-      }
+    [data-collapse-mode="collapsed"] .NavigationBar .static-btns {
+      display: none !important;
+    }
+
+    [data-collapse-mode="collapsed"] .NavigationBar .main-items .NavItem {
+      display: none !important;
+    }
+
+    [data-collapse-mode="collapsed"] .NavigationBar .main-items .NavItem[data-active="true"] {
+      display: flex !important;
+      margin: 0 auto !important;
+    }
+
+    [data-collapse-mode="collapsed"] .Tab .body .t-box,
+    [data-collapse-mode="collapsed"] .Tab .close,
+    [data-collapse-mode="collapsed"] .Tab .child-count,
+    [data-collapse-mode="collapsed"] .Tab .exp {
+      display: none !important;
+    }
+
+    [data-collapse-mode="collapsed"] .Tab .body .audio {
+      position: absolute !important;
+      right: 2px !important;
+      bottom: 2px !important;
+      width: 14px !important;
+      height: 14px !important;
+      padding: 0 !important;
+      background: rgba(0, 0, 0, 0.6) !important;
+      border-radius: 4px !important;
     }
   </style>
 </head>

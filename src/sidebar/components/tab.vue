@@ -412,7 +412,9 @@ function onDoubleClick(): void {
   else if (dc === 'close') {
     if (shouldBeConvertedToGroup()) convertToGroup()
     else Tabs.removeTabs([tab.id])
-  } else if (dc === 'edit_title') Tabs.editTabTitle([tab.id])
+  } else {
+    Tabs.editTabTitle([tab.id])
+  }
 }
 
 function onDragStart(e: DragEvent): void {

@@ -21,6 +21,10 @@
       @contextmenu="onNavCtxMenu($event, item)")
 
   .static-btns(v-if="nav?.visibleStaticButtons")
+    .NavItem.-btn.collapse-toggle-btn(
+      :title="collapseModeTooltip"
+      @click.stop="onToggleCollapseMode")
+      svg.icon: use(:xlink:href="collapseModeIcon")
     NavItemComponent(
       v-for="(item, i) in nav.visibleStaticButtons"
       :key="item.id"
@@ -93,7 +97,23 @@ import { DnD } from 'src/services/drag-and-drop'
 import { Search } from 'src/services/search'
 import { Snapshots } from 'src/services/snapshots'
 import * as Popups from 'src/services/popups'
+import { CollapseModeService } from 'src/services/collapse-mode'
 import NavItemComponent from './nav-item.vue'
+
+const collapseMode = ref(CollapseModeService.mode)
+const collapseModeIcon = computed(() => {
+  if (collapseMode.value === 'full') return '#icon_pin'
+  if (collapseMode.value === 'collapsed') return '#icon_collapse'
+  return '#icon_expand'
+})
+const collapseModeTooltip = computed(() => {
+  if (collapseMode.value === 'full') return 'Sidebar: Full width (Click to collapse)'
+  if (collapseMode.value === 'collapsed') return 'Sidebar: Collapsed rail (Click for auto-expand)'
+  return 'Sidebar: Auto-expand on hover (Click to pin full)'
+})
+function onToggleCollapseMode() {
+  collapseMode.value = CollapseModeService.cycle()
+}
 
 const HIDDEN_PANELS_BTN: NavBtn = {
   id: 'hidden_panels_btn',
@@ -277,13 +297,16 @@ onMounted(() => {
 function getBtnInlineIndex(index: number): number {
   if (!isInline) return -1
 
-  const visMax = nav.value?.visibleItemsMax
-  if (!visMax) return -1
-
   const visItems = nav.value?.visibleItems
   const activePanelId = Sidebar.reactive.activePanelId
-  let activeIndex = visItems.findIndex(btn => btn.id === activePanelId)
+  let activeIndex = visItems?.findIndex(btn => btn.id === activePanelId) ?? -1
   if (activeIndex === -1) activeIndex = 0
+
+  // Always keep active panel visible with count badge!
+  if (index === activeIndex) return 0
+
+  const visMax = nav.value?.visibleItemsMax
+  if (!visMax || visMax <= 1) return -1
   const halfCap = Math.floor(visMax / 2)
   let len = visItems?.length ?? 0
 

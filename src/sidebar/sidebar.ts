@@ -24,6 +24,7 @@ import { Search } from 'src/services/search'
 import { Info } from 'src/services/info'
 import SidebarRoot from './sidebar.vue'
 import { Snapshots } from 'src/services/snapshots'
+import { CollapseModeService } from 'src/services/collapse-mode'
 import { updateWebReqHandlers } from 'src/services/web-req.fg'
 import { initUpgrading, showUpgradingScreen } from 'src/services/upgrading'
 
@@ -31,6 +32,7 @@ async function main(): Promise<void> {
   Info.setInstanceType(InstanceType.sidebar)
   IPC.setInstanceType(InstanceType.sidebar)
   Logs.setInstanceType(InstanceType.sidebar)
+  CollapseModeService.init()
 
   const ts = performance.now()
   Logs.info('Init start')

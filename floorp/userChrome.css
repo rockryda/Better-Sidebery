@@ -15,8 +15,40 @@
   display: none !important;
 }
 
-/* 1. Base Sidebar Layout (Docked 48px In-Flow Rail + Expand to 260px on Hover) */
-#sidebar-box:not([hidden="true"]) {
+/* 1. Base Sidebar Layout */
+
+/* Mode 1: Full Width (Pinned, never collapses) */
+#sidebar-box:has(#sidebar[src*="sidebar-full"]):not([hidden="true"]) {
+  position: relative !important;
+  z-index: 100 !important;
+  width: 260px !important;
+  min-width: 260px !important;
+  max-width: 260px !important;
+  margin-inline-end: 0 !important;
+  overflow: hidden !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
+  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Mode 2: Collapsed Rail (Pinned 48px, no hover expand) */
+#sidebar-box:has(#sidebar[src*="sidebar-collapsed"]):not([hidden="true"]) {
+  position: relative !important;
+  z-index: 100 !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  margin-inline-end: 0 !important;
+  overflow: hidden !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
+  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Mode 3: Auto-Expand on hover (Default: 48px rail, expands to 260px on hover with zero reflow) */
+#sidebar-box:not(:has(#sidebar[src*="sidebar-full"])):not(:has(#sidebar[src*="sidebar-collapsed"])):not([hidden="true"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 48px !important;
@@ -34,9 +66,8 @@
               box-shadow 0.22s ease !important;
 }
 
-/* Expand smoothly on hover / focus over web content (zero content reflow) */
-#sidebar-box:not([hidden="true"]):hover,
-#sidebar-box:not([hidden="true"]):focus-within {
+#sidebar-box:not(:has(#sidebar[src*="sidebar-full"])):not(:has(#sidebar[src*="sidebar-collapsed"])):not([hidden="true"]):hover,
+#sidebar-box:not(:has(#sidebar[src*="sidebar-full"])):not(:has(#sidebar[src*="sidebar-collapsed"])):not([hidden="true"]):focus-within {
   width: 260px !important;
   max-width: 260px !important;
   margin-inline-end: -212px !important;

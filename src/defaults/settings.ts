@@ -209,7 +209,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   wheelThreshold: false,
   wheelThresholdX: 10,
   wheelThresholdY: 60,
-  tabDoubleClick: 'none',
+  tabDoubleClick: 'edit_title',
   tabsSecondClickActPrev: false,
   tabsSecondClickActPrevPanelOnly: false,
   shiftSelAct: true,
