@@ -1,19 +1,11 @@
 <div align="center">
 
-<img src="docs/assets/readme-logo.svg" height="96" alt="Sidebery">
+<img src="src/assets/logo.svg" height="96" alt="Sidebery">
 
 <br>
 <br>
 
 Firefox extension for managing tabs and bookmarks in sidebar.
-
-</div>
-
-<br>
-
-<div align="center">
-
-<img src="docs/assets/screenshot-003.png" width="20%" alt="screenshot-003" title="Firefox theme: Modern Light"><img src="docs/assets/screenshot-002.png" width="20%" alt="screenshot-002" title="Firefox theme: Arc Dark Theme"><img src="docs/assets/screenshot-005.png" width="20%" alt="screenshot-005" title="Firefox theme: Modern Light"><img src="docs/assets/screenshot-009.png" width="20%" alt="screenshot-009" title="Firefox theme: Vampyric Dark"><img src="docs/assets/screenshot-011.png" width="20%" alt="screenshot-011" title="Firefox theme: Modern Light">
 
 </div>
 
