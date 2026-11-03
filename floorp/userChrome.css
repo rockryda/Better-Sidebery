@@ -1,9 +1,9 @@
 /* ==========================================================================
    Better-Sidebery companion userChrome.css for Floorp
-   - 48px compact icon rail in normal flow (zero empty gap/layers)
-   - Zero-reflow hover expansion to 260px floating over web content
-   - Full Floorp Zen Mode edge-hover slide-over drawer
-   - Cleans up redundant headers and duplicate tab bars
+   - Auto-collapses Sidebery sidebar to a 48px icon rail
+   - Smoothly expands to 260px on hover over web content (zero page reflow)
+   - Full Floorp Zen Mode integration: edge-hover slide-over drawer
+   - Removes redundant sidebar headers and duplicate native tab bars
    ========================================================================== */
 
 #browser {
@@ -15,37 +15,38 @@
   display: none !important;
 }
 
-/* 1. Base Sidebar Layout (Docked 48px Icon Rail in-flow) */
+/* 1. Base Sidebar Layout (Docked 48px Icon Rail + Expand to 260px on Hover) */
 #sidebar-box:not([hidden="true"]) {
-  display: flex !important;
-  min-width: 48px !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
   width: 48px !important;
+  min-width: 48px !important;
   max-width: 48px !important;
-  margin-right: 0 !important;
   z-index: 100 !important;
   overflow: hidden !important;
   border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
-  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
+  background-color: light-dark(rgba(248, 249, 250, 0.85), rgba(20, 20, 22, 0.85)) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  transition: width 0.2s cubic-bezier(0.2, 0, 0, 1),
-              max-width 0.2s cubic-bezier(0.2, 0, 0, 1),
-              margin-right 0.2s cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 0.2s ease,
+  transition: width 0.22s cubic-bezier(0.2, 0, 0, 1),
+              max-width 0.22s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.22s ease,
               margin-inline-start 0.25s cubic-bezier(0.2, 0, 0, 1),
               opacity 0.2s ease !important;
 }
 
-/* Zero-Reflow Expansion: Expands to 260px, negative margin keeps page layout at 48px */
+/* Expand smoothly on hover / focus over web content */
 #sidebar-box:not([hidden="true"]):hover,
 #sidebar-box:not([hidden="true"]):focus-within {
   width: 260px !important;
   max-width: 260px !important;
-  margin-right: -212px !important; /* 260px - 212px = 48px layout footprint */
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* Inner sidebar iframe */
+/* Remove min-width restriction on the internal iframe */
 #sidebar-box #sidebar {
   min-width: 0 !important;
   width: 100% !important;
@@ -59,12 +60,11 @@
   display: none !important;
 }
 
-/* Ensure no artificial margins stack up on the content area */
+/* Reserve space for the 48px docked rail so page content isn't covered */
 #appcontent,
 #tabbrowser-tabbox,
 #tabbrowser-tabpanels {
-  margin-inline-start: 0 !important;
-  padding-inline-start: 0 !important;
+  margin-inline-start: 48px !important;
 }
 
 /* 2. Floorp Zen Mode Integration */
@@ -79,14 +79,13 @@
   width: 260px !important;
   max-width: 260px !important;
   min-width: 0 !important;
-  margin-right: 0 !important;
   margin-inline-start: -264px !important;
   opacity: 0 !important;
   pointer-events: none !important;
   box-shadow: none !important;
 }
 
-/* Floorp edge-hover: slides in when mouse reaches left screen edge in Zen Mode */
+/* Floorp edge-hover: slides in when mouse reaches left screen edge */
 :root[zenmode][zenmode-reveal-side] #sidebar-box:not([hidden="true"]),
 :root[zenmode] #sidebar-box:not([hidden="true"]):hover {
   margin-inline-start: 0 !important;
@@ -101,11 +100,7 @@
   margin-inline-start: 0 !important;
 }
 
-/* 3. Hide redundant native tab bars */
+/* 3. Hide redundant native tab strip */
 #TabsToolbar {
   visibility: collapse !important;
-}
-
-#vertical-tabs {
-  display: none !important;
 }
