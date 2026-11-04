@@ -17,8 +17,8 @@ section(ref="el")
       .btn(
         @click="openFloorpDesignSettings"
         style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px;")
-        span {{ copied ? '✓ Copied! Press Cmd+V & Enter in the new tab' : '📋 Copy URL & Open New Tab ↗' }}
-      code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:preferences#design
+        span {{ statusMsg || '🚀 Open Floorp Design Settings ↗' }}
+      code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:hub#/features/design
 
   ToggleField(
     label="settings.native_scrollbars"
@@ -110,34 +110,46 @@ function showPermissionsPopup(): void {
   SetupPage.reactive.permissions = true
 }
 
-const copied = ref(false)
+const statusMsg = ref('')
 
 async function openFloorpDesignSettings(): Promise<void> {
-  const url = 'about:preferences#design'
+  const url = 'about:hub#/features/design'
+
+  // Pre-copy to clipboard in case browser blocks direct about: navigation
   try {
     if (navigator?.clipboard?.writeText) {
       await navigator.clipboard.writeText(url)
-    } else {
-      throw new Error('No clipboard API')
     }
-  } catch {
-    const el = document.createElement('textarea')
-    el.value = url
-    el.style.position = 'fixed'
-    el.style.opacity = '0'
-    document.body.appendChild(el)
-    el.select()
-    document.execCommand('copy')
-    document.body.removeChild(el)
-  }
+  } catch {}
 
-  copied.value = true
-  setTimeout(() => {
-    copied.value = false
-  }, 4000)
+  let navigated = false
 
+  // 1. Attempt direct navigation via WebExtensions API
   if (typeof browser !== 'undefined' && browser.tabs) {
-    browser.tabs.create({})
+    try {
+      await browser.tabs.create({ url })
+      navigated = true
+    } catch {
+      // Gecko WebExtension schema blocked about: URL with Illegal URL error
+      try {
+        await browser.tabs.create({})
+      } catch {}
+    }
+  } else {
+    try {
+      window.open(url, '_blank')
+      navigated = true
+    } catch {}
   }
+
+  if (navigated) {
+    statusMsg.value = '✓ Opened Floorp Design Settings!'
+  } else {
+    statusMsg.value = '✓ Copied URL! Press Cmd+V & Enter in the new tab'
+  }
+
+  setTimeout(() => {
+    statusMsg.value = ''
+  }, 4000)
 }
 </script>
