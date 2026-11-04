@@ -1,18 +1,30 @@
 #!/usr/bin/env bash
+# ==============================================================================
+# Better-Sidebery Browser Companion Uninstaller
+# Supports Floorp, Firefox, LibreWolf, and Waterfox
+# Can be run locally or via: curl -fsSL https://.../uninstall.sh | bash
+# ==============================================================================
+
 set -e
 
-echo "🔍 Detecting Floorp profile directory..."
+echo "🔍 Detecting browser profiles..."
 
-FLOORP_DIR=""
+TARGET_DIRS=()
+
 case "$(uname -s)" in
   Darwin*)
-    FLOORP_DIR="$HOME/Library/Application Support/Floorp"
+    [ -d "$HOME/Library/Application Support/Floorp/Profiles" ] && TARGET_DIRS+=("$HOME/Library/Application Support/Floorp/Profiles")
+    [ -d "$HOME/Library/Application Support/Firefox/Profiles" ] && TARGET_DIRS+=("$HOME/Library/Application Support/Firefox/Profiles")
+    [ -d "$HOME/Library/Application Support/Waterfox/Profiles" ] && TARGET_DIRS+=("$HOME/Library/Application Support/Waterfox/Profiles")
     ;;
   Linux*)
-    FLOORP_DIR="$HOME/.floorp"
+    [ -d "$HOME/.floorp" ] && TARGET_DIRS+=("$HOME/.floorp")
+    [ -d "$HOME/.mozilla/firefox" ] && TARGET_DIRS+=("$HOME/.mozilla/firefox")
+    [ -d "$HOME/.waterfox" ] && TARGET_DIRS+=("$HOME/.waterfox")
     ;;
   MINGW*|MSYS*|CYGWIN*)
-    FLOORP_DIR="$APPDATA/Floorp"
+    [ -d "$APPDATA/Floorp/Profiles" ] && TARGET_DIRS+=("$APPDATA/Floorp/Profiles")
+    [ -d "$APPDATA/Mozilla/Firefox/Profiles" ] && TARGET_DIRS+=("$APPDATA/Mozilla/Firefox/Profiles")
     ;;
   *)
     echo "❌ Unsupported operating system: $(uname -s)"
@@ -20,25 +32,22 @@ case "$(uname -s)" in
     ;;
 esac
 
-if [ ! -d "$FLOORP_DIR" ]; then
-  echo "❌ Floorp data directory not found at: $FLOORP_DIR"
-  exit 1
-fi
-
-echo "📁 Reverting userChrome.css across all Floorp profiles..."
-for P_DIR in "$FLOORP_DIR"/Profiles/*; do
-  if [ -d "$P_DIR" ]; then
-    CHROME_DIR="$P_DIR/chrome"
-    if [ -f "$CHROME_DIR/userChrome.css.bak" ]; then
-      mv "$CHROME_DIR/userChrome.css.bak" "$CHROME_DIR/userChrome.css"
-      echo "  ↩️ Restored original backup in: $CHROME_DIR"
-    elif [ -f "$CHROME_DIR/userChrome.css" ]; then
-      rm -f "$CHROME_DIR/userChrome.css"
-      echo "  🗑️ Removed userChrome.css in: $CHROME_DIR"
+echo "📁 Reverting userChrome.css across all detected browser profiles..."
+for PARENT_DIR in "${TARGET_DIRS[@]}"; do
+  for P_DIR in "$PARENT_DIR"/*; do
+    if [ -d "$P_DIR" ]; then
+      CHROME_DIR="$P_DIR/chrome"
+      if [ -f "$CHROME_DIR/userChrome.css.bak" ]; then
+        mv "$CHROME_DIR/userChrome.css.bak" "$CHROME_DIR/userChrome.css"
+        echo "  ↩️ Restored original backup in: $P_DIR"
+      elif [ -f "$CHROME_DIR/userChrome.css" ]; then
+        rm -f "$CHROME_DIR/userChrome.css"
+        echo "  🗑️ Removed userChrome.css in: $P_DIR"
+      fi
     fi
-  fi
+  done
 done
 
+echo ""
 echo "🎉 Revert complete!"
-echo "🔄 Please completely quit Floorp (Cmd + Q) and restart it to apply the changes."
-
+echo "🔄 Please completely quit your browser (Cmd + Q) and restart it to apply changes."

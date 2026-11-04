@@ -47,10 +47,10 @@ section(ref="el")
         .btn(
           @click="copySetupScript"
           style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
-          span {{ scriptMsg || '📋 Copy Setup Command' }}
-        code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") bash floorp/install.sh
+          span {{ scriptMsg || '📋 Copy Terminal Command' }}
+        code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;") curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/install.sh | bash
       .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
-        | *Paste into your terminal to apply. (Revert anytime with <code>bash floorp/uninstall.sh</code>).*
+        | *Click to copy, paste into your terminal, and press Enter. Then restart your browser.*
 
   ToggleField(
     label="settings.native_scrollbars"
@@ -148,13 +148,14 @@ const statusMsg = ref('')
 const scriptMsg = ref('')
 
 async function copySetupScript(): Promise<void> {
-  const cmd = 'bash floorp/install.sh'
+  const cmd =
+    'curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/install.sh | bash'
   try {
     if (navigator?.clipboard?.writeText) {
       await navigator.clipboard.writeText(cmd)
     }
   } catch {}
-  scriptMsg.value = '✓ Copied setup command!'
+  scriptMsg.value = '✓ Copied terminal command!'
   setTimeout(() => {
     scriptMsg.value = ''
   }, 4000)
