@@ -2,6 +2,20 @@
 section(ref="el")
   h2 {{translate('settings.general_title')}}
   span.header-shadow
+
+  .sub-fields(style="margin-bottom: 16px; padding: 14px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
+    .label(style="font-size: 14px; font-weight: 600; color: #22c55e; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;")
+      span 🦊
+      span Floorp Browser 1-Click Setup
+    .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
+      | To remove duplicate horizontal tabs and the sidebar header in Floorp, click below to open Floorp's Design settings and toggle:
+      br
+      | • <b>Hide tabs on Horizontal Tab Bar</b>
+      br
+      | • <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
+    .btn(@click="openFloorpDesignSettings" style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px;")
+      span Open Floorp Design Settings ↗
+
   ToggleField(
     label="settings.native_scrollbars"
     v-model:value="Settings.state.nativeScrollbars"
@@ -90,5 +104,13 @@ async function toggleSelWinScreenshots(): Promise<void> {
 
 function showPermissionsPopup(): void {
   SetupPage.reactive.permissions = true
+}
+
+function openFloorpDesignSettings(): void {
+  if (typeof browser !== 'undefined' && browser.tabs) {
+    browser.tabs.create({ url: 'about:preferences#design' })
+  } else {
+    window.open('about:preferences#design', '_blank')
+  }
 }
 </script>
