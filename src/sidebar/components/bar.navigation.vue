@@ -261,6 +261,15 @@ const nav = computed<Nav | undefined>(() => {
       }
     }
 
+    // Icon-only rail (<= 68px): only one static button fits, so keep "add panel" inline
+    // (settings is hidden by the rail CSS) instead of burying it in the hidden-panels popup.
+    if (horNavWidth <= 68) {
+      const addIdx = nav.hiddenStaticButtons.findIndex(btn => btn.id === 'add_tp')
+      if (addIdx !== -1) {
+        nav.visibleStaticButtons.unshift(...nav.hiddenStaticButtons.splice(addIdx, 1))
+      }
+    }
+
     if (hasHiddenPanels || nav.hiddenStaticButtons.length) {
       nav.visibleStaticButtons.unshift(HIDDEN_PANELS_BTN)
     }
@@ -340,7 +349,7 @@ function onDrop(e: DragEvent): void {
  * Handle context menu event
  */
 function onNavCtxMenu(e: MouseEvent, item: NavItem) {
-  if (!Settings.state.ctxMenuNative || e.ctrlKey || e.shiftKey) {
+  if (!Settings.isNativeCtxMenu() || e.ctrlKey || e.shiftKey) {
     e.stopPropagation()
     e.preventDefault()
     return
@@ -525,7 +534,7 @@ function onNavMouseUp(e: MouseEvent, item: NavItem, inHiddenBar?: boolean) {
   else if (e.button === 2) {
     e.stopPropagation()
 
-    if (Settings.state.ctxMenuNative) return
+    if (Settings.isNativeCtxMenu()) return
     if (Selection.isSet()) return Selection.resetSelection()
     if (isRemuteAudioTabs) return Tabs.switchToFirstAudibleTab()
 

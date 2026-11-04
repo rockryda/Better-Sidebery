@@ -62,6 +62,29 @@
 }
 
 
+/* Popup open in the rail: temporarily widen to 260px (overlay, zero page reflow) so that
+   dialogs/popups fit. Set by the extension via an invisible window-title marker. */
+:root[titlepreface*="\200B\2060"] #sidebar-box:not([hidden="true"]) {
+  position: relative !important;
+  z-index: 100 !important;
+  width: 260px !important;
+  min-width: 0 !important;
+  max-width: 260px !important;
+  margin-inline-end: -212px !important;
+  overflow: hidden !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
+  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+:root[titlepreface*="\200B\2060"] #sidebar-box #sidebar {
+  min-width: 0 !important;
+  width: 100% !important;
+  background-color: transparent !important;
+}
+
 /* Ensure content containers have zero extra margins */
 #appcontent,
 #tabbrowser-tabbox,

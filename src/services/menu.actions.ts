@@ -190,7 +190,7 @@ export function open(type: MenuType, x?: number, y?: number, customForced?: bool
 
   Menu.isOpen = true
 
-  if (Settings.state.ctxMenuNative && !customForced) {
+  if (Settings.isNativeCtxMenu() && !customForced) {
     for (const block of blocks) {
       for (const opt of block.opts) {
         if (opt.sub && opt.sub.length && opt.label) {
@@ -277,7 +277,7 @@ function createMenuBlocks(config: MenuConf, customForced?: boolean): MenuBlock[]
     }
   }
 
-  if (!Settings.state.ctxMenuNative || customForced) {
+  if (!Settings.isNativeCtxMenu() || customForced) {
     blocks = blocks.reduce<MenuBlock[]>((blocks, block) => {
       if (block.opts.length === 0) return blocks
       if (block.opts.length === 1 && block.opts[0].type === 'separator') return blocks

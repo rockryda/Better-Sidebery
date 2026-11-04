@@ -103,7 +103,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, Component, nextTick } from 'vue'
+import { ref, computed, onMounted, Component, nextTick, watch } from 'vue'
 import { PanelType, Panel, MenuType, WheelDirection, DropType } from 'src/types'
 import { SubPanelType } from 'src/types'
 import { NOID } from 'src/defaults'
@@ -144,6 +144,34 @@ import * as Utils from 'src/utils'
 import * as Popups from 'src/services/popups'
 import * as Logs from 'src/services/logs'
 import * as Preview from 'src/services/tabs.preview'
+import { CollapseModeService } from 'src/services/collapse-mode'
+
+// Popups/dialogs can't extend beyond the 48px rail: widen the sidebar while one is open
+const anyPopupOpen = computed<boolean>(() => {
+  const p = Popups.reactive
+  return !!(
+    p.confirm ||
+    p.panelConfigPopup ||
+    p.containerConfigPopup ||
+    p.groupConfigPopup ||
+    p.dialog ||
+    p.newTabShortcutsPopup ||
+    p.siteConfigPopup ||
+    Windows.reactive.choosing ||
+    Bookmarks.reactive.popup
+  )
+})
+watch(anyPopupOpen, open => {
+  if (open) {
+    if (CollapseModeService.mode === 'full') return
+    if (document.documentElement.clientWidth > 68) return
+    CollapseModeService.popupExpanded = true
+    Windows.updWindowPreface()
+  } else if (CollapseModeService.popupExpanded) {
+    CollapseModeService.popupExpanded = false
+    Windows.updWindowPreface()
+  }
+})
 
 const rootEl = ref<HTMLElement | null>(null)
 const panelBoxEl = ref<HTMLElement | null>(null)

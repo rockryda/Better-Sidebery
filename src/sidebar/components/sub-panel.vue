@@ -68,7 +68,7 @@ function onMouseUp(e: MouseEvent): void {
 
   const panel = Sidebar.subPanelHost
 
-  if (e.button === 2 && !Settings.state.ctxMenuNative && panel) {
+  if (e.button === 2 && !Settings.isNativeCtxMenu() && panel) {
     Selection.selectNavItem(panel.id)
     Menu.open(MenuType.TabsPanel, e.clientX, e.clientY)
   }

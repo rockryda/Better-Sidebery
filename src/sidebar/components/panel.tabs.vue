@@ -160,7 +160,7 @@ function onRightMouseUp(e: MouseEvent): void {
   if (Selection.isSet()) return
   e.stopPropagation()
 
-  if (Settings.state.ctxMenuNative) return
+  if (Settings.isNativeCtxMenu()) return
 
   Selection.selectNavItem(props.panel.id)
   Menu.open(MenuType.TabsPanel, e.clientX, e.clientY)
@@ -177,7 +177,7 @@ function onNavCtxMenu(e: MouseEvent): void {
 
   if (
     Mouse.isLocked() ||
-    !Settings.state.ctxMenuNative ||
+    !Settings.isNativeCtxMenu() ||
     e.ctrlKey ||
     e.shiftKey ||
     Selection.isSet()

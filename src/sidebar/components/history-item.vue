@@ -77,7 +77,7 @@ function onMouseDown(e: MouseEvent, visit: Visit): void {
 
   // Right
   else if (e.button === 2) {
-    if (!Settings.state.ctxMenuNative && !visit.reactive.sel) Selection.resetSelection()
+    if (!Settings.isNativeCtxMenu() && !visit.reactive.sel) Selection.resetSelection()
   }
 }
 
@@ -110,10 +110,10 @@ function onMouseUp(e: MouseEvent, visit: Visit): void {
     if (e.ctrlKey || e.shiftKey) return
 
     if (Menu.isBlocked()) return
-    if (!Selection.isSet() && !Settings.state.ctxMenuNative) {
+    if (!Selection.isSet() && !Settings.isNativeCtxMenu()) {
       Selection.selectHistory(visit.id)
     }
-    if (!Settings.state.ctxMenuNative) Menu.open(MenuType.History, e.clientX, e.clientY)
+    if (!Settings.isNativeCtxMenu()) Menu.open(MenuType.History, e.clientX, e.clientY)
   }
 }
 
@@ -134,7 +134,7 @@ function onFavMouseDown(e: MouseEvent, visit: Visit): void {
 }
 
 function onCtxMenu(e: MouseEvent, visit: Visit): void {
-  if (Mouse.isLocked() || !Settings.state.ctxMenuNative || e.ctrlKey || e.shiftKey) {
+  if (Mouse.isLocked() || !Settings.isNativeCtxMenu() || e.ctrlKey || e.shiftKey) {
     Mouse.resetClickLock()
     e.stopPropagation()
     e.preventDefault()

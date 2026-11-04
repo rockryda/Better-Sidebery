@@ -144,7 +144,7 @@ async function onMouseDown(e: MouseEvent): Promise<void> {
 
   // Right
   else if (e.button === 2) {
-    if (!Settings.state.ctxMenuNative && !props.node.sel && !Bookmarks.reactive.popup) {
+    if (!Settings.isNativeCtxMenu() && !props.node.sel && !Bookmarks.reactive.popup) {
       Selection.resetSelection()
       Mouse.startMultiSelection(e, props.node.id)
     }
@@ -273,7 +273,7 @@ async function onMouseUp(e: MouseEvent): Promise<void> {
     if (Bookmarks.reactive.popup) return
 
     Mouse.stopMultiSelection()
-    if (!Settings.state.ctxMenuNative) {
+    if (!Settings.isNativeCtxMenu()) {
       if (!Selection.isSet()) Selection.selectBookmark(props.node.id)
       Menu.open(MenuType.Bookmarks, e.clientX, e.clientY)
     }
@@ -284,7 +284,7 @@ async function onMouseUp(e: MouseEvent): Promise<void> {
  * Handle context menu
  */
 function onCtxMenu(e: MouseEvent): void {
-  if (!Settings.state.ctxMenuNative || e.ctrlKey || e.shiftKey || Bookmarks.reactive.popup) {
+  if (!Settings.isNativeCtxMenu() || e.ctrlKey || e.shiftKey || Bookmarks.reactive.popup) {
     e.stopPropagation()
     e.preventDefault()
     return

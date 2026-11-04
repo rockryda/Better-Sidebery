@@ -15,6 +15,15 @@ export async function editTabTitle(tabIds: ID[]) {
     if (ptp === 'left' || ptp === 'right') return
   }
 
+  // Icon-only rail (<= 68px): no room for an inline input, so rename via a prompt
+  if (document.documentElement.clientWidth <= 68) {
+    const value = window.prompt('Rename', tab.customTitle ?? tab.title)
+    if (value === null) return
+    tab.reactive.customTitle = value
+    Tabs.saveCustomTitle(tab.id)
+    return
+  }
+
   Tabs.editableTabId = tab.id
   tab.reactive.customTitleEdit = true
   tab.reactive.customTitle = tab.customTitle ?? tab.title

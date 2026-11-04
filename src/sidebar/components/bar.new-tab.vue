@@ -188,7 +188,7 @@ function onNewTabMouseDown(e: MouseEvent, btn?: NewTabBtn): void {
 
   // Right
   else if (e.button === 2) {
-    if (!Settings.state.ctxMenuNative && !props.panel.selNewTab) Selection.resetSelection()
+    if (!Settings.isNativeCtxMenu() && !props.panel.selNewTab) Selection.resetSelection()
   }
 }
 
@@ -250,10 +250,10 @@ function onNewTabMouseUp(e: MouseEvent, btn?: NewTabBtn): void {
     if (e.ctrlKey || e.shiftKey || Windows.incognito) return
 
     if (Menu.isBlocked()) return
-    if (!Selection.isSet() && !Settings.state.ctxMenuNative) {
+    if (!Selection.isSet() && !Settings.isNativeCtxMenu()) {
       Selection.selectNewTabBtn(props.panel.id)
     }
-    if (!Settings.state.ctxMenuNative) Menu.open(MenuType.NewTab, e.clientX, e.clientY)
+    if (!Settings.isNativeCtxMenu()) Menu.open(MenuType.NewTab, e.clientX, e.clientY)
   }
 }
 
@@ -275,7 +275,7 @@ function onNewTabCtxMenu(e: MouseEvent): void {
 
   e.stopPropagation()
 
-  if (Mouse.isLocked() || !Settings.state.ctxMenuNative || e.ctrlKey || e.shiftKey) {
+  if (Mouse.isLocked() || !Settings.isNativeCtxMenu() || e.ctrlKey || e.shiftKey) {
     Mouse.resetClickLock()
     e.stopPropagation()
     e.preventDefault()

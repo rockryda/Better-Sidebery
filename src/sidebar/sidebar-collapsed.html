@@ -162,7 +162,12 @@
       transition: opacity 0.18s ease, transform 0.18s ease !important;
     }
 
-    /* Auto-collapse to icon-only mode when sidebar width <= 68px or data-collapse-mode="collapsed" */
+    /* Group badge is only used in the icon-only rail */
+    .Tab .group-badge {
+      display: none;
+    }
+
+    /* ===== Icon-only rail (sidebar width <= 68px) ===== */
     @media (max-width: 68px) {
       #search_bar,
       .SearchBar,
@@ -171,71 +176,269 @@
         display: none !important;
       }
 
+      /* --- Header: [mode toggle] on top, divider, then the panel switcher below --- */
       .NavigationBar {
-        justify-content: center !important;
-        padding: 4px 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        width: 100% !important;
+        gap: 6px !important;
+        padding: 6px 0 8px !important;
       }
 
+      /* Static buttons are flattened into the column: toggle first, add-panel after the panel */
       .NavigationBar .static-btns {
+        display: contents !important;
+      }
+
+      .NavigationBar .static-btns > :not(.collapse-toggle-btn):not([data-type="add_tp"]) {
         display: none !important;
+      }
+
+      .NavigationBar .static-btns > [data-type="add_tp"] {
+        order: 2 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px !important;
+        height: 28px !important;
+        border-radius: 8px !important;
+        border: 1px dashed rgba(128, 128, 128, 0.6) !important;
+        opacity: 0.85 !important;
+      }
+
+      .NavigationBar .static-btns > [data-type="add_tp"] .name-box {
+        display: none !important;
+      }
+
+      /* Toggle = square control button (outlined), unlike the round tab icons */
+      .collapse-toggle-btn {
+        order: -2 !important;
+        position: relative !important;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        margin-bottom: 8px !important;
+        border-radius: 8px !important;
+        border: 1px solid rgba(128, 128, 128, 0.45) !important;
+        background-color: var(--floorp-hover-bg) !important;
+      }
+
+      /* Divider under the toggle */
+      .collapse-toggle-btn::after {
+        content: '' !important;
+        position: absolute !important;
+        left: -8px !important;
+        right: -8px !important;
+        bottom: -7px !important;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.35) !important;
       }
 
       .NavigationBar .main-items {
         display: flex !important;
-        justify-content: center !important;
+        flex-direction: column !important;
+        align-items: center !important;
         width: 100% !important;
       }
 
-      .NavigationBar .main-items .NavItem {
+      .NavigationBar .main-items .nav-item {
         display: none !important;
       }
 
-      /* Active tabs panel with its count badge stays prominently at the top */
-      .NavigationBar .main-items .NavItem[data-active="true"] {
+      /* Panel button: filled rounded block, visibly different from tab icons */
+      .NavigationBar .main-items .nav-item[data-active="true"] {
         display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         margin: 0 auto !important;
+        width: 38px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
+        background-color: var(--floorp-active-bg) !important;
       }
 
+      /* "New tabs panel" button right under the panel button */
+      .NavigationBar .main-items .nav-item[data-type="add_tp"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 auto !important;
+        width: 32px !important;
+        height: 28px !important;
+        border-radius: 8px !important;
+        border: 1px dashed rgba(128, 128, 128, 0.6) !important;
+        opacity: 0.85 !important;
+      }
+
+      .NavigationBar .main-items .nav-item[data-type="add_tp"] .name-box {
+        display: none !important;
+      }
+
+      /* --- Pinned tabs: tinted, bordered tray with a pin mark --- */
+      .PinnedTabsBar {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 2px !important;
+        width: 42px !important;
+        margin: 4px auto 8px !important;
+        padding: 4px 0 6px !important;
+        border: 1px solid rgba(128, 128, 128, 0.35) !important;
+        border-radius: 10px !important;
+        background-color: var(--floorp-active-bg) !important;
+      }
+
+      .PinnedTabsBar::before {
+        content: '📌';
+        font-size: 9px;
+        line-height: 1;
+        margin-bottom: 2px;
+        opacity: 0.75;
+      }
+
+      .PinnedTabsBar .tab-wrapper {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+      }
+
+      .PinnedTabsBar .Tab {
+        width: 32px !important;
+        height: 30px !important;
+        margin: 0 !important;
+      }
+
+      .PinnedTabsBar .Tab .fav {
+        width: 20px !important;
+        height: 20px !important;
+      }
+
+      /* --- Regular tabs: icon only, never any text --- */
       .Tab {
-        padding-left: 0 !important;
-        margin: 2px 4px !important;
-        width: calc(100% - 8px) !important;
+        position: relative !important;
+        width: 40px !important;
+        height: 36px !important;
+        margin: 2px auto !important;
+        padding: 0 !important;
       }
 
       .Tab .body {
+        width: 100% !important;
+        height: 100% !important;
         justify-content: center !important;
         padding: 0 !important;
       }
 
       .Tab .body .fav {
+        position: relative !important;
         margin: 0 !important;
         width: 24px !important;
         height: 24px !important;
       }
 
       .Tab .body .t-box,
-      .Tab .close,
-      .Tab .child-count,
-      .Tab .exp {
+      .Tab .body .title,
+      .Tab .body .custom-title-input,
+      .Tab .close {
         display: none !important;
       }
 
-      /* Subtle depth indicator dot when collapsed */
-      .Tab[data-lvl]:not([data-lvl="0"]) .body::after {
-        content: '' !important;
-        position: absolute !important;
-        left: 2px !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        width: 3px !important;
-        height: 12px !important;
-        border-radius: 2px !important;
-        background-color: var(--tabs-normal-fg, currentColor) !important;
-        opacity: 0.45 !important;
-        display: block !important;
+      /* --- Groups / stacks: colored circle with the group's initial; click opens/closes --- */
+      .Tab[data-parent="true"] .body .fav,
+      .Tab[data-parent="true"] .body .fav .exp {
+        display: none !important;
       }
 
-      /* Container color pill layer (Full width colored tabs) */
+      .Tab[data-parent="true"] {
+        height: 40px !important;
+      }
+
+      .Tab[data-parent="true"] .group-badge {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        background-color: var(--group-color) !important;
+        color: #fff !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        transition: box-shadow 0.15s ease !important;
+      }
+
+      /* closed (folded): white ring; open: plain */
+      .Tab[data-parent="true"][data-folded="true"] .group-badge {
+        box-shadow: 0 0 0 2px #fff !important;
+      }
+
+      .Tab[data-parent="true"] .group-badge .gb-count {
+        position: absolute !important;
+        top: -6px !important;
+        right: -8px !important;
+        min-width: 15px !important;
+        height: 15px !important;
+        padding: 0 3px !important;
+        border-radius: 8px !important;
+        font-size: 9px !important;
+        font-weight: 700 !important;
+        line-height: 15px !important;
+        text-align: center !important;
+        color: #fff !important;
+        background-color: #3b82f6 !important;
+        box-shadow: 0 0 0 1.5px var(--floorp-fg, #1f2328) !important;
+      }
+
+      /* Children: indented with a continuous vertical line, like the native tab groups */
+      .Tab[data-lvl]:not([data-lvl="0"]) {
+        width: 34px !important;
+        height: 32px !important;
+        margin: 0 4px 0 6px !important;
+        border-left: 2px solid #93c5fd !important;
+        border-radius: 0 8px 8px 0 !important;
+      }
+
+      .Tab[data-lvl]:not([data-lvl="0"]) .body .fav {
+        width: 20px !important;
+        height: 20px !important;
+      }
+
+      /* --- Footer tool buttons (closed tabs / bookmarks / history): stacked --- */
+      .BottomBar {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 4px !important;
+        height: auto !important;
+        padding: 6px 0 !important;
+        border-top: 1px solid rgba(128, 128, 128, 0.35) !important;
+      }
+
+      .BottomBar .tool-btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 auto !important;
+        width: 32px !important;
+        height: 28px !important;
+        min-width: 0 !important;
+        border-radius: 8px !important;
+        opacity: 1 !important;
+      }
+
+      .BottomBar .tool-btn svg {
+        width: 16px !important;
+        height: 16px !important;
+      }
+
+      /* Container color pill layer */
       .Tab .color-layer {
         position: absolute !important;
         top: 0 !important;
@@ -255,27 +458,6 @@
 
       .Tab:hover .color-layer {
         opacity: 0.5 !important;
-      }
-
-      /* Tab Title Typography */
-      .Tab .body .t-box {
-        display: flex !important;
-        align-items: center !important;
-        opacity: 1 !important;
-      }
-
-      .Tab .title {
-        color: #f4f4f5 !important;
-        font-size: 13px !important;
-        font-weight: 500 !important;
-        opacity: 0.95 !important;
-        display: block !important;
-      }
-
-      .Tab[data-active="true"] .title {
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
       }
 
       /* Audio badge overlay */

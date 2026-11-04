@@ -34,6 +34,9 @@
     .color-layer(v-if="tabColor" :style="{ '--tab-color': tabColor }")
     .flash-fx(v-if="tab.reactive.flash")
     .unread-mark(v-if="tab.reactive.unread")
+    .group-badge(v-if="tab.reactive.isParent" :style="{ '--group-color': groupColor }")
+      span.gb-letter {{groupLetter}}
+      span.gb-count(v-if="tab.reactive.folded && tab.reactive.branchLen") {{tab.reactive.branchLen}}
     .fav(@dragstart.stop.prevent)
       img.fav-icon(v-if="tab.reactive.favIconUrl" :src="tab.reactive.favIconUrl" @error="onError" draggable="false")
       svg.fav-icon(v-else): use(:xlink:href="favPlaceholder")
@@ -114,6 +117,23 @@ const tabColor = computed<string>(() => {
     return ''
   }
 })
+// Icon-only rail: a group/stack is drawn as a colored circle with the group's initial
+const groupLetter = computed((): string => {
+  const title = (tab.reactive.customTitle ?? tab.reactive.title ?? '').trim()
+  return (Array.from(title)[0] ?? '•').toUpperCase()
+})
+const groupColor = computed((): string => {
+  if (tabColor.value) return tabColor.value
+  let h = 0
+  const title = tab.reactive.customTitle ?? tab.reactive.title ?? ''
+  for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) % 360
+  return `hsl(${h}, 60%, 48%)`
+})
+function isRail(): boolean {
+  return document.documentElement.clientWidth <= 68
+}
+let railToggled = false
+
 const favPlaceholder = computed((): string => {
   if (tab.reactive.warn) return '#icon_warn'
   return Favicons.getFavPlaceholder(tab.reactive.url)
@@ -215,6 +235,17 @@ function onMouseDown(e: MouseEvent): void {
       return
     }
 
+    // Clicking a group/stack opens or closes it (the small chevron stays available too).
+    // Rail and group pages: toggle only. Stacks with a real page: toggle and still activate.
+    if (tab.reactive.isParent && !tab.pinned) {
+      Tabs.toggleBranch(tab.id)
+      if (isRail() || tab.reactive.isGroup) {
+        railToggled = true
+        Selection.resetSelection()
+        return
+      }
+    }
+
     if (Selection.isSet() && !tab.sel) Selection.resetSelection()
 
     if (!Selection.isSet() && !Settings.state.activateOnMouseUp) activate()
@@ -290,7 +321,7 @@ function onMouseDown(e: MouseEvent): void {
 
   // Right
   else if (e.button === 2) {
-    if (!Settings.state.ctxMenuNative && !tab.sel) {
+    if (!Settings.isNativeCtxMenu() && !tab.sel) {
       Selection.resetSelection()
       Mouse.startMultiSelection(e, tab.id)
     }
@@ -310,6 +341,11 @@ function onMouseUp(e: MouseEvent): void {
   if (Mouse.isLocked()) return Mouse.resetClickLock(120)
   if (Mouse.longClickApplied) return
   if (tab.reactive.customTitleEdit) return
+
+  if (railToggled) {
+    railToggled = false
+    return
+  }
 
   if (e.button === 0) {
     const withoutMods = !e.ctrlKey && !e.shiftKey
@@ -358,15 +394,15 @@ function onMouseUp(e: MouseEvent): void {
 
     if (closeLock) return
     if (Menu.isBlocked()) return
-    if (!Selection.isSet() && !Settings.state.ctxMenuNative) select()
-    if (!Settings.state.ctxMenuNative) Menu.open(MenuType.Tabs, e.clientX, e.clientY)
+    if (!Selection.isSet() && !Settings.isNativeCtxMenu()) select()
+    if (!Settings.isNativeCtxMenu()) Menu.open(MenuType.Tabs, e.clientX, e.clientY)
   }
 }
 
 function onCtxMenu(e: MouseEvent): void {
   if (
     Mouse.isLocked() ||
-    !Settings.state.ctxMenuNative ||
+    !Settings.isNativeCtxMenu() ||
     e.ctrlKey ||
     e.shiftKey ||
     Mouse.longClickApplied
