@@ -16,7 +16,7 @@ section(ref="el")
         @click="copySetupScript"
         style="background: #22c55e; color: #0f172a; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 6px; border: none;")
         span {{ scriptMsg || '📋 Copy 1-Click Setup Command' }}
-      code(style="font-size: 11px; opacity: 0.9; user-select: all; background: rgba(0,0,0,0.35); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;") curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/install.sh | bash
+      code(style="font-size: 11px; opacity: 0.9; user-select: all; background: rgba(0,0,0,0.35); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;") curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/Split-view/floorp/install.sh | bash
 
     .note(style="font-size: 11px; opacity: 0.7; margin-bottom: 14px;")
       | *Click to copy, paste into Terminal, and press Enter. Then completely restart your browser (Cmd + Q).*
@@ -24,9 +24,9 @@ section(ref="el")
     .sub-fields(style="padding: 12px 14px; background: rgba(0, 0, 0, 0.25); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08);")
       .label(style="font-size: 13px; font-weight: 600; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;")
         span ⚡
-        span Recommended for Floorp Users
+        span Recommended for all Firefox Browsers
       .note(style="font-size: 11.5px; line-height: 1.6; opacity: 0.9; margin-bottom: 8px;")
-        | Highly recommended to avoid having Sidebery and Floorp's native tab bar running at the same time:
+        | Highly recommended to avoid having better Sidebery and Firefox native tab bar running at the same time:
         br
         | • <b>Hide tabs on Horizontal Tab Bar</b>
         br
@@ -135,7 +135,7 @@ const scriptMsg = ref('')
 
 async function copySetupScript(): Promise<void> {
   const cmd =
-    'curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/install.sh | bash'
+    'curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/Split-view/floorp/install.sh | bash'
   try {
     if (navigator?.clipboard?.writeText) {
       await navigator.clipboard.writeText(cmd)

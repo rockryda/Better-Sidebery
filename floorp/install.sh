@@ -49,10 +49,10 @@ if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/userChrome.css" ]; then
 else
   echo "🌐 Fetching latest userChrome.css from GitHub..."
   TEMP_CSS="$(mktemp)"
-  REMOTE_URL="https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/userChrome.css"
-  if ! curl -fsSL "$REMOTE_URL" -o "$TEMP_CSS"; then
-    # Fallback to Split-view branch if main is not yet merged
-    REMOTE_URL="https://raw.githubusercontent.com/rockryda/Better-Sidebery/Split-view/floorp/userChrome.css"
+  REMOTE_URL="https://raw.githubusercontent.com/rockryda/Better-Sidebery/Split-view/floorp/userChrome.css"
+  if ! curl -fsSL "$REMOTE_URL" -o "$TEMP_CSS" 2>/dev/null; then
+    # Fallback to main branch
+    REMOTE_URL="https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/userChrome.css"
     curl -fsSL "$REMOTE_URL" -o "$TEMP_CSS"
   fi
   SOURCE_CSS="$TEMP_CSS"
