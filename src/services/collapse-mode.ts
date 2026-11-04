@@ -1,7 +1,19 @@
 export type CollapseMode = 'auto' | 'full' | 'collapsed'
 
+// Invisible markers appended to the window title preface so userChrome.css can
+// detect the mode via `:root[titlepreface*="..."]` (the panel URL isn't visible to CSS).
+export const COLLAPSE_MARKERS: Record<CollapseMode, string> = {
+  auto: '\u200D\u2060',
+  full: '',
+  collapsed: '\u200C\u2060',
+}
+
 export const CollapseModeService = {
   mode: 'auto' as CollapseMode,
+
+  marker(): string {
+    return COLLAPSE_MARKERS[this.mode] ?? ''
+  },
 
   init(): void {
     let currentMode: CollapseMode = 'auto'

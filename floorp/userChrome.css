@@ -14,29 +14,15 @@
   display: none !important;
 }
 
-/* 1. Base Sidebar Layout */
+/* The extension marks the window title preface with an invisible token per mode:
+   - Auto:      "\200D\2060"  -> 48px rail, expands over content on hover
+   - Collapsed: "\200C\2060"  -> 48px rail, pinned, hover disabled
+   - Full:      no token      -> NO rules apply; Firefox's native sidebar behavior
+                                 (stays open at its normal, resizable width) */
 
-/* Mode 1: Full Width (Pinned 260px, never collapses) */
-#sidebar-box:not([hidden="true"])[src*="sidebar-full.html"],
-#sidebar-box:not([hidden="true"]):has(#sidebar[src*="sidebar-full.html"]) {
-  position: relative !important;
-  z-index: 100 !important;
-  width: 260px !important;
-  min-width: 260px !important;
-  max-width: 260px !important;
-  margin-inline-end: 0 !important;
-  overflow: hidden !important;
-  border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
-  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  transition: none !important;
-  box-shadow: none !important;
-}
-
-/* Mode 2: Collapsed Rail (Pinned 48px, never expands on hover) */
-#sidebar-box:not([hidden="true"])[src*="sidebar-collapsed.html"],
-#sidebar-box:not([hidden="true"]):has(#sidebar[src*="sidebar-collapsed.html"]) {
+/* Shared look for the 48px rail (Auto + Collapsed) */
+:root[titlepreface*="\200D\2060"] #sidebar-box:not([hidden="true"]),
+:root[titlepreface*="\200C\2060"] #sidebar-box:not([hidden="true"]) {
   position: relative !important;
   z-index: 100 !important;
   width: 48px !important;
@@ -48,43 +34,33 @@
   background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  transition: none !important;
   box-shadow: none !important;
 }
 
-/* Mode 3: Auto-Expand on hover (Default: 48px rail, expands to 260px on hover with zero reflow) */
-#sidebar-box:not([hidden="true"]):not([src*="sidebar-full.html"]):not([src*="sidebar-collapsed.html"]):not(:has(#sidebar[src*="sidebar-full.html"])):not(:has(#sidebar[src*="sidebar-collapsed.html"])) {
-  position: relative !important;
-  z-index: 100 !important;
-  width: 48px !important;
-  min-width: 48px !important;
-  max-width: 48px !important;
-  margin-inline-end: 0 !important;
-  overflow: hidden !important;
-  border-right: 1px solid rgba(128, 128, 128, 0.2) !important;
-  background-color: light-dark(rgba(248, 249, 250, 0.95), rgba(20, 20, 22, 0.95)) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+/* Let the internal iframe shrink to the rail width */
+:root[titlepreface*="\200D\2060"] #sidebar-box #sidebar,
+:root[titlepreface*="\200C\2060"] #sidebar-box #sidebar {
+  min-width: 0 !important;
+  width: 100% !important;
+  background-color: transparent !important;
+}
+
+/* Auto: animate and expand to 260px on hover with zero page reflow */
+:root[titlepreface*="\200D\2060"] #sidebar-box:not([hidden="true"]) {
   transition: width 0.22s cubic-bezier(0.2, 0, 0, 1),
               max-width 0.22s cubic-bezier(0.2, 0, 0, 1),
               margin-inline-end 0.22s cubic-bezier(0.2, 0, 0, 1),
               box-shadow 0.22s ease !important;
 }
 
-#sidebar-box:not([hidden="true"]):not([src*="sidebar-full.html"]):not([src*="sidebar-collapsed.html"]):not(:has(#sidebar[src*="sidebar-full.html"])):not(:has(#sidebar[src*="sidebar-collapsed.html"])):hover,
-#sidebar-box:not([hidden="true"]):not([src*="sidebar-full.html"]):not([src*="sidebar-collapsed.html"]):not(:has(#sidebar[src*="sidebar-full.html"])):not(:has(#sidebar[src*="sidebar-collapsed.html"])):focus-within {
+:root[titlepreface*="\200D\2060"] #sidebar-box:not([hidden="true"]):hover,
+:root[titlepreface*="\200D\2060"] #sidebar-box:not([hidden="true"]):focus-within {
   width: 260px !important;
   max-width: 260px !important;
   margin-inline-end: -212px !important;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* Remove min-width restriction on the internal iframe */
-#sidebar-box #sidebar {
-  min-width: 0 !important;
-  width: 100% !important;
-  background-color: transparent !important;
-}
 
 /* Ensure content containers have zero extra margins */
 #appcontent,

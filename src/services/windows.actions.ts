@@ -9,6 +9,7 @@ import { Settings } from 'src/services/settings'
 import * as IPC from './ipc'
 import { Containers } from './containers'
 import { Sidebar } from './sidebar'
+import { CollapseModeService } from 'src/services/collapse-mode'
 
 export async function loadWindows(): Promise<void> {
   const windows = await browser.windows.getAll({ windowTypes: ['normal'], populate: false })
@@ -286,5 +287,12 @@ export function updWindowPreface(preface?: string) {
 
   preface = preface.replace('%PN', Sidebar.panelsById[Sidebar.activePanelId]?.name ?? '')
 
-  browser.windows.update(Windows.id, { titlePreface: preface })
+  if (!Settings.state.markWindow) preface = ''
+
+  // The collapse-mode marker lets userChrome.css detect full/collapsed sidebar modes
+  const mode = CollapseModeService.mode
+  Logs.info(`Windows.updWindowPreface: win=${Windows.id} mode=${mode}`)
+  browser.windows
+    .update(Windows.id, { titlePreface: preface + CollapseModeService.marker() })
+    .catch(err => Logs.err('Windows.updWindowPreface: Cannot update titlePreface:', err))
 }

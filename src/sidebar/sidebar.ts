@@ -144,6 +144,7 @@ async function main(): Promise<void> {
   Keybindings.setupListeners()
 
   Search.init()
+  Windows.updWindowPreface()
 
   if (Settings.state.updateSidebarTitle) Sidebar.updateSidebarTitle(0)
 

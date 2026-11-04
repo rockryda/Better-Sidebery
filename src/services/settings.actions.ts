@@ -84,9 +84,7 @@ export function updateSettingsBg(settings?: SettingsState | null): void {
   if (markWindowChanged) {
     for (const win of Object.values(Windows.byId)) {
       if (win.type !== 'normal' || win.id === undefined) continue
-      if (!next.markWindow) {
-        browser.windows.update(win.id, { titlePreface: '' })
-      } else if (IPC.isConnected(InstanceType.sidebar, win.id)) {
+      if (IPC.isConnected(InstanceType.sidebar, win.id)) {
         IPC.sendToSidebar(win.id, 'updWindowPreface')
       }
     }
