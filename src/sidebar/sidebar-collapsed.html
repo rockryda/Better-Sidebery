@@ -163,7 +163,8 @@
     }
 
     /* Group badge is only used in the icon-only rail */
-    .Tab .group-badge {
+    .Tab .group-badge,
+    .PinnedTabsBar .pinned-header {
       display: none;
     }
 
@@ -293,12 +294,35 @@
         background-color: var(--floorp-active-bg) !important;
       }
 
-      .PinnedTabsBar::before {
-        content: '📌';
-        font-size: 9px;
-        line-height: 1;
-        margin-bottom: 2px;
-        opacity: 0.75;
+      .PinnedTabsBar .pinned-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        width: 100% !important;
+        height: 18px !important;
+        margin-bottom: 2px !important;
+        font-size: 9px !important;
+        line-height: 1 !important;
+        cursor: pointer !important;
+        opacity: 0.85 !important;
+        user-select: none !important;
+      }
+
+      .PinnedTabsBar .pinned-header:hover {
+        opacity: 1 !important;
+      }
+
+      .PinnedTabsBar .pinned-header .ph-count {
+        font-weight: 700 !important;
+      }
+
+      .PinnedTabsBar[data-collapsed="true"] .tab-wrapper {
+        display: none !important;
+      }
+
+      .PinnedTabsBar[data-collapsed="true"] {
+        padding-bottom: 3px !important;
       }
 
       .PinnedTabsBar .tab-wrapper {
@@ -471,6 +495,18 @@
         background: rgba(0, 0, 0, 0.6) !important;
         border-radius: 4px !important;
       }
+    }
+
+    /* Popups/dialogs must be opaque: the sidebar frame itself is transparent/blurred */
+    #root.root .popup-container .popup,
+    #root.root .PanelConfigPopup .popup {
+      background-color: light-dark(#f8f9fa, #1e1e22) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    #root.root .popup-container {
+      background-color: rgba(0, 0, 0, 0.55) !important;
     }
   </style>
 </head>

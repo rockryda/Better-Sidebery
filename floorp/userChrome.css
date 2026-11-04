@@ -62,6 +62,342 @@
 }
 
 
+/* ==========================================================================
+   Custom width (drag-resize). The extension encodes the chosen width (8px steps,
+   48-488px) as an invisible token in the window title; one rule per step.
+   Collapsed: pinned width. Auto: width used when expanded on hover.
+   ========================================================================== */
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 48px !important; min-width: 48px !important; max-width: 48px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 48px !important; max-width: 48px !important; margin-inline-end: 0px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 56px !important; min-width: 56px !important; max-width: 56px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 56px !important; max-width: 56px !important; margin-inline-end: -8px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 64px !important; min-width: 64px !important; max-width: 64px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 64px !important; max-width: 64px !important; margin-inline-end: -16px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 72px !important; min-width: 72px !important; max-width: 72px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 72px !important; max-width: 72px !important; margin-inline-end: -24px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 80px !important; min-width: 80px !important; max-width: 80px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 80px !important; max-width: 80px !important; margin-inline-end: -32px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 88px !important; min-width: 88px !important; max-width: 88px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 88px !important; max-width: 88px !important; margin-inline-end: -40px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 96px !important; min-width: 96px !important; max-width: 96px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 96px !important; max-width: 96px !important; margin-inline-end: -48px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200B\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 104px !important; min-width: 104px !important; max-width: 104px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200B\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 104px !important; max-width: 104px !important; margin-inline-end: -56px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 112px !important; min-width: 112px !important; max-width: 112px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 112px !important; max-width: 112px !important; margin-inline-end: -64px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 120px !important; min-width: 120px !important; max-width: 120px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 120px !important; max-width: 120px !important; margin-inline-end: -72px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 128px !important; min-width: 128px !important; max-width: 128px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 128px !important; max-width: 128px !important; margin-inline-end: -80px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 136px !important; min-width: 136px !important; max-width: 136px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 136px !important; max-width: 136px !important; margin-inline-end: -88px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 144px !important; min-width: 144px !important; max-width: 144px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 144px !important; max-width: 144px !important; margin-inline-end: -96px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 152px !important; min-width: 152px !important; max-width: 152px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 152px !important; max-width: 152px !important; margin-inline-end: -104px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 160px !important; min-width: 160px !important; max-width: 160px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 160px !important; max-width: 160px !important; margin-inline-end: -112px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200B\200C\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 168px !important; min-width: 168px !important; max-width: 168px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200B\200C\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 168px !important; max-width: 168px !important; margin-inline-end: -120px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 176px !important; min-width: 176px !important; max-width: 176px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 176px !important; max-width: 176px !important; margin-inline-end: -128px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 184px !important; min-width: 184px !important; max-width: 184px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 184px !important; max-width: 184px !important; margin-inline-end: -136px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 192px !important; min-width: 192px !important; max-width: 192px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 192px !important; max-width: 192px !important; margin-inline-end: -144px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 200px !important; min-width: 200px !important; max-width: 200px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 200px !important; max-width: 200px !important; margin-inline-end: -152px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 208px !important; min-width: 208px !important; max-width: 208px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 208px !important; max-width: 208px !important; margin-inline-end: -160px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 216px !important; min-width: 216px !important; max-width: 216px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 216px !important; max-width: 216px !important; margin-inline-end: -168px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 224px !important; min-width: 224px !important; max-width: 224px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 224px !important; max-width: 224px !important; margin-inline-end: -176px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200B\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 232px !important; min-width: 232px !important; max-width: 232px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200B\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 232px !important; max-width: 232px !important; margin-inline-end: -184px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 240px !important; min-width: 240px !important; max-width: 240px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 240px !important; max-width: 240px !important; margin-inline-end: -192px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 248px !important; min-width: 248px !important; max-width: 248px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 248px !important; max-width: 248px !important; margin-inline-end: -200px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 256px !important; min-width: 256px !important; max-width: 256px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 256px !important; max-width: 256px !important; margin-inline-end: -208px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 264px !important; min-width: 264px !important; max-width: 264px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 264px !important; max-width: 264px !important; margin-inline-end: -216px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 272px !important; min-width: 272px !important; max-width: 272px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 272px !important; max-width: 272px !important; margin-inline-end: -224px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 280px !important; min-width: 280px !important; max-width: 280px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 280px !important; max-width: 280px !important; margin-inline-end: -232px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 288px !important; min-width: 288px !important; max-width: 288px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 288px !important; max-width: 288px !important; margin-inline-end: -240px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200B\200C\200C\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 296px !important; min-width: 296px !important; max-width: 296px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200B\200C\200C\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 296px !important; max-width: 296px !important; margin-inline-end: -248px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 304px !important; min-width: 304px !important; max-width: 304px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 304px !important; max-width: 304px !important; margin-inline-end: -256px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 312px !important; min-width: 312px !important; max-width: 312px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 312px !important; max-width: 312px !important; margin-inline-end: -264px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 320px !important; min-width: 320px !important; max-width: 320px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 320px !important; max-width: 320px !important; margin-inline-end: -272px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 328px !important; min-width: 328px !important; max-width: 328px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 328px !important; max-width: 328px !important; margin-inline-end: -280px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 336px !important; min-width: 336px !important; max-width: 336px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 336px !important; max-width: 336px !important; margin-inline-end: -288px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 344px !important; min-width: 344px !important; max-width: 344px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 344px !important; max-width: 344px !important; margin-inline-end: -296px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 352px !important; min-width: 352px !important; max-width: 352px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 352px !important; max-width: 352px !important; margin-inline-end: -304px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200B\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 360px !important; min-width: 360px !important; max-width: 360px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200B\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 360px !important; max-width: 360px !important; margin-inline-end: -312px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 368px !important; min-width: 368px !important; max-width: 368px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 368px !important; max-width: 368px !important; margin-inline-end: -320px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 376px !important; min-width: 376px !important; max-width: 376px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 376px !important; max-width: 376px !important; margin-inline-end: -328px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 384px !important; min-width: 384px !important; max-width: 384px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 384px !important; max-width: 384px !important; margin-inline-end: -336px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 392px !important; min-width: 392px !important; max-width: 392px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 392px !important; max-width: 392px !important; margin-inline-end: -344px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 400px !important; min-width: 400px !important; max-width: 400px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 400px !important; max-width: 400px !important; margin-inline-end: -352px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 408px !important; min-width: 408px !important; max-width: 408px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 408px !important; max-width: 408px !important; margin-inline-end: -360px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 416px !important; min-width: 416px !important; max-width: 416px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 416px !important; max-width: 416px !important; margin-inline-end: -368px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200B\200C\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 424px !important; min-width: 424px !important; max-width: 424px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200B\200C\200C\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 424px !important; max-width: 424px !important; margin-inline-end: -376px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 432px !important; min-width: 432px !important; max-width: 432px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200B\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 432px !important; max-width: 432px !important; margin-inline-end: -384px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 440px !important; min-width: 440px !important; max-width: 440px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200B\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 440px !important; max-width: 440px !important; margin-inline-end: -392px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 448px !important; min-width: 448px !important; max-width: 448px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200B\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 448px !important; max-width: 448px !important; margin-inline-end: -400px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 456px !important; min-width: 456px !important; max-width: 456px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200B\200C\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 456px !important; max-width: 456px !important; margin-inline-end: -408px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 464px !important; min-width: 464px !important; max-width: 464px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200C\200B\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 464px !important; max-width: 464px !important; margin-inline-end: -416px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 472px !important; min-width: 472px !important; max-width: 472px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200C\200B\200C\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 472px !important; max-width: 472px !important; margin-inline-end: -424px !important;
+}
+:root:not([zenmode])[titlepreface*="\200C\2060"][titlepreface*="\2063\200C\200C\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]) {
+  width: 480px !important; min-width: 480px !important; max-width: 480px !important;
+}
+:root:not([zenmode])[titlepreface*="\200D\2060"][titlepreface*="\2063\200C\200C\200B\200C\200C\200B\2064"] #sidebar-box:not([hidden="true"]):is(:hover, :focus-within) {
+  width: 480px !important; max-width: 480px !important; margin-inline-end: -432px !important;
+}
+
 /* Popup open in the rail: temporarily widen to 260px (overlay, zero page reflow) so that
    dialogs/popups fit. Set by the extension via an invisible window-title marker. */
 :root[titlepreface*="\200B\2060"] #sidebar-box:not([hidden="true"]) {

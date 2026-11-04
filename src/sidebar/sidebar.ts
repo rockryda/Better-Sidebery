@@ -25,6 +25,7 @@ import { Info } from 'src/services/info'
 import SidebarRoot from './sidebar.vue'
 import { Snapshots } from 'src/services/snapshots'
 import { CollapseModeService } from 'src/services/collapse-mode'
+import { initSidebarResize } from 'src/services/sidebar-resize'
 import { updateWebReqHandlers } from 'src/services/web-req.fg'
 import { initUpgrading, showUpgradingScreen } from 'src/services/upgrading'
 
@@ -145,6 +146,7 @@ async function main(): Promise<void> {
 
   Search.init()
   Windows.updWindowPreface()
+  initSidebarResize()
 
   if (Settings.state.updateSidebarTitle) Sidebar.updateSidebarTitle(0)
 
