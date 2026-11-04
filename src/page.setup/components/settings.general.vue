@@ -8,7 +8,7 @@ section(ref="el")
       span 🦊
       span Floorp Browser 1-Click Setup
     .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
-      | To remove duplicate horizontal tabs and the sidebar header in Floorp:
+      | In Floorp, toggle these two options for clean vertical tabs:
       br
       | • <b>Hide tabs on Horizontal Tab Bar</b>
       br
@@ -16,9 +16,11 @@ section(ref="el")
     .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
       .btn(
         @click="openFloorpDesignSettings"
-        style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px;")
-        span {{ statusMsg || '🚀 Open Floorp Design Settings ↗' }}
+        style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
+        span {{ statusMsg || '📋 Copy URL & Open New Tab ↗' }}
       code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:hub#/features/design
+    .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
+      | *Click to copy the link and open a new tab, then press <b>Cmd + V</b> & <b>Enter</b> in the address bar.*
 
   ToggleField(
     label="settings.native_scrollbars"
