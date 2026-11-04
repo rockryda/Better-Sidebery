@@ -3,54 +3,36 @@ section(ref="el")
   h2 {{translate('settings.general_title')}}
   span.header-shadow
 
-  .sub-fields(style="margin-bottom: 18px; padding: 14px 16px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
-    .label(style="font-size: 14px; font-weight: 600; color: #22c55e; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;")
-      span(style="display: flex; align-items: center; gap: 6px;")
-        span 🦊
-        span Browser Optimization (Clean Vertical Tabs)
-      .ctrls(style="display: flex; gap: 6px;")
-        .btn(
-          :style="selectedBrowser === 'floorp' ? 'background: rgba(34, 197, 94, 0.35); border-color: #22c55e; color: #ffffff;' : 'opacity: 0.6;'"
-          @click="selectedBrowser = 'floorp'"
-          style="padding: 2px 10px; font-size: 11px; border-radius: 4px; cursor: pointer;") Floorp
-        .btn(
-          :style="selectedBrowser === 'firefox' ? 'background: rgba(34, 197, 94, 0.35); border-color: #22c55e; color: #ffffff;' : 'opacity: 0.6;'"
-          @click="selectedBrowser = 'firefox'"
-          style="padding: 2px 10px; font-size: 11px; border-radius: 4px; cursor: pointer;") Firefox / Other
+  .sub-fields(style="margin-bottom: 18px; padding: 16px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
+    .label(style="font-size: 15px; font-weight: 600; color: #22c55e; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;")
+      span 🚀
+      span Auto-Expand, Hover Rail & Zen Mode Setup
 
-    // Floorp Tab
-    template(v-if="selectedBrowser === 'floorp'")
-      .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
-        | In Floorp, hide the duplicate top bar and sidebar header via built-in settings:
-        br
-        | 1. Toggle <b>Hide tabs on Horizontal Tab Bar</b>
-        br
-        | 2. Select <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
-      .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
+    .note(style="font-size: 12px; line-height: 1.6; opacity: 0.9; margin-bottom: 12px;")
+      | To enable <b>docking to a 48px icon rail</b>, <b>auto-expanding to 260px on hover</b> (zero page reflow), <b>Floorp Zen Mode edge-reveal</b>, and hiding the top tab strip, install the companion styles:
+
+    .ctrls(style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;")
+      .btn(
+        @click="copySetupScript"
+        style="background: #22c55e; color: #0f172a; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 6px; border: none;")
+        span {{ scriptMsg || '📋 Copy 1-Click Setup Command' }}
+      code(style="font-size: 11px; opacity: 0.9; user-select: all; background: rgba(0,0,0,0.35); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;") curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/install.sh | bash
+
+    .note(style="font-size: 11px; opacity: 0.7; margin-bottom: 14px;")
+      | *Click to copy, paste into Terminal, and press Enter. Then completely restart your browser (Cmd + Q).*
+
+    .sub-fields(style="padding: 10px 12px; background: rgba(0, 0, 0, 0.2); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05);")
+      .label(style="font-size: 12px; font-weight: 600; color: #f4f4f5; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;")
+        span 🦊
+        span Optional Floorp Native Tab Settings
+      .note(style="font-size: 11px; line-height: 1.5; opacity: 0.8; margin-bottom: 6px;")
+        | You can also toggle Floorp's built-in <i>Hide tabs on Horizontal Tab Bar</i> and <i>Collapse Tree Style Tab</i> in Floorp Hub:
+      .ctrls(style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;")
         .btn(
           @click="openFloorpDesignSettings"
-          style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
-          span {{ statusMsg || '📋 Copy URL & Open New Tab ↗' }}
-        code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:hub#/features/design
-      .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
-        | *Click to copy the link and open a new tab, then press <b>Cmd + V</b> & <b>Enter</b> in the address bar.*
-
-    // Firefox & Other Browsers Tab
-    template(v-else)
-      .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
-        | For standard Firefox, LibreWolf, or Waterfox:
-        br
-        | • <b>Firefox 131+:</b> Enable built-in vertical tabs under <i>Settings ➔ General ➔ Tabs</i>.
-        br
-        | • <b>All Firefox Versions:</b> Use our 1-click companion script to cleanly hide the top bar and sidebar header:
-      .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
-        .btn(
-          @click="copySetupScript"
-          style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
-          span {{ scriptMsg || '📋 Copy Terminal Command' }}
-        code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;") curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/main/floorp/install.sh | bash
-      .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
-        | *Click to copy, paste into your terminal, and press Enter. Then restart your browser.*
+          style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f4f4f5; font-size: 11px; font-weight: 500; cursor: pointer; padding: 4px 10px; border-radius: 4px;")
+          span {{ statusMsg || '📋 Copy about:hub URL & Open Tab' }}
+        code(style="font-size: 10px; opacity: 0.75; user-select: all;") about:hub#/features/design
 
   ToggleField(
     label="settings.native_scrollbars"
