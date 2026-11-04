@@ -14,8 +14,6 @@ The ultimate tab management setup for **Floorp Browser**, merging the deep tree 
    - Hooks into Floorp's native edge-detection (`:root[zenmode-reveal-side]`) to slide out as a floating drawer on edge hover.
 3. **Tab Previews (Peek Cards)**:
    - Live hovering thumbnail cards with rounded borders, page titles, and URLs.
-4. **No Double Sidebars**:
-   - Strips the redundant Firefox `#sidebar-header` and hides horizontal `#TabsToolbar`.
 
 ---
 

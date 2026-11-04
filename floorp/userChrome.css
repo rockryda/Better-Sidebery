@@ -3,7 +3,6 @@
    - Auto-collapses Sidebery sidebar to a 48px icon rail
    - Smoothly expands to 260px on hover over web content (zero page reflow)
    - Full Floorp Zen Mode integration: edge-hover slide-over drawer
-   - Removes redundant sidebar headers and duplicate native tab bars
    ========================================================================== */
 
 #browser {
@@ -87,13 +86,6 @@
   background-color: transparent !important;
 }
 
-/* Hide default sidebar header and splitters */
-#sidebar-header,
-#sidebar-splitter,
-#sidebar-splitter2 {
-  display: none !important;
-}
-
 /* Ensure content containers have zero extra margins */
 #appcontent,
 #tabbrowser-tabbox,
@@ -130,9 +122,4 @@
   opacity: 1 !important;
   pointer-events: auto !important;
   box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* 3. Hide redundant native tab strip */
-#TabsToolbar {
-  visibility: collapse !important;
 }

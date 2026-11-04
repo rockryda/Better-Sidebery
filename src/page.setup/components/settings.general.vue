@@ -21,18 +21,22 @@ section(ref="el")
     .note(style="font-size: 11px; opacity: 0.7; margin-bottom: 14px;")
       | *Click to copy, paste into Terminal, and press Enter. Then completely restart your browser (Cmd + Q).*
 
-    .sub-fields(style="padding: 10px 12px; background: rgba(0, 0, 0, 0.2); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05);")
-      .label(style="font-size: 12px; font-weight: 600; color: #f4f4f5; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;")
-        span 🦊
-        span Optional Floorp Native Tab Settings
-      .note(style="font-size: 11px; line-height: 1.5; opacity: 0.8; margin-bottom: 6px;")
-        | You can also toggle Floorp's built-in <i>Hide tabs on Horizontal Tab Bar</i> and <i>Collapse Tree Style Tab</i> in Floorp Hub:
+    .sub-fields(style="padding: 12px 14px; background: rgba(0, 0, 0, 0.25); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08);")
+      .label(style="font-size: 13px; font-weight: 600; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;")
+        span ⚡
+        span Recommended for Floorp Users
+      .note(style="font-size: 11.5px; line-height: 1.6; opacity: 0.9; margin-bottom: 8px;")
+        | Highly recommended to avoid having Sidebery and Floorp's native tab bar running at the same time:
+        br
+        | • <b>Hide tabs on Horizontal Tab Bar</b>
+        br
+        | • <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
       .ctrls(style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;")
         .btn(
           @click="openFloorpDesignSettings"
-          style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f4f4f5; font-size: 11px; font-weight: 500; cursor: pointer; padding: 4px 10px; border-radius: 4px;")
+          style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #f4f4f5; font-size: 11px; font-weight: 500; cursor: pointer; padding: 5px 12px; border-radius: 4px;")
           span {{ statusMsg || '📋 Copy about:hub URL & Open Tab' }}
-        code(style="font-size: 10px; opacity: 0.75; user-select: all;") about:hub#/features/design
+        code(style="font-size: 10.5px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;") about:hub#/features/design
 
   ToggleField(
     label="settings.native_scrollbars"
