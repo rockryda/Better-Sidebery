@@ -74,9 +74,9 @@ Better-Sidebery is ready to go immediately upon install. For the cleanest vertic
 For power users who want an Arc-like experience where the sidebar docks as an icon rail and smoothly slides out over the webpage on hover with zero page reflow:
 
 ```bash
-bash floorp/install.sh
+curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/Master/floorp/install.sh | bash
 ```
-*(To revert at any time, run `bash floorp/uninstall.sh`)*.
+*(To revert at any time, run: `curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/Master/floorp/uninstall.sh | bash`)*.
 
 ## Build
 
