@@ -8,13 +8,17 @@ section(ref="el")
       span 🦊
       span Floorp Browser 1-Click Setup
     .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
-      | To remove duplicate horizontal tabs and the sidebar header in Floorp, click below to open Floorp's Design settings and toggle:
+      | To remove duplicate horizontal tabs and the sidebar header in Floorp:
       br
       | • <b>Hide tabs on Horizontal Tab Bar</b>
       br
       | • <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
-    .btn(@click="openFloorpDesignSettings" style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px;")
-      span Open Floorp Design Settings ↗
+    .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
+      .btn(
+        @click="openFloorpDesignSettings"
+        style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px;")
+        span {{ copied ? '✓ Copied! Press Cmd+V & Enter in the new tab' : '📋 Copy URL & Open New Tab ↗' }}
+      code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:preferences#design
 
   ToggleField(
     label="settings.native_scrollbars"
@@ -106,11 +110,34 @@ function showPermissionsPopup(): void {
   SetupPage.reactive.permissions = true
 }
 
-function openFloorpDesignSettings(): void {
+const copied = ref(false)
+
+async function openFloorpDesignSettings(): Promise<void> {
+  const url = 'about:preferences#design'
+  try {
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url)
+    } else {
+      throw new Error('No clipboard API')
+    }
+  } catch {
+    const el = document.createElement('textarea')
+    el.value = url
+    el.style.position = 'fixed'
+    el.style.opacity = '0'
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
+  }
+
+  copied.value = true
+  setTimeout(() => {
+    copied.value = false
+  }, 4000)
+
   if (typeof browser !== 'undefined' && browser.tabs) {
-    browser.tabs.create({ url: 'about:preferences#design' })
-  } else {
-    window.open('about:preferences#design', '_blank')
+    browser.tabs.create({})
   }
 }
 </script>
