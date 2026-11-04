@@ -3,24 +3,54 @@ section(ref="el")
   h2 {{translate('settings.general_title')}}
   span.header-shadow
 
-  .sub-fields(style="margin-bottom: 16px; padding: 14px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
-    .label(style="font-size: 14px; font-weight: 600; color: #22c55e; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;")
-      span 🦊
-      span Floorp Browser 1-Click Setup
-    .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
-      | In Floorp, toggle these two options for clean vertical tabs:
-      br
-      | • <b>Hide tabs on Horizontal Tab Bar</b>
-      br
-      | • <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
-    .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
-      .btn(
-        @click="openFloorpDesignSettings"
-        style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
-        span {{ statusMsg || '📋 Copy URL & Open New Tab ↗' }}
-      code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:hub#/features/design
-    .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
-      | *Click to copy the link and open a new tab, then press <b>Cmd + V</b> & <b>Enter</b> in the address bar.*
+  .sub-fields(style="margin-bottom: 18px; padding: 14px 16px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
+    .label(style="font-size: 14px; font-weight: 600; color: #22c55e; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;")
+      span(style="display: flex; align-items: center; gap: 6px;")
+        span 🦊
+        span Browser Optimization (Clean Vertical Tabs)
+      .ctrls(style="display: flex; gap: 6px;")
+        .btn(
+          :style="selectedBrowser === 'floorp' ? 'background: rgba(34, 197, 94, 0.35); border-color: #22c55e; color: #ffffff;' : 'opacity: 0.6;'"
+          @click="selectedBrowser = 'floorp'"
+          style="padding: 2px 10px; font-size: 11px; border-radius: 4px; cursor: pointer;") Floorp
+        .btn(
+          :style="selectedBrowser === 'firefox' ? 'background: rgba(34, 197, 94, 0.35); border-color: #22c55e; color: #ffffff;' : 'opacity: 0.6;'"
+          @click="selectedBrowser = 'firefox'"
+          style="padding: 2px 10px; font-size: 11px; border-radius: 4px; cursor: pointer;") Firefox / Other
+
+    // Floorp Tab
+    template(v-if="selectedBrowser === 'floorp'")
+      .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
+        | In Floorp, hide the duplicate top bar and sidebar header via built-in settings:
+        br
+        | 1. Toggle <b>Hide tabs on Horizontal Tab Bar</b>
+        br
+        | 2. Select <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
+      .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
+        .btn(
+          @click="openFloorpDesignSettings"
+          style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
+          span {{ statusMsg || '📋 Copy URL & Open New Tab ↗' }}
+        code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") about:hub#/features/design
+      .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
+        | *Click to copy the link and open a new tab, then press <b>Cmd + V</b> & <b>Enter</b> in the address bar.*
+
+    // Firefox & Other Browsers Tab
+    template(v-else)
+      .note(style="font-size: 12px; line-height: 1.6; opacity: 0.88; margin-bottom: 10px;")
+        | For standard Firefox, LibreWolf, or Waterfox:
+        br
+        | • <b>Firefox 131+:</b> Enable built-in vertical tabs under <i>Settings ➔ General ➔ Tabs</i>.
+        br
+        | • <b>All Firefox Versions:</b> Use our 1-click companion script to cleanly hide the top bar and sidebar header:
+      .ctrls(style="display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap;")
+        .btn(
+          @click="copySetupScript"
+          style="background: rgba(34, 197, 94, 0.25); border: 1px solid #22c55e; color: #f4f4f5; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;")
+          span {{ scriptMsg || '📋 Copy Setup Command' }}
+        code(style="font-size: 11px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);") bash floorp/install.sh
+      .note(style="font-size: 11px; opacity: 0.7; margin-top: 6px;")
+        | *Paste into your terminal to apply. (Revert anytime with <code>bash floorp/uninstall.sh</code>).*
 
   ToggleField(
     label="settings.native_scrollbars"
@@ -112,7 +142,23 @@ function showPermissionsPopup(): void {
   SetupPage.reactive.permissions = true
 }
 
+const isFloorpDetected = typeof navigator !== 'undefined' && navigator.userAgent.includes('Floorp')
+const selectedBrowser = ref(isFloorpDetected ? 'floorp' : 'firefox')
 const statusMsg = ref('')
+const scriptMsg = ref('')
+
+async function copySetupScript(): Promise<void> {
+  const cmd = 'bash floorp/install.sh'
+  try {
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(cmd)
+    }
+  } catch {}
+  scriptMsg.value = '✓ Copied setup command!'
+  setTimeout(() => {
+    scriptMsg.value = ''
+  }, 4000)
+}
 
 async function openFloorpDesignSettings(): Promise<void> {
   const url = 'about:hub#/features/design'
