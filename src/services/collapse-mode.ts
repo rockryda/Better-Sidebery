@@ -4,7 +4,7 @@ export type CollapseMode = 'auto' | 'full' | 'collapsed'
 // detect the mode via `:root[titlepreface*="..."]` (the panel URL isn't visible to CSS).
 export const COLLAPSE_MARKERS: Record<CollapseMode, string> = {
   auto: '\u200D\u2060',
-  full: '',
+  full: '\u2060\u2060',
   collapsed: '\u200C\u2060',
 }
 
@@ -12,9 +12,16 @@ export const COLLAPSE_MARKERS: Record<CollapseMode, string> = {
 // extend beyond the 48px frame). userChrome.css matches it via `:root[titlepreface*=...]`.
 export const POPUP_EXPAND_MARKER = '\u200B\u2060'
 
+// While dragging the resize handle the sidebar is temporarily widened to the max width so the
+// pointer never leaves the frame. "overlay" floats over the page (rail), "push" reflows it.
+export const DRAG_OVERLAY_MARKER = '\u2060\u2060\u2060'
+export const DRAG_PUSH_MARKER = '\u2060\u2060\u2060\u2060'
+
 // Custom sidebar width (drag-resize). CSS can't read numbers from the title, so the width is
-// quantized to WIDTH_STEP px steps and encoded as 6 binary zero-width chars between delimiters:
-// \u2063 [\u200B=0 | \u200C=1]x6 \u2064   (userChrome.css has one rule per step)
+// quantized to WIDTH_STEP px steps and encoded as 6 binary zero-width chars + a terminator,
+// appended right after the mode marker (which ends in \u2060):
+//   [\u200B=0 | \u200C=1] x6, \u200D     (userChrome.css has one rule per step)
+// Only characters known to survive in window titles are used (\u200B-\u200D, \u2060).
 export const WIDTH_MIN = 48
 export const WIDTH_STEP = 8
 export const WIDTH_STEPS = 55 // 48 .. 488px
@@ -25,7 +32,7 @@ function widthToken(w: number): string {
   const step = widthToStep(w)
   let bits = ''
   for (let i = 5; i >= 0; i--) bits += (step >> i) & 1 ? '\u200C' : '\u200B'
-  return '\u2063' + bits + '\u2064'
+  return bits + '\u200D'
 }
 
 const widthKey = (mode: CollapseMode) => `sidebery_width_${mode}`
@@ -33,6 +40,7 @@ const widthKey = (mode: CollapseMode) => `sidebery_width_${mode}`
 export const CollapseModeService = {
   mode: 'auto' as CollapseMode,
   popupExpanded: false,
+  dragMarker: '' as '' | typeof DRAG_OVERLAY_MARKER | typeof DRAG_PUSH_MARKER,
 
   getWidth(mode?: CollapseMode): number | undefined {
     try {
@@ -54,9 +62,9 @@ export const CollapseModeService = {
   },
 
   marker(): string {
+    if (this.dragMarker) return this.dragMarker
     if (this.popupExpanded) return POPUP_EXPAND_MARKER
     const base = COLLAPSE_MARKERS[this.mode] ?? ''
-    if (this.mode === 'full') return base
     const w = this.getWidth()
     return w === undefined ? base : base + widthToken(w)
   },

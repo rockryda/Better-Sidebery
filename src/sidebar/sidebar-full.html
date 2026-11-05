@@ -221,7 +221,8 @@
 
     /* Group badge is only used in the icon-only rail */
     .Tab .group-badge,
-    .PinnedTabsBar .pinned-header {
+    .PinnedTabsBar .pinned-header,
+    .BottomBar .tool-btn.-settings {
       display: none;
     }
 
@@ -512,6 +513,16 @@
         min-width: 0 !important;
         border-radius: 8px !important;
         opacity: 1 !important;
+      }
+
+      /* Settings button joins the footer in the rail (separated from the other tools) */
+      .BottomBar .tool-btn.-settings {
+        display: flex !important;
+        margin-top: 4px !important;
+        border-top: 1px solid rgba(128, 128, 128, 0.35) !important;
+        border-radius: 0 0 8px 8px !important;
+        padding-top: 4px !important;
+        height: 32px !important;
       }
 
       .BottomBar .tool-btn svg {

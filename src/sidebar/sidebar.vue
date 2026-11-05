@@ -92,6 +92,11 @@
             :data-disabled="!Utils.isTabsPanel(activePanel)"
             @click="Sidebar.openSubPanel(SubPanelType.History, activePanel)")
             svg: use(xlink:href="#icon_clock")
+          //- Icon-only rail: the nav bar has no room for Settings, so it lives in the footer
+          .tool-btn.-settings(
+            title="Settings"
+            @click="SetupPage.open()")
+            svg: use(xlink:href="#icon_settings")
 
       SubPanel
 
@@ -144,6 +149,7 @@ import * as Utils from 'src/utils'
 import * as Popups from 'src/services/popups'
 import * as Logs from 'src/services/logs'
 import * as Preview from 'src/services/tabs.preview'
+import { SetupPage } from 'src/services/setup-page'
 import { CollapseModeService } from 'src/services/collapse-mode'
 
 // Popups/dialogs can't extend beyond the 48px rail: widen the sidebar while one is open
