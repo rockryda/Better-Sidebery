@@ -6,20 +6,21 @@ section(ref="el")
     label="settings.load_bookmarks_on_demand"
     v-model:value="Settings.state.loadBookmarksOnDemand"
     @update:value="Settings.saveDebounced(150)")
-  SelectField(
-    label="settings.warn_on_multi_bookmark_delete"
-    optLabel="settings.warn_on_multi_bookmark_delete_"
-    v-model:value="Settings.state.warnOnMultiBookmarkDelete"
-    :opts="Settings.getOpts('warnOnMultiBookmarkDelete')"
-    @update:value="Settings.saveDebounced(150)")
-  ToggleField(
-    label="settings.ask_new_bookmark_place"
-    v-model:value="Settings.state.askNewBookmarkPlace"
-    @update:value="Settings.saveDebounced(150)")
-  ToggleField(
-    label="settings.show_bookmark_len"
-    v-model:value="Settings.state.showBookmarkLen"
-    @update:value="Settings.saveDebounced(150)")
+  AdvancedFold(title="Advanced")
+    SelectField(
+      label="settings.warn_on_multi_bookmark_delete"
+      optLabel="settings.warn_on_multi_bookmark_delete_"
+      v-model:value="Settings.state.warnOnMultiBookmarkDelete"
+      :opts="Settings.getOpts('warnOnMultiBookmarkDelete')"
+      @update:value="Settings.saveDebounced(150)")
+    ToggleField(
+      label="settings.ask_new_bookmark_place"
+      v-model:value="Settings.state.askNewBookmarkPlace"
+      @update:value="Settings.saveDebounced(150)")
+    ToggleField(
+      label="settings.show_bookmark_len"
+      v-model:value="Settings.state.showBookmarkLen"
+      @update:value="Settings.saveDebounced(150)")
   .ctrls
     .fetch-progress(v-if="state.fetchingBookmarksFavs")
       .progress-bar
@@ -31,40 +32,6 @@ section(ref="el")
         .progress-errors {{state.fetchingBookmarksFavsErrors}} {{translate('settings.fetch_bookmarks_favs_errors')}}
       .btn(v-if="state.fetchingBookmarksFavs" @click="stopFetchingBookmarksFavicons") {{translate('settings.fetch_bookmarks_favs_stop')}}
     .btn(v-if="!state.fetchingBookmarksFavs" @click="fetchBookmarksFavicons") {{translate('settings.fetch_bookmarks_favs')}}
-  AdvancedFold(title="Advanced")
-    ToggleField(
-      label="settings.bookmarks_rm_undo_note"
-      v-model:value="Settings.state.bookmarksRmUndoNote"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.auto_close_bookmarks"
-      v-model:value="Settings.state.autoCloseBookmarks"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.auto_rm_other"
-      v-model:value="Settings.state.autoRemoveOther"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.highlight_open_bookmarks"
-      v-model:value="Settings.state.highlightOpenBookmarks"
-      @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.activate_open_bookmark_tab"
-        v-model:value="Settings.state.activateOpenBookmarkTab"
-        :inactive="!Settings.state.highlightOpenBookmarks"
-        @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.pin_opened_bookmarks_folder"
-      v-model:value="Settings.state.pinOpenedBookmarksFolder"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.old_bookmarks_after_save"
-      optLabel="settings.old_bookmarks_after_save_"
-      v-model:value="Settings.state.oldBookmarksAfterSave"
-      :opts="Settings.getOpts('oldBookmarksAfterSave')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
   HistorySection
 </template>
 

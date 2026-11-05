@@ -24,7 +24,6 @@ export interface SettingsState {
   hideAddBtn: boolean // DEPR
   hideSettingsBtn: boolean // DEPR
   navBtnCount: boolean
-  skipEmptyPanels: boolean
   hideEmptyPanels: boolean
   hideDiscardedTabPanels: boolean
   navSwitchPanelsWheel: boolean
@@ -172,7 +171,6 @@ export interface SettingsState {
 
   // Appearance
   fontSize: (typeof SETTINGS_OPTIONS.fontSize)[number]
-  bgNoise?: boolean // DEPR
   animations: boolean
   animationSpeed: (typeof SETTINGS_OPTIONS.animationSpeed)[number]
   theme: (typeof SETTINGS_OPTIONS.theme)[number]

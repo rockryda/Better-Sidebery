@@ -454,10 +454,9 @@ export function initSplitFrameHandler(): void {
   if (!browser.webRequest?.onHeadersReceived) return
   const filter = { urls: ['<all_urls>'], types: ['sub_frame' as browser.webRequest.ResourceType] }
   if (!browser.webRequest.onHeadersReceived.hasListener(onHeadersReceivedHandler)) {
-    browser.webRequest.onHeadersReceived.addListener(
-      onHeadersReceivedHandler,
-      filter,
-      ['blocking', 'responseHeaders']
-    )
+    browser.webRequest.onHeadersReceived.addListener(onHeadersReceivedHandler, filter, [
+      'blocking',
+      'responseHeaders',
+    ])
   }
 }

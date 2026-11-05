@@ -223,7 +223,7 @@ function onMouseUp(e: MouseEvent, opt: MenuOption): void {
   else if (e.button === 1 || (e.button === 0 && e.altKey)) activateOption(opt, true)
 }
 
-const scrollConf: ScrollToOptions = { behavior: 'smooth', top: 0 }
+const scrollConf = { behavior: 'smooth', top: 0 } as const
 function scrollToOption(opt: MenuOption) {
   const query = `.opt[title="${opt.tooltip ?? opt.label}"]`
   const optEl = document.querySelector(query) as HTMLElement | null

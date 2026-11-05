@@ -1,3 +1,5 @@
+import * as Logs from 'src/services/logs'
+
 export type CollapseMode = 'auto' | 'full' | 'collapsed'
 
 // Invisible markers appended to the window title preface so userChrome.css can
@@ -84,7 +86,6 @@ export const CollapseModeService = {
         needsPanelSync = currentMode !== 'auto'
       }
     }
-    console.log(`[collapse-mode] init mode=${currentMode} href=${typeof window !== 'undefined' ? window.location.href : ''}`)
     this.mode = currentMode
     localStorage.setItem('sidebery_collapse_mode', currentMode)
     this.applyDOM(currentMode)
@@ -92,7 +93,6 @@ export const CollapseModeService = {
   },
 
   set(mode: CollapseMode): void {
-    console.log(`[collapse-mode] set ${this.mode} -> ${mode}`)
     this.mode = mode
     localStorage.setItem('sidebery_collapse_mode', mode)
     this.applyDOM(mode)
@@ -113,8 +113,8 @@ export const CollapseModeService = {
       mode === 'full'
         ? 'sidebar/sidebar-full.html'
         : mode === 'collapsed'
-        ? 'sidebar/sidebar-collapsed.html'
-        : 'sidebar/sidebar.html'
+          ? 'sidebar/sidebar-collapsed.html'
+          : 'sidebar/sidebar.html'
 
     const fullUrl =
       typeof browser !== 'undefined' && browser.runtime?.getURL
@@ -122,22 +122,14 @@ export const CollapseModeService = {
         : `/${file}`
 
     const sAction = (browser as any)?.sidebarAction
-    const log = (msg: string, ...a: unknown[]) => console.log(`[collapse-mode] ${msg}`, ...a)
-    log(`applyPanel mode=${mode} url=${fullUrl} setPanel=${!!sAction?.setPanel} href=${location.href}`)
-    if (!sAction?.setPanel) {
-      log('browser.sidebarAction.setPanel is NOT available')
-      return
-    }
-    sAction
-      .setPanel({ panel: fullUrl })
-      .then(() => log('setPanel OK ->', fullUrl))
-      .catch((err: unknown) => {
-        log('setPanel FAILED with full url:', err)
-        sAction
-          .setPanel({ panel: `/${file}` })
-          .then(() => log('setPanel OK (relative) ->', file))
-          .catch((err2: unknown) => log('setPanel FAILED with relative url:', err2))
+    if (!sAction?.setPanel) return
+
+    sAction.setPanel({ panel: fullUrl }).catch((err: unknown) => {
+      Logs.warn('CollapseMode.applyPanel: setPanel failed, retrying with relative url:', err)
+      sAction.setPanel({ panel: `/${file}` }).catch((err2: unknown) => {
+        Logs.err('CollapseMode.applyPanel: setPanel failed:', err2)
       })
+    })
   },
 
   cycle(): CollapseMode {
@@ -147,4 +139,3 @@ export const CollapseModeService = {
     return next
   },
 }
-

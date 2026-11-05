@@ -66,8 +66,12 @@ function isNavActive(opt: { name: string; lvl: number }): boolean {
   if (opt.lvl === 0) return opt.name === r.activeView
   if (opt.name === r.activeSection) return true
   // Level-1 settings entry stays highlighted while one of its sub-sections is active
-  return r.activeView === 'settings' && opt.lvl === 1 && opt.name === r.settingsPage
-    && SetupPage.getSettingsPage(r.activeSection) === opt.name
+  return (
+    r.activeView === 'settings' &&
+    opt.lvl === 1 &&
+    opt.name === r.settingsPage &&
+    SetupPage.getSettingsPage(r.activeSection) === opt.name
+  )
 }
 
 const animations = computed(() => (Settings.state.animations ? 'fast' : 'none'))

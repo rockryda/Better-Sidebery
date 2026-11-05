@@ -72,7 +72,7 @@
 
       Transition(name="bottom-bar")
         .BottomBar(
-          v-if="bottomBar && Utils.isTabsPanel(activePanel)"
+          v-if="(bottomBar || !navHasCollapseToggle) && Utils.isTabsPanel(activePanel)"
           @dragover.prevent.stop=""
           :data-drop-target-bookmarks="DnD.reactive.dstType === DropType.BookmarksSubPanelBtn && DnD.reactive.dstPanelId === activePanel.id")
           .tool-btn(
@@ -92,6 +92,12 @@
             :data-disabled="!Utils.isTabsPanel(activePanel)"
             @click="Sidebar.openSubPanel(SubPanelType.History, activePanel)")
             svg: use(xlink:href="#icon_clock")
+          //- Sidebar mode toggle (auto / full / collapsed) for layouts whose nav bar has no toggle
+          .tool-btn.-collapse(
+            v-if="!navHasCollapseToggle"
+            :title="collapseModeTooltip"
+            @click="onToggleCollapseMode")
+            svg: use(:xlink:href="collapseModeIcon")
           //- Icon-only rail: the nav bar has no room for Settings, so it lives in the footer
           .tool-btn.-settings(
             title="Settings"
@@ -178,6 +184,25 @@ watch(anyPopupOpen, open => {
     Windows.updWindowPreface()
   }
 })
+
+// The nav bar only has the mode toggle in the horizontal inline layout: otherwise use the footer
+const navHasCollapseToggle = computed<boolean>(() => {
+  return Settings.state.navBarLayout === 'horizontal' && Settings.state.navBarInline
+})
+const collapseMode = ref(CollapseModeService.mode)
+const collapseModeIcon = computed(() => {
+  if (collapseMode.value === 'full') return '#icon_pin'
+  if (collapseMode.value === 'collapsed') return '#icon_collapse_all'
+  return '#icon_expand'
+})
+const collapseModeTooltip = computed(() => {
+  if (collapseMode.value === 'full') return 'Sidebar: Full width (Click to collapse)'
+  if (collapseMode.value === 'collapsed') return 'Sidebar: Collapsed rail (Click for auto-expand)'
+  return 'Sidebar: Auto-expand on hover (Click to pin full)'
+})
+function onToggleCollapseMode(): void {
+  collapseMode.value = CollapseModeService.cycle()
+}
 
 const rootEl = ref<HTMLElement | null>(null)
 const panelBoxEl = ref<HTMLElement | null>(null)

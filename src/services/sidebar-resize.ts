@@ -1,9 +1,4 @@
-import {
-  CollapseModeService,
-  WIDTH_MIN,
-  WIDTH_STEP,
-  WIDTH_STEPS,
-} from 'src/services/collapse-mode'
+import { CollapseModeService, WIDTH_MIN, WIDTH_STEP, WIDTH_STEPS } from 'src/services/collapse-mode'
 import { Windows } from 'src/services/windows'
 
 const MAX_WIDTH = WIDTH_MIN + (WIDTH_STEPS - 1) * WIDTH_STEP

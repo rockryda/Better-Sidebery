@@ -11,14 +11,6 @@
     label="settings.animations"
     v-model:value="Settings.state.animations"
     @update:value="Settings.saveDebounced(150)")
-  .sub-fields
-    SelectField(
-      label="settings.animation_speed"
-      optLabel="settings.animation_speed_"
-      v-model:value="Settings.state.animationSpeed"
-      :inactive="!Settings.state.animations"
-      :opts="Settings.getOpts('animationSpeed')"
-      @update:value="Settings.saveDebounced(150)")
   SelectField(
     label="settings.theme"
     optLabel="settings.theme_"
@@ -37,6 +29,14 @@
     v-model:value="Settings.state.colorScheme"
     :opts="Settings.getOpts('colorScheme')"
     @update:value="onColorSchemeUpdate")
+  AdvancedFold(title="Advanced")
+    SelectField(
+      label="settings.animation_speed"
+      optLabel="settings.animation_speed_"
+      v-model:value="Settings.state.animationSpeed"
+      :inactive="!Settings.state.animations"
+      :opts="Settings.getOpts('animationSpeed')"
+      @update:value="Settings.saveDebounced(150)")
   .note-field
     .label {{translate('settings.appearance_notes_title')}}
     .note {{translate('settings.appearance_notes')}}

@@ -44,7 +44,7 @@ const backupReady = ref(false)
 const backupErr = ref<UpgradeMsg | null>(null)
 const el = ref<HTMLElement | null>(null)
 
-const scrollConf: ScrollToOptions = { behavior: 'smooth', top: 0 }
+const scrollConf = { behavior: 'smooth', top: 0 } as const
 let scrollTimeout: number | undefined
 watch(
   () => reactiveUpgrading.status?.messages,

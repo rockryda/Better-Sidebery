@@ -30,21 +30,6 @@ div.wrapper(
     label="settings.nav_btn_count"
     v-model:value="Settings.state.navBtnCount"
     @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
-    ToggleField(
-      label="settings.hide_empty_panels"
-      v-model:value="Settings.state.hideEmptyPanels"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-        label="settings.hide_discarded_tab_panels"
-        v-model:value="Settings.state.hideDiscardedTabPanels"
-        @update:value="Settings.saveDebounced(150)")
-    NumField.-inline(
-      label="settings.nav_switch_panels_delay"
-      v-model:value="Settings.state.navSwitchPanelsDelay"
-      :or="128"
-      @update:value="Settings.saveDebounced(500)")
-  
   InfoField(label="settings.bottom_bar")
   .sub-fields
     ToggleField(
@@ -59,7 +44,6 @@ div.wrapper(
       label="settings.sub_panel.history"
       v-model:value="Settings.state.subPanelHistory"
       @update:value="Settings.saveDebounced(150)")
-
   InfoField(label="settings.nav_bar_enabled" :inactive="!availableBtns.length").-sub-title
   .sub-fields
     .card.-placeholder(
@@ -119,7 +103,6 @@ div.wrapper(
             svg: use(xlink:href="#icon_expand")
           .card-ctrl.-rm(@click="disableBtn(i)")
             svg: use(xlink:href="#icon_remove")
-
   InfoField(label="settings.nav_bar.available_elements" :inactive="!availableBtns.length").-sub-title
   .sub-fields.-disabled(v-if="availableBtns.length")
     .card.-disabled(
@@ -135,7 +118,15 @@ div.wrapper(
             use(:xlink:href="'#' + btn.iconSVG")
           img(v-else :src="btn.iconIMG")
         .card-name {{btn.name}}
-
+  AdvancedFold(title="Advanced")
+    ToggleField(
+      label="settings.hide_empty_panels"
+      v-model:value="Settings.state.hideEmptyPanels"
+      @update:value="Settings.saveDebounced(150)")
+    ToggleField(
+        label="settings.hide_discarded_tab_panels"
+        v-model:value="Settings.state.hideDiscardedTabPanels"
+        @update:value="Settings.saveDebounced(150)")
   Transition(name="popup")
     .popup-layer(
       v-if="SetupPage.reactive.selectedPanelConfig"
@@ -165,7 +156,6 @@ import { SetupPage } from 'src/services/setup-page'
 import ToggleField from '../../components/toggle-field.vue'
 import SelectField from '../../components/select-field.vue'
 import InfoField from '../../components/info-field.vue'
-import NumField from '../../components/num-field.vue'
 import PanelConfigPopup from './popup.panel-config.vue'
 
 interface Btn {

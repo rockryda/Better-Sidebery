@@ -33,10 +33,6 @@ section(ref="el")
       :inactive="!Settings.state.showNewTabBtns"
       :opts="Settings.getOpts('newTabBarPosition')"
       @update:value="Settings.saveDebounced(150)")
-  //- ToggleField(
-  //-   label="settings.tab_warmup_on_hover"
-  //-   v-model:value="Settings.state.tabWarmupOnHover"
-  //-   @update:value="Settings.saveDebounced(150)")
   AdvancedFold(title="Advanced")
     ToggleField(
       label="settings.tabs_rm_undo_note"
@@ -44,15 +40,12 @@ section(ref="el")
       @update:value="Settings.saveDebounced(150)")
     ToggleField(
       label="settings.activate_last_tab_on_panel_switching"
+      :inactive="Settings.state.hideInact"
       :value="Settings.state.activateLastTabOnPanelSwitching"
       @update:value="toggleActivateLastTabOnPanelSwitching")
-    .sub-fields
-      ToggleField(
-        label="settings.activate_last_tab_on_panel_switching_loaded_only"
-        v-model:value="Settings.state.activateLastTabOnPanelSwitchingLoadedOnly"
-        @update:value="Settings.saveDebounced(150)")
     SelectField(
       label="settings.switch_panel_after_switching_tab"
+      :inactive="Settings.state.hideInact"
       optLabel="settings.switch_panel_after_switching_tab_"
       v-model:value="Settings.state.switchPanelAfterSwitchingTab"
       :folded="true"
@@ -65,26 +58,6 @@ section(ref="el")
       :folded="true"
       :opts="Settings.getOpts('activateAfterClosing')"
       @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.activate_after_closing_stay_in_panel"
-        v-model:value="Settings.state.activateAfterClosingStayInPanel"
-        @update:value="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.activate_after_closing_global"
-        v-model:value="Settings.state.activateAfterClosingGlobal"
-        :inactive="Settings.state.activateAfterClosing !== 'prev_act'"
-        @update:value="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.activate_after_closing_no_folded"
-        v-model:value="Settings.state.activateAfterClosingNoFolded"
-        :inactive="Settings.state.activateAfterClosing !== 'prev_act'"
-        @update:value="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.activate_after_closing_no_discarded"
-        v-model:value="Settings.state.activateAfterClosingNoDiscarded"
-        :inactive="Settings.state.activateAfterClosing === 'none'"
-        @update:value="Settings.saveDebounced(150)")
     ToggleField(
       label="settings.tabs_unread_mark"
       v-model:value="Settings.state.tabsUnreadMark"
@@ -96,62 +69,32 @@ section(ref="el")
       :opts="Settings.getOpts('tabsUpdateMark')"
       :folded="true"
       @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.tabs_update_mark_first"
-        v-model:value="Settings.state.tabsUpdateMarkFirst"
-        @update:value="Settings.saveDebounced(150)")
     CountField.-inline(
       label="settings.tabs_reload_limit"
       v-model:value="Settings.state.tabsReloadLimit"
       :min="1"
       @update:value="Settings.saveDebounced(500)")
-    .sub-fields
-      ToggleField(
-        label="settings.tabs_reload_limit_notif"
-        v-model:value="Settings.state.tabsReloadLimitNotif"
-        :inactive="!(Settings.state.tabsReloadLimit > 0)"
-        @update:value="Settings.saveDebounced(150)")
+    ToggleField(
+      label="settings.tabs_reload_limit_notif"
+      v-model:value="Settings.state.tabsReloadLimitNotif"
+      :inactive="!(Settings.state.tabsReloadLimit > 0)"
+      @update:value="Settings.saveDebounced(150)")
     ToggleField(
       label="settings.tabs_panel_switch_act_move"
+      :inactive="Settings.state.hideInact"
       :value="Settings.state.tabsPanelSwitchActMove"
       @update:value="toggleTabsPanelSwitchActMove")
     ToggleField(
       label="settings.tabs_panel_switch_act_move_auto"
+      :inactive="Settings.state.hideInact"
       :value="Settings.state.tabsPanelSwitchActMoveAuto"
       @update:value="toggleTabsPanelSwitchActMoveAuto")
-    NumField.-inline(
-      label="settings.tabs_switch_delay"
-      v-model:value="Settings.state.tabSwitchDelay"
-      :or="0"
-      @update:value="Settings.saveDebounced(500)")
-
+  //- ToggleField(
+  //-   label="settings.tab_warmup_on_hover"
+  //-   v-model:value="Settings.state.tabWarmupOnHover"
+  //-   @update:value="Settings.saveDebounced(150)")
   .wrapper(ref="newTabPosEl")
     .sub-title: .text {{translate('settings.nav_settings_new_tab_position')}}
-    SelectField.-no-separator(
-      label="settings.move_new_tab_pin"
-      optLabel="settings.move_new_tab_pin_"
-      v-model:value="Settings.state.moveNewTabPin"
-      :opts="Settings.getOpts('moveNewTabPin')"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.pinned_auto_group"
-      :inactive="!Settings.state.tabsTree"
-      v-model:value="Settings.state.pinnedAutoGroup"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.move_new_tab_parent"
-      optLabel="settings.move_new_tab_parent_"
-      v-model:value="Settings.state.moveNewTabParent"
-      :opts="Settings.getOpts('moveNewTabParent')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.move_new_tab_parent_act_panel"
-        :inactive="Settings.state.moveNewTabParent === 'none'"
-        v-model:value="Settings.state.moveNewTabParentActPanel"
-        @update:value="Settings.saveDebounced(150)")
     SelectField(
       label="settings.move_new_tab"
       optLabel="settings.move_new_tab_"
@@ -159,7 +102,25 @@ section(ref="el")
       :opts="Settings.getOpts('moveNewTab')"
       :folded="true"
       @update:value="Settings.saveDebounced(150)")
-    .sub-fields
+    AdvancedFold(title="Advanced")
+      SelectField.-no-separator(
+        label="settings.move_new_tab_pin"
+        optLabel="settings.move_new_tab_pin_"
+        v-model:value="Settings.state.moveNewTabPin"
+        :opts="Settings.getOpts('moveNewTabPin')"
+        @update:value="Settings.saveDebounced(150)")
+      ToggleField(
+        label="settings.pinned_auto_group"
+        :inactive="!Settings.state.tabsTree"
+        v-model:value="Settings.state.pinnedAutoGroup"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.move_new_tab_parent"
+        optLabel="settings.move_new_tab_parent_"
+        v-model:value="Settings.state.moveNewTabParent"
+        :opts="Settings.getOpts('moveNewTabParent')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
       SelectField(
         :inactive="!relativeToActiveTab"
         label="settings.move_new_tab_active_pin"
@@ -167,7 +128,6 @@ section(ref="el")
         v-model:value="Settings.state.moveNewTabActivePin"
         :opts="Settings.getOpts('moveNewTabActivePin')"
         @update:value="Settings.saveDebounced(150)")
-
   .wrapper(ref="pinTabsEl")
     .sub-title: .text {{translate('settings.nav_settings_pinned_tabs')}}
     SelectField.-no-separator(
@@ -182,12 +142,12 @@ section(ref="el")
       :inactive="Settings.state.pinnedTabsPosition !== 'panel' && Settings.state.pinnedTabsPosition!== 'top'"
       v-model:value="Settings.state.pinnedTabsList"
       @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.pinned.no_unload"
-      :inactive="Settings.state.pinnedTabsPosition !== 'panel'"
-      v-model:value="Settings.state.pinnedNoUnload"
-      @update:value="Settings.saveDebounced(150)")
-
+    AdvancedFold(title="Advanced")
+      ToggleField(
+        label="settings.pinned.no_unload"
+        :inactive="Settings.state.pinnedTabsPosition !== 'panel'"
+        v-model:value="Settings.state.pinnedNoUnload"
+        @update:value="Settings.saveDebounced(150)")
   .wrapper(ref="tabsTreeEl")
     .sub-title: .text {{translate('settings.nav_settings_tabs_tree')}}
     ToggleField.-no-separator(
@@ -206,14 +166,6 @@ section(ref="el")
       :inactive="!Settings.state.tabsTree"
       v-model:value="Settings.state.autoFoldTabs"
       @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      SelectField(
-        label="settings.auto_fold_tabs_except"
-        optLabel="settings.auto_fold_tabs_except_"
-        v-model:value="Settings.state.autoFoldTabsExcept"
-        :inactive="!Settings.state.tabsTree || !Settings.state.autoFoldTabs"
-        :opts="Settings.getOpts('autoFoldTabsExcept')"
-        @update:value="Settings.saveDebounced(150)")
     SelectField(
       label="settings.rm_child_tabs"
       optLabel="settings.rm_child_tabs_"
@@ -237,6 +189,13 @@ section(ref="el")
       v-model:value="Settings.state.sortGroupsFirst"
       @update:value="Settings.saveDebounced(150)")
     AdvancedFold(title="Advanced")
+      SelectField(
+        label="settings.auto_fold_tabs_except"
+        optLabel="settings.auto_fold_tabs_except_"
+        v-model:value="Settings.state.autoFoldTabsExcept"
+        :inactive="!Settings.state.tabsTree || !Settings.state.autoFoldTabs"
+        :opts="Settings.getOpts('autoFoldTabsExcept')"
+        @update:value="Settings.saveDebounced(150)")
       ToggleField(
         label="settings.group_on_open_layout"
         v-model:value="Settings.state.groupOnOpen"
@@ -257,22 +216,6 @@ section(ref="el")
         :inactive="!Settings.state.tabsTree"
         v-model:value="Settings.state.discardFolded"
         @update:value="Settings.saveDebounced(150)")
-      .sub-fields
-        NumField.-last(
-          label="settings.discard_folded_delay"
-          unitLabel="settings.discard_folded_delay_"
-          v-model:value="Settings.state.discardFoldedDelay"
-          v-model:unit="Settings.state.discardFoldedDelayUnit"
-          :or="0"
-          :inactive="!Settings.state.tabsTree || !Settings.state.discardFolded"
-          :unitOpts="SETTINGS_OPTIONS.discardFoldedDelayUnit"
-          @update:value="Settings.saveDebounced(500)"
-          @update:unit="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.tabs_tree_bookmarks"
-        :inactive="!Settings.state.tabsTree"
-        v-model:value="Settings.state.tabsTreeBookmarks"
-        @update:value="Settings.saveDebounced(150)")
       SelectField(
         label="settings.tree_rm_outdent"
         optLabel="settings.tree_rm_outdent_"
@@ -285,23 +228,11 @@ section(ref="el")
         :inactive="!Settings.state.tabsTree"
         v-model:value="Settings.state.autoGroupOnClose"
         @update:value="Settings.saveDebounced(150)")
-      .sub-fields
-        ToggleField(
-          label="settings.auto_group_on_close_0_lvl"
-          :inactive="!Settings.state.tabsTree || !Settings.state.autoGroupOnClose"
-          v-model:value="Settings.state.autoGroupOnClose0Lvl"
-          @update:value="Settings.saveDebounced(150)")
-        ToggleField(
-          label="settings.auto_group_on_close_mouse_only"
-          :inactive="!Settings.state.tabsTree || !Settings.state.autoGroupOnClose"
-          v-model:value="Settings.state.autoGroupOnCloseMouseOnly"
-          @update:value="Settings.saveDebounced(150)")
       ToggleField(
         label="settings.ignore_folded_parent"
         :inactive="!Settings.state.tabsTree"
         v-model:value="Settings.state.ignoreFoldedParent"
         @update:value="Settings.saveDebounced(150)")
-
   .wrapper(ref="tabsColorEl")
     .sub-title: .text {{translate('settings.nav_settings_tabs_colorization')}}
     ToggleField.-no-separator(
@@ -334,7 +265,6 @@ section(ref="el")
       :inactive="!Settings.state.tabsTree"
       v-model:value="Settings.state.inheritCustomColor"
       @update:value="Settings.saveDebounced(150)")
-
   .wrapper(ref="tabsPreviewEl")
     .sub-title: .text {{translate('settings.nav_settings_tabs_preview')}}
     ToggleField.-no-separator(
@@ -350,33 +280,6 @@ section(ref="el")
         :opts="Settings.getOpts('previewTabsMode')"
         :folded="true"
         @update:value="Settings.saveDebounced(150)")
-      .sub-fields
-        SelectField(
-          label="settings.tabs.preview_page_mode_fallback"
-          optLabel="settings.tabs.preview_mode_"
-          v-model:value="Settings.state.previewTabsPageModeFallback"
-          :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode !== 'p'"
-          :opts="Settings.getOpts('previewTabsPageModeFallback')"
-          :folded="true"
-          @update:value="Settings.saveDebounced(150)")
-      NumField.-inline(
-        label="settings.tabs.preview_delay"
-        v-model:value="Settings.state.previewTabsDelay"
-        :or="0"
-        :inactive="!Settings.state.previewTabs"
-        @update:value="Settings.saveDebounced(500)")
-      NumField.-inline(
-        label="settings.tabs.preview_inline_height"
-        v-model:value="Settings.state.previewTabsInlineHeight"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || (Settings.state.previewTabsMode !== 'i' && Settings.state.previewTabsPageModeFallback !== 'i')"
-        @update:value="Settings.saveDebounced(500)")
-      NumField.-inline(
-        label="settings.tabs.preview_popup_width"
-        v-model:value="Settings.state.previewTabsPopupWidth"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode === 'i'"
-        @update:value="Settings.saveDebounced(500)")
       SelectField(
         label="settings.tabs.preview_side"
         optLabel="settings.tabs.preview_side_"
@@ -384,71 +287,19 @@ section(ref="el")
         :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode === 'i'"
         :opts="Settings.getOpts('previewTabsSide')"
         @update:value="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.tabs.preview_follow_mouse"
-        v-model:value="Settings.state.previewTabsFollowMouse"
-        :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode === 'i'"
-        @update:value="Settings.saveDebounced(150)")
-      NumField.-inline(
-        label="settings.tabs.preview_win_offset_y"
-        v-model:value="Settings.state.previewTabsWinOffsetY"
-        :allowNegative="true"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || (Settings.state.previewTabsMode !== 'w' && Settings.state.previewTabsPageModeFallback !== 'w')"
-        @update:value="Settings.saveDebounced(500)")
-      NumField.-inline(
-        label="settings.tabs.preview_win_offset_x"
-        v-model:value="Settings.state.previewTabsWinOffsetX"
-        :allowNegative="true"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || (Settings.state.previewTabsMode !== 'w' && Settings.state.previewTabsPageModeFallback !== 'w')"
-        @update:value="Settings.saveDebounced(500)")
-      NumField.-inline(
-        label="settings.tabs.preview_in_page_offset_y"
-        v-model:value="Settings.state.previewTabsInPageOffsetY"
-        :allowNegative="true"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode !== 'p'"
-        @update:value="Settings.saveDebounced(500)")
-      NumField.-inline(
-        label="settings.tabs.preview_in_page_offset_x"
-        v-model:value="Settings.state.previewTabsInPageOffsetX"
-        :allowNegative="true"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode !== 'p'"
-        @update:value="Settings.saveDebounced(500)")
-      NumField.-inline(
-        label="settings.tabs.preview_crop_right"
-        v-model:value="Settings.state.previewTabsCropRight"
-        :or="0"
-        :inactive="!Settings.state.previewTabs || Settings.state.previewTabsMode !== 'p'"
-        @update:value="Settings.saveDebounced(500)")
-
   .wrapper(ref="nativeTabsEl")
     .sub-title: .text {{translate('settings.nav_settings_tabs_native')}}
-    AdvancedFold(title="Native (horizontal) tabs")
-      ToggleField.-no-separator(
-        label="settings.hide_inactive_panel_tabs"
-        :value="Settings.state.hideInact"
-        @update:value="toggleHideInact")
+    ToggleField.-no-separator(
+      label="settings.hide_inactive_panel_tabs"
+    note="While on, these stay enabled and are locked: Activate last tab, Move tab when switching panels, Switch panel after switching tab."
+      :value="Settings.state.hideInact"
+      @update:value="toggleHideInact")
+    AdvancedFold(title="Advanced")
       ToggleField(
         label="settings.hide_folded_tabs"
         :inactive="!Settings.state.tabsTree"
         :value="Settings.state.hideFoldedTabs"
         @update:value="toggleHideFoldedTabs")
-      .sub-fields
-        SelectField(
-          label="settings.hide_folded_parent"
-          optLabel="settings.hide_folded_parent_"
-          v-model:value="Settings.state.hideFoldedParent"
-          :inactive="!Settings.state.hideFoldedTabs"
-          :opts="Settings.getOpts('hideFoldedParent')"
-          @update:value="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.native_highlight"
-        :note="translate('settings.native_highlight_note')"
-        v-model:value="Settings.state.nativeHighlight"
-        @update:value="Settings.saveDebounced(150)")
   GroupSection
   ContainersSection
 </template>
@@ -458,14 +309,12 @@ import GroupSection from './settings.group.vue'
 import ContainersSection from './settings.containers.vue'
 import { ref, computed, onMounted } from 'vue'
 import { translate } from 'src/dict'
-import { SETTINGS_OPTIONS } from 'src/defaults'
 import { Settings } from 'src/services/settings'
 import { Permissions } from 'src/services/permissions'
 import { SetupPage } from 'src/services/setup-page'
 import CountField from '../../components/count-field.vue'
 import ToggleField from '../../components/toggle-field.vue'
 import SelectField from '../../components/select-field.vue'
-import NumField from '../../components/num-field.vue'
 import AdvancedFold from '../../components/advanced-fold.vue'
 
 const el = ref<HTMLElement | null>(null)
@@ -511,6 +360,10 @@ async function toggleHideInact(): Promise<void> {
     Settings.state.tabsPanelSwitchActMove = true
   }
 
+  if (Settings.state.hideInact && !Settings.state.tabsPanelSwitchActMoveAuto) {
+    Settings.state.tabsPanelSwitchActMoveAuto = true
+  }
+
   const notAlwaysSwitch = Settings.state.switchPanelAfterSwitchingTab !== 'always'
   if (Settings.state.hideInact && notAlwaysSwitch) {
     Settings.state.switchPanelAfterSwitchingTab = 'always'
@@ -540,7 +393,8 @@ function toggleTabsPanelSwitchActMoveAuto(): void {
 }
 
 async function toggleHideFoldedTabs(): Promise<void> {
-  if (!Settings.state.hideInact && !Permissions.reactive.tabHide) {
+  // Only ask for the permission when turning the setting on
+  if (!Settings.state.hideFoldedTabs && !Permissions.reactive.tabHide) {
     const result = await Permissions.request('tabHide')
     if (!result) return
   }

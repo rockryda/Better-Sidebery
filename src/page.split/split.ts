@@ -54,10 +54,13 @@ btnOpenRight?.addEventListener('click', () => {
 
 // Reload handlers
 btnReloadLeft?.addEventListener('click', () => {
+  // Re-assigning src reloads the frame
+  // eslint-disable-next-line no-self-assign
   if (frameLeft) frameLeft.src = frameLeft.src
 })
 
 btnReloadRight?.addEventListener('click', () => {
+  // eslint-disable-next-line no-self-assign
   if (frameRight) frameRight.src = frameRight.src
 })
 
@@ -138,4 +141,3 @@ window.addEventListener('mouseup', () => {
   dragShield?.classList.remove('active')
   document.body.style.cursor = 'default'
 })
-

@@ -2789,4 +2789,3 @@ export async function openInSplitTab(tabIds: ID[]): Promise<void> {
     Logs.err('Tabs.openInSplitTab: Failed to open split tab', err)
   }
 }
-

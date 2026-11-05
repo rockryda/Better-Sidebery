@@ -58,7 +58,6 @@ export const nav: SetupPageNavOption[] = [
   { active: false, name: 'settings_history', lvl: 2 },
   { active: false, name: 'settings_data', lvl: 1 },
   { active: false, name: 'settings_snapshots', lvl: 2 },
-  { active: false, name: 'settings_sync', lvl: 2 },
   { active: false, name: 'settings_help', lvl: 1 },
   { active: false, name: 'keybindings', lvl: 0 },
   { active: false, name: 'menu_editor', lvl: 0 },
