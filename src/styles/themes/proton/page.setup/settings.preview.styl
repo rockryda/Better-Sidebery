@@ -31,7 +31,7 @@
 .SettingsPreview .sp-screen
   position: relative
   display: flex
-  height: calc(var(--sp-h, 640px) - 200px)
+  height: 440px
   border-radius: 8px
   overflow: hidden
   background-color: #2a3440
@@ -124,28 +124,16 @@
 @media (min-width: 1120px)
   .Settings
     box-sizing: border-box
-    padding-right: calc(var(--sp-w, 300px) + 32px)
+    padding-right: calc(var(--sp-w, 300px) + var(--sp-right, 16px) + 16px)
 
   .SettingsPreview
     position: fixed
-    top: 16px
-    right: 16px
+    top: var(--sp-top, 16px)
+    right: var(--sp-right, 16px)
     width: var(--sp-w, 300px)
-    // Card height follows the grip, but never exceeds the window
-    height: min(var(--sp-h, 640px), calc(100vh - 32px))
-    display: flex
-    flex-direction: column
+    max-height: calc(100vh - var(--sp-top, 16px) - 8px)
     margin: 0
     overflow: auto
-
-  .SettingsPreview > *
-    flex: none
-
-  // The screen takes whatever height is left
-  .SettingsPreview .sp-screen
-    flex: 1 1 auto
-    height: auto
-    min-height: 160px
 
 @media (prefers-reduced-motion: reduce)
   .SettingsPreview .sb
@@ -190,7 +178,8 @@
 .SettingsSaveBar .btn.-primary
   font-weight: 700
 
-// Resize grips: left edge (width, wide windows only) and the strip under the screen (height)
+// Resize grips on all four edges. The side and top grips only exist while the card is docked
+// (wide windows); the bottom one also works when the card sits inline.
 .SettingsPreview .sp-grip
   position: absolute
   z-index: 5
@@ -198,25 +187,173 @@
   touch-action: none
 
 .SettingsPreview .sp-grip:hover
-  background-color: rgba(120, 160, 255, .45)
+  background-color: rgba(120, 160, 255, .5)
 
-.SettingsPreview .sp-grip.-x
-  top: 8px
-  bottom: 8px
-  left: -4px
-  width: 8px
-  border-radius: 4px
+.SettingsPreview .sp-grip.-l
+.SettingsPreview .sp-grip.-r
+  top: 14px
+  bottom: 14px
+  width: 6px
   cursor: ew-resize
   display: none
 
-.SettingsPreview .sp-grip.-y
-  left: 12px
-  right: 12px
-  bottom: 2px
-  height: 8px
-  border-radius: 4px
+.SettingsPreview .sp-grip.-l
+  left: 0
+  border-radius: 12px 0 0 12px
+
+.SettingsPreview .sp-grip.-r
+  right: 0
+  border-radius: 0 12px 12px 0
+
+.SettingsPreview .sp-grip.-t
+.SettingsPreview .sp-grip.-b
+  left: 14px
+  right: 14px
+  height: 6px
   cursor: ns-resize
 
+.SettingsPreview .sp-grip.-t
+  top: 0
+  border-radius: 12px 12px 0 0
+  display: none
+
+.SettingsPreview .sp-grip.-b
+  bottom: 0
+  border-radius: 0 0 12px 12px
+
+// Once the user sets a height, the screen fills whatever is left
+.SettingsPreview[data-sized="true"]
+  height: min(var(--sp-h), calc(100vh - 16px))
+  display: flex
+  flex-direction: column
+
+.SettingsPreview[data-sized="true"] > *
+  flex: none
+
+.SettingsPreview[data-sized="true"] .sp-screen
+  flex: 1 1 auto
+  height: auto
+  min-height: 160px
+
 @media (min-width: 1120px)
-  .SettingsPreview .sp-grip.-x
+  .SettingsPreview .sp-grip.-l
+  .SettingsPreview .sp-grip.-r
+  .SettingsPreview .sp-grip.-t
     display: block
+
+// Companion setup card with live status
+.CompanionSetup
+  margin: 4px 0 18px
+  padding: 14px 16px
+  border: 1px solid rgba(128, 128, 128, .4)
+  border-radius: 10px
+  background-color: rgba(128, 128, 128, .08)
+
+.CompanionSetup[data-state="ok"]
+  border-color: rgba(34, 197, 94, .5)
+  background-color: rgba(34, 197, 94, .08)
+
+.CompanionSetup[data-state="warn"]
+  border-color: rgba(217, 162, 27, .6)
+  background-color: rgba(217, 162, 27, .09)
+
+.CompanionSetup .cs-head
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 10px
+  margin-bottom: 6px
+
+.CompanionSetup .cs-title
+  font-size: rem(15)
+  font-weight: 700
+
+.CompanionSetup .cs-chip
+  padding: 2px 10px
+  border: 1px solid currentColor
+  border-radius: 999px
+  font-size: rem(12)
+  opacity: .85
+
+.CompanionSetup .cs-chip[data-state="ok"]
+  color: #22c55e
+  opacity: 1
+
+.CompanionSetup .cs-chip[data-state="warn"]
+  color: #d9a21b
+  opacity: 1
+
+.CompanionSetup .cs-note
+  font-size: rem(12)
+  line-height: 1.5
+  opacity: .85
+
+.CompanionSetup .cs-note.-small
+  margin-top: 10px
+  opacity: .7
+
+.CompanionSetup .cs-row
+  display: flex
+  gap: 12px
+  align-items: flex-start
+  margin: 12px 0
+  padding: 10px 12px
+  border-radius: 8px
+  background-color: rgba(128, 128, 128, .12)
+
+.CompanionSetup .cs-icon
+  flex: none
+  display: grid
+  place-items: center
+  width: 24px
+  height: 24px
+  border-radius: 50%
+  font-weight: 700
+  background-color: rgba(128, 128, 128, .4)
+  color: #fff
+
+.CompanionSetup .cs-row[data-state="active"] .cs-icon
+  background-color: #22c55e
+
+.CompanionSetup .cs-row[data-state="inactive"] .cs-icon
+  background-color: #d9a21b
+
+.CompanionSetup .cs-name
+  font-weight: 600
+
+.CompanionSetup .cs-detail
+  margin-top: 2px
+  font-size: rem(12)
+  line-height: 1.5
+  opacity: .85
+
+.CompanionSetup .cs-ctrls
+  display: flex
+  flex-wrap: wrap
+  gap: 10px
+  align-items: center
+
+.CompanionSetup .btn.-primary
+  font-weight: 700
+
+.CompanionSetup .btn[data-disabled="true"]
+  opacity: .5
+  pointer-events: none
+
+.CompanionSetup .cs-uninstall
+  margin-top: 12px
+  padding: 10px 12px
+  border: 1px dashed rgba(128, 128, 128, .5)
+  border-radius: 8px
+
+.CompanionSetup .cs-uninstall ol
+  margin: 6px 0 10px
+  padding-left: 20px
+  font-size: rem(12)
+  line-height: 1.6
+
+.CompanionSetup .cs-uninstall code
+  font-size: rem(11)
+  padding: 0 4px
+  border-radius: 4px
+  background-color: rgba(128, 128, 128, .25)

@@ -136,6 +136,7 @@ section(ref="el")
       v-model:value="Settings.state.pinnedTabsPosition"
       label="settings.pinned_tabs_position"
       :live="true"
+      :note="pinnedSideNote"
       optLabel="settings.pinned_tabs_position_"
       :opts="Settings.getOpts('pinnedTabsPosition')"
       :folded="true"
@@ -314,7 +315,7 @@ section(ref="el")
 <script lang="ts" setup>
 import GroupSection from './settings.group.vue'
 import ContainersSection from './settings.containers.vue'
-import { ref, computed, onMounted, shallowRef, provide } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, shallowRef, provide } from 'vue'
 import { translate } from 'src/dict'
 import { Settings } from 'src/services/settings'
 import { Permissions } from 'src/services/permissions'
@@ -333,6 +334,30 @@ const tabsTreeEl = ref<HTMLElement | null>(null)
 const tabsColorEl = ref<HTMLElement | null>(null)
 const tabsPreviewEl = ref<HTMLElement | null>(null)
 const nativeTabsEl = ref<HTMLElement | null>(null)
+
+// Left/right only apply in Full mode: in Collapsed and Auto (a narrow rail) pinned tabs stay on top
+const MODE_KEY = 'sidebery_collapse_mode'
+function readRailMode(): boolean {
+  try {
+    // No saved mode means the default, Auto
+    return (localStorage.getItem(MODE_KEY) ?? 'auto') !== 'full'
+  } catch {
+    return false
+  }
+}
+const railMode = ref(readRailMode())
+// Shown only when the user picks left or right (the default is top)
+const pinnedSideNote = computed(() => {
+  const pos = Settings.state.pinnedTabsPosition
+  if (pos !== 'left' && pos !== 'right') return undefined
+  const base = translate('settings.pinned_tabs_position_rail_note')
+  return railMode.value ? base + ' ' + translate('settings.pinned_tabs_position_rail_now') : base
+})
+function onStorageEvent(e: StorageEvent): void {
+  if (e.key === MODE_KEY || e.key === null) railMode.value = readRailMode()
+}
+onMounted(() => window.addEventListener('storage', onStorageEvent))
+onBeforeUnmount(() => window.removeEventListener('storage', onStorageEvent))
 
 const relativeToActiveTab = computed<boolean>(() => {
   return (

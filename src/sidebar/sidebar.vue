@@ -12,7 +12,7 @@
   :data-act-el-color-scheme="Styles.reactive.actElColorScheme"
   :data-popup-color-scheme="Styles.reactive.popupColorScheme"
   :data-animations="animations"
-  :data-pinned-tabs-position="Settings.state.pinnedTabsPosition"
+  :data-pinned-tabs-position="pinnedPosition()"
   :data-pinned-tabs-list="Settings.state.pinnedTabsList"
   :data-tabs-tree-lvl-marks="Settings.state.tabsLvlDots"
   :data-tabs-close-btn="Settings.state.tabRmBtn"
@@ -209,9 +209,17 @@ const panelBoxEl = ref<HTMLElement | null>(null)
 const rrc = ref(0)
 
 let animations = !Settings.state.animations ? 'none' : Settings.state.animationSpeed || 'fast'
-let pinnedTabsBarTop = Settings.state.pinnedTabsPosition === 'top'
-let pinnedTabsBarLeft = Settings.state.pinnedTabsPosition === 'left'
-let pinnedTabsBarRight = Settings.state.pinnedTabsPosition === 'right'
+// Collapsed and Auto start as a 48px rail: a left/right strip of pinned tabs does not fit, so they
+// stay on top (only Full mode keeps the position from the settings)
+function pinnedPosition(): typeof Settings.state.pinnedTabsPosition {
+  const pos = Settings.state.pinnedTabsPosition
+  if (CollapseModeService.mode !== 'full' && (pos === 'left' || pos === 'right')) return 'top'
+  return pos
+}
+
+let pinnedTabsBarTop = pinnedPosition() === 'top'
+let pinnedTabsBarLeft = pinnedPosition() === 'left'
+let pinnedTabsBarRight = pinnedPosition() === 'right'
 let navBarHorizontal = Settings.state.navBarLayout === 'horizontal'
 let navBarVertical = Settings.state.navBarLayout === 'vertical'
 let navBarLayout = navBarVertical ? Settings.state.navBarSide : Settings.state.navBarLayout
@@ -224,9 +232,9 @@ let bottomBar =
 
 function recalcStaticVars() {
   animations = !Settings.state.animations ? 'none' : Settings.state.animationSpeed || 'fast'
-  pinnedTabsBarTop = Settings.state.pinnedTabsPosition === 'top'
-  pinnedTabsBarLeft = Settings.state.pinnedTabsPosition === 'left'
-  pinnedTabsBarRight = Settings.state.pinnedTabsPosition === 'right'
+  pinnedTabsBarTop = pinnedPosition() === 'top'
+  pinnedTabsBarLeft = pinnedPosition() === 'left'
+  pinnedTabsBarRight = pinnedPosition() === 'right'
   navBarHorizontal = Settings.state.navBarLayout === 'horizontal'
   navBarVertical = Settings.state.navBarLayout === 'vertical'
   navBarLayout = navBarVertical ? Settings.state.navBarSide : Settings.state.navBarLayout

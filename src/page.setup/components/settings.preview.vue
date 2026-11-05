@@ -1,8 +1,16 @@
 <template lang="pug">
-.SettingsPreview
-  .sp-grip.-x(
+.SettingsPreview(ref="boxEl" :data-sized="sized")
+  .sp-grip.-l(
     :title="translate('settings.preview_resize')"
-    @pointerdown="startResize($event, 'x')"
+    @pointerdown="startResize($event, 'l')"
+    @dblclick="resetSize")
+  .sp-grip.-r(
+    :title="translate('settings.preview_resize')"
+    @pointerdown="startResize($event, 'r')"
+    @dblclick="resetSize")
+  .sp-grip.-t(
+    :title="translate('settings.preview_resize')"
+    @pointerdown="startResize($event, 't')"
     @dblclick="resetSize")
   .sp-head
     .sp-title {{translate('settings.preview_title')}}
@@ -30,14 +38,14 @@
       :data-active="mode === m"
       @click="setMode(m)") {{translate('settings.preview_mode_' + m)}}
   .sp-note.-small {{editing ? translate('settings.preview_legend_editing') : translate('settings.preview_legend_live')}}
-  .sp-grip.-y(
+  .sp-grip.-b(
     :title="translate('settings.preview_resize')"
-    @pointerdown="startResize($event, 'y')"
+    @pointerdown="startResize($event, 'b')"
     @dblclick="resetSize")
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, reactive, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { translate } from 'src/dict'
 import { Settings } from 'src/services/settings'
 import { DEFAULT_SETTINGS } from 'src/defaults'
@@ -55,50 +63,81 @@ const PANELS: Record<PreviewMode, string> = {
 
 const mode = ref<PreviewMode>('auto')
 
-// Resizable preview box: width and height of the whole card (wide windows)
-const SIZE_KEY = 'sidebery_preview_size_v2'
+// Resizable preview box: all four edges. By default it keeps its natural size.
+const SIZE_KEY = 'sidebery_preview_size_v3'
 const DEFAULT_W = 300
-const DEFAULT_H = 640
+const DEFAULT_TOP = 16
+const DEFAULT_RIGHT = 16
 const MIN_W = 260
-const MAX_W = 640
-const MIN_H = 420
-const MAX_H = 1200
-const boxW = ref(DEFAULT_W)
-const boxH = ref(DEFAULT_H)
+const MAX_W = 800
+const MIN_H = 360
+const MAX_H = 1400
+const boxEl = ref<HTMLElement | null>(null)
+const box = reactive({
+  w: DEFAULT_W,
+  h: null as number | null,
+  top: DEFAULT_TOP,
+  right: DEFAULT_RIGHT,
+})
+const sized = computed(() => box.h !== null)
+
+type Edge = 'l' | 'r' | 't' | 'b'
 
 function applySize(): void {
   const root = document.documentElement.style
-  root.setProperty('--sp-w', boxW.value + 'px')
-  root.setProperty('--sp-h', boxH.value + 'px')
+  root.setProperty('--sp-w', box.w + 'px')
+  root.setProperty('--sp-top', box.top + 'px')
+  root.setProperty('--sp-right', box.right + 'px')
+  if (box.h === null) root.removeProperty('--sp-h')
+  else root.setProperty('--sp-h', box.h + 'px')
 }
 function clamp(v: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, v))
 }
 function saveSize(): void {
   try {
-    localStorage.setItem(SIZE_KEY, JSON.stringify({ w: boxW.value, h: boxH.value }))
+    localStorage.setItem(SIZE_KEY, JSON.stringify({ ...box }))
   } catch {
     // ignore: storage unavailable
   }
 }
 function resetSize(): void {
-  boxW.value = DEFAULT_W
-  boxH.value = DEFAULT_H
+  box.w = DEFAULT_W
+  box.h = null
+  box.top = DEFAULT_TOP
+  box.right = DEFAULT_RIGHT
   applySize()
   saveSize()
 }
-function startResize(e: PointerEvent, axis: 'x' | 'y'): void {
+function startResize(e: PointerEvent, edge: Edge): void {
+  const card = boxEl.value
+  if (!card) return
   e.preventDefault()
   const target = e.currentTarget as HTMLElement
   target.setPointerCapture(e.pointerId)
+
+  const rect = card.getBoundingClientRect()
   const startX = e.clientX
   const startY = e.clientY
-  const startW = boxW.value
-  const startH = boxH.value
+  const startW = rect.width
+  const startH = rect.height
+  const startTop = rect.top
+  const startRight = window.innerWidth - rect.right
+
   const move = (ev: PointerEvent): void => {
-    // The box is docked to the right edge: dragging its left edge to the left makes it wider
-    if (axis === 'x') boxW.value = clamp(startW + (startX - ev.clientX), MIN_W, MAX_W)
-    else boxH.value = clamp(startH + (ev.clientY - startY), MIN_H, MAX_H)
+    if (edge === 'l') {
+      box.w = clamp(startW + (startX - ev.clientX), MIN_W, MAX_W)
+    } else if (edge === 'r') {
+      // The left edge stays where it is: the box grows to the right
+      box.w = clamp(startW + (ev.clientX - startX), MIN_W, MAX_W)
+      box.right = Math.max(0, Math.round(startRight - (box.w - startW)))
+    } else if (edge === 'b') {
+      box.h = clamp(startH + (ev.clientY - startY), MIN_H, MAX_H)
+    } else {
+      // Top edge: the bottom stays where it is
+      box.h = clamp(startH + (startY - ev.clientY), MIN_H, MAX_H)
+      box.top = Math.max(0, Math.round(startTop - (box.h - startH)))
+    }
     applySize()
   }
   const up = (): void => {
@@ -114,6 +153,8 @@ function startResize(e: PointerEvent, axis: 'x' | 'y'): void {
 onBeforeUnmount(() => {
   document.documentElement.style.removeProperty('--sp-w')
   document.documentElement.style.removeProperty('--sp-h')
+  document.documentElement.style.removeProperty('--sp-top')
+  document.documentElement.style.removeProperty('--sp-right')
 })
 const frameEl = ref<HTMLIFrameElement | null>(null)
 // Unsaved edits: the preview shows them and becomes interactive, the real sidebar does not change
@@ -125,8 +166,10 @@ onMounted(() => {
     if (saved && MODES.includes(saved)) mode.value = saved
     const size = JSON.parse(localStorage.getItem(SIZE_KEY) ?? 'null')
     if (size) {
-      boxW.value = clamp(Number(size.w) || DEFAULT_W, MIN_W, MAX_W)
-      boxH.value = clamp(Number(size.h) || DEFAULT_H, MIN_H, MAX_H)
+      box.w = clamp(Number(size.w) || DEFAULT_W, MIN_W, MAX_W)
+      box.h = size.h == null ? null : clamp(Number(size.h) || MIN_H, MIN_H, MAX_H)
+      box.top = size.top == null ? DEFAULT_TOP : Math.max(0, Number(size.top) || 0)
+      box.right = size.right == null ? DEFAULT_RIGHT : Math.max(0, Number(size.right) || 0)
     }
   } catch {
     // ignore: storage unavailable

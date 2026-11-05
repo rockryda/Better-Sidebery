@@ -587,6 +587,10 @@ export const setupPageTranslations: Translations = {
   'settings.draft_save': { en: 'Save changes' },
   'settings.draft_saved': { en: 'Saved. Your sidebar is updated.' },
   'settings.preview_resize': { en: 'Drag to resize, double-click to reset' },
+  'settings.pinned_tabs_position_rail_note': {
+    en: 'Left and right only work in Full mode. In Collapsed and Auto the sidebar is a narrow rail, so pinned tabs stay on top there.',
+  },
+  'settings.pinned_tabs_position_rail_now': { en: 'Your sidebar is in one of those modes now.' },
   'settings.nav_settings': {
     en: 'Settings',
     de: 'Einstellungen',
