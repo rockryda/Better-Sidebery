@@ -31,7 +31,7 @@
 .SettingsPreview .sp-screen
   position: relative
   display: flex
-  height: var(--sp-h, 440px)
+  height: calc(var(--sp-h, 640px) - 200px)
   border-radius: 8px
   overflow: hidden
   background-color: #2a3440
@@ -131,9 +131,21 @@
     top: 16px
     right: 16px
     width: var(--sp-w, 300px)
-    max-height: calc(100vh - 32px)
+    // Card height follows the grip, but never exceeds the window
+    height: min(var(--sp-h, 640px), calc(100vh - 32px))
+    display: flex
+    flex-direction: column
     margin: 0
     overflow: auto
+
+  .SettingsPreview > *
+    flex: none
+
+  // The screen takes whatever height is left
+  .SettingsPreview .sp-screen
+    flex: 1 1 auto
+    height: auto
+    min-height: 160px
 
 @media (prefers-reduced-motion: reduce)
   .SettingsPreview .sb
@@ -198,9 +210,10 @@
   display: none
 
 .SettingsPreview .sp-grip.-y
-  position: relative
+  left: 12px
+  right: 12px
+  bottom: 2px
   height: 8px
-  margin-top: 4px
   border-radius: 4px
   cursor: ns-resize
 

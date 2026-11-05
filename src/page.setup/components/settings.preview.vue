@@ -21,10 +21,6 @@
         @load="onFrameLoad")
     .page-body
       i(v-for="w in PAGE_LINES" :key="w" :style="{ width: w + '%' }")
-  .sp-grip.-y(
-    :title="translate('settings.preview_resize')"
-    @pointerdown="startResize($event, 'y')"
-    @dblclick="resetSize")
   .sp-state(:data-editing="editing") {{editing ? translate('settings.preview_state_editing') : translate('settings.preview_state_locked')}}
   .sp-modes(role="group")
     button(
@@ -34,6 +30,10 @@
       :data-active="mode === m"
       @click="setMode(m)") {{translate('settings.preview_mode_' + m)}}
   .sp-note.-small {{editing ? translate('settings.preview_legend_editing') : translate('settings.preview_legend_live')}}
+  .sp-grip.-y(
+    :title="translate('settings.preview_resize')"
+    @pointerdown="startResize($event, 'y')"
+    @dblclick="resetSize")
 </template>
 
 <script lang="ts" setup>
@@ -55,14 +55,14 @@ const PANELS: Record<PreviewMode, string> = {
 
 const mode = ref<PreviewMode>('auto')
 
-// Resizable preview box: width (wide windows) and height of the screen
-const SIZE_KEY = 'sidebery_preview_size'
+// Resizable preview box: width and height of the whole card (wide windows)
+const SIZE_KEY = 'sidebery_preview_size_v2'
 const DEFAULT_W = 300
-const DEFAULT_H = 440
+const DEFAULT_H = 640
 const MIN_W = 260
 const MAX_W = 640
-const MIN_H = 240
-const MAX_H = 900
+const MIN_H = 420
+const MAX_H = 1200
 const boxW = ref(DEFAULT_W)
 const boxH = ref(DEFAULT_H)
 
