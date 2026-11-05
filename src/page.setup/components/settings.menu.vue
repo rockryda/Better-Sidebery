@@ -5,7 +5,7 @@
     label="settings.ctx_menu_native"
     v-model:value="Settings.state.ctxMenuNative"
     @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     ToggleField(
       label="settings.ctx_menu_render_inact"
       v-model:value="Settings.state.ctxMenuRenderInact"
@@ -14,8 +14,6 @@
       label="settings.ctx_menu_render_icons"
       v-model:value="Settings.state.ctxMenuRenderIcons"
       @update:value="Settings.saveDebounced(150)")
-  .ctrls
-    .btn(@click="SetupPage.switchView('menu_editor')") {{translate('settings.ctx_menu_editor')}}
 </template>
 
 <script lang="ts" setup>

@@ -7,13 +7,10 @@
       v-model="settingsFilter.q"
       spellcheck="false"
       autocomplete="off")
-  GeneralSection(v-show="show('settings_general')")
   SidebarSection(v-show="show('settings_sidebar')")
   TabsSection(v-show="show('settings_tabs')")
-  MouseSection(v-show="show('settings_mouse')")
-  BookmarksSection(v-show="show('settings_bookmarks')")
+  ControlsSection(v-show="show('settings_controls')")
   DataSection(v-show="show('settings_data')")
-  HelpSection(v-show="show('settings_help')")
   FooterSection
 
   .btw: p v{{Info.reactive.addonVer}}
@@ -31,13 +28,10 @@ import { ref, watch, nextTick, onActivated } from 'vue'
 import { settingsFilter } from '../settings-filter'
 import { SetupPage } from 'src/services/setup-page'
 import { Info } from 'src/services/info'
-import GeneralSection from './settings.general.vue'
 import SidebarSection from './settings.sidebar.vue'
 import TabsSection from './settings.tabs.vue'
-import BookmarksSection from './settings.bookmarks.vue'
-import MouseSection from './settings.mouse.vue'
+import ControlsSection from './settings.controls.vue'
 import DataSection from './settings.data.vue'
-import HelpSection from './settings.help.vue'
 import PermissionsPopup from 'src/page.setup/components/popup.permissions.vue'
 import FooterSection from './footer-section.vue'
 

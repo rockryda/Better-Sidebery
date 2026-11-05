@@ -118,7 +118,7 @@ div.wrapper(
             use(:xlink:href="'#' + btn.iconSVG")
           img(v-else :src="btn.iconIMG")
         .card-name {{btn.name}}
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     ToggleField(
       label="settings.hide_empty_panels"
       v-model:value="Settings.state.hideEmptyPanels"
@@ -136,7 +136,7 @@ div.wrapper(
 </template>
 
 <script lang="ts" setup>
-import AdvancedFold from '../../components/advanced-fold.vue'
+import AdvancedItems from '../../components/advanced-items.vue'
 import { computed, ref, onMounted } from 'vue'
 import * as Utils from 'src/utils'
 import * as Popups from 'src/services/popups'

@@ -1,7 +1,6 @@
 <template lang="pug">
-section(ref="el")
-  h2 {{translate('settings.general_title')}}
-  span.header-shadow
+.wrapper(ref="el")
+  .sub-title: .text {{translate('settings.general_title')}}
   .sub-fields(style="margin-bottom: 18px; padding: 14px 16px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
     .label(style="font-size: 14px; font-weight: 600; color: #22c55e; margin-bottom: 6px;") Companion setup (Floorp / Firefox)
     .note(style="font-size: 12px; line-height: 1.5; opacity: 0.9; margin-bottom: 10px;")
@@ -25,7 +24,7 @@ section(ref="el")
     label="settings.update_sidebar_title"
     v-model:value="Settings.state.updateSidebarTitle"
     @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     ToggleField(
       label="settings.native_scrollbars_thin"
       :inactive="!Settings.state.nativeScrollbars"

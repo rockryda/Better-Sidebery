@@ -557,10 +557,12 @@ export const setupPageTranslations: Translations = {
   // ---
   // -- Settings
   // -
-  'settings.sidebar_title': { en: 'Sidebar & Appearance' },
-  'settings.nav_settings_sidebar': { en: 'Sidebar & Appearance' },
-  'settings.data_title': { en: 'Snapshots' },
-  'settings.nav_settings_data': { en: 'Snapshots' },
+  'settings.sidebar_title': { en: 'Sidebar' },
+  'settings.nav_settings_sidebar': { en: 'Sidebar' },
+  'settings.data_title': { en: 'Data & Backup' },
+  'settings.nav_settings_data': { en: 'Data & Backup' },
+  'settings.controls_title': { en: 'Controls & Panels' },
+  'settings.nav_settings_controls': { en: 'Controls & Panels' },
   'settings.nav_settings': {
     en: 'Settings',
     de: 'Einstellungen',
@@ -729,7 +731,7 @@ export const setupPageTranslations: Translations = {
   },
 
   'settings.nav_settings_bookmarks': {
-    en: 'Bookmarks & History',
+    en: 'Bookmarks',
     de: 'Lesezeichen',
     hu: 'Könyvjelzők',
     pl: 'Zakładki',
@@ -759,7 +761,7 @@ export const setupPageTranslations: Translations = {
     ja: '外観',
   },
   'settings.nav_settings_mouse': {
-    en: 'Mouse & Controls',
+    en: 'Mouse',
     de: 'Maus',
     hu: 'Egér',
     pl: 'Mysz',
@@ -3647,7 +3649,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 
   // - Bookmarks
   'settings.bookmarks_title': {
-    en: 'Bookmarks & History',
+    en: 'Bookmarks',
     de: 'Lesezeichen',
     hu: 'Könyvjelzők',
     pl: 'Zakładki',
@@ -4121,7 +4123,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 
   // - Mouse
   'settings.mouse_title': {
-    en: 'Mouse & Controls',
+    en: 'Mouse',
     de: 'Maus',
     hu: 'Egér',
     pl: 'Mysz',

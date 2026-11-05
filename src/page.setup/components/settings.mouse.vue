@@ -1,8 +1,7 @@
 <template lang="pug">
-section(ref="el")
-  h2 {{translate('settings.mouse_title')}}
-  span.header-shadow
-  AdvancedFold(title="Advanced")
+.wrapper(ref="el")
+  .sub-title: .text {{translate('settings.mouse_title')}}
+  AdvancedItems
     SelectField(
       label="settings.h_scroll_action"
       optLabel="settings.h_scroll_action_"
@@ -46,19 +45,15 @@ section(ref="el")
       :opts="Settings.getOpts('tabMiddleClick')"
       :folded="true"
       @update:value="Settings.saveDebounced(150)")
-    AdvancedFold(title="Advanced")
+    AdvancedItems
       ToggleField(
         label="settings.tabs_second_click_act_prev"
         v-model:value="Settings.state.tabsSecondClickActPrev"
         @update:value="onTabsSecondClickActPrevUpdate")
-  MenuSection
-  DndSection
 </template>
 
 <script lang="ts" setup>
-import MenuSection from './settings.menu.vue'
-import DndSection from './settings.dnd.vue'
-import AdvancedFold from '../../components/advanced-fold.vue'
+import AdvancedItems from '../../components/advanced-items.vue'
 import { ref, onMounted } from 'vue'
 import { translate } from 'src/dict'
 import { Settings } from 'src/services/settings'

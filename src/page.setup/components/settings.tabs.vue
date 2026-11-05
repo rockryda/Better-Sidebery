@@ -33,7 +33,7 @@ section(ref="el")
       :inactive="!Settings.state.showNewTabBtns"
       :opts="Settings.getOpts('newTabBarPosition')"
       @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     ToggleField(
       label="settings.tabs_rm_undo_note"
       v-model:value="Settings.state.tabsRmUndoNote"
@@ -102,7 +102,7 @@ section(ref="el")
       :opts="Settings.getOpts('moveNewTab')"
       :folded="true"
       @update:value="Settings.saveDebounced(150)")
-    AdvancedFold(title="Advanced")
+    AdvancedItems
       SelectField.-no-separator(
         label="settings.move_new_tab_pin"
         optLabel="settings.move_new_tab_pin_"
@@ -142,7 +142,7 @@ section(ref="el")
       :inactive="Settings.state.pinnedTabsPosition !== 'panel' && Settings.state.pinnedTabsPosition!== 'top'"
       v-model:value="Settings.state.pinnedTabsList"
       @update:value="Settings.saveDebounced(150)")
-    AdvancedFold(title="Advanced")
+    AdvancedItems
       ToggleField(
         label="settings.pinned.no_unload"
         :inactive="Settings.state.pinnedTabsPosition !== 'panel'"
@@ -188,7 +188,7 @@ section(ref="el")
       :inactive="!Settings.state.tabsTree"
       v-model:value="Settings.state.sortGroupsFirst"
       @update:value="Settings.saveDebounced(150)")
-    AdvancedFold(title="Advanced")
+    AdvancedItems
       SelectField(
         label="settings.auto_fold_tabs_except"
         optLabel="settings.auto_fold_tabs_except_"
@@ -271,7 +271,7 @@ section(ref="el")
       label="settings.tabs.preview"
       :value="Settings.state.previewTabs"
       @update:value="togglePreviewTabs")
-    AdvancedFold(title="Advanced")
+    AdvancedItems
       SelectField(
         label="settings.tabs.preview_mode"
         optLabel="settings.tabs.preview_mode_"
@@ -294,7 +294,7 @@ section(ref="el")
     note="While on, these stay enabled and are locked: Activate last tab, Move tab when switching panels, Switch panel after switching tab."
       :value="Settings.state.hideInact"
       @update:value="toggleHideInact")
-    AdvancedFold(title="Advanced")
+    AdvancedItems
       ToggleField(
         label="settings.hide_folded_tabs"
         :inactive="!Settings.state.tabsTree"
@@ -302,12 +302,13 @@ section(ref="el")
         @update:value="toggleHideFoldedTabs")
   GroupSection
   ContainersSection
+  AdvancedFold(@body="onAdvBody")
 </template>
 
 <script lang="ts" setup>
 import GroupSection from './settings.group.vue'
 import ContainersSection from './settings.containers.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, shallowRef, provide } from 'vue'
 import { translate } from 'src/dict'
 import { Settings } from 'src/services/settings'
 import { Permissions } from 'src/services/permissions'
@@ -315,7 +316,9 @@ import { SetupPage } from 'src/services/setup-page'
 import CountField from '../../components/count-field.vue'
 import ToggleField from '../../components/toggle-field.vue'
 import SelectField from '../../components/select-field.vue'
+import AdvancedItems from '../../components/advanced-items.vue'
 import AdvancedFold from '../../components/advanced-fold.vue'
+import { ADV_KEY } from '../advanced-target'
 
 const el = ref<HTMLElement | null>(null)
 const newTabPosEl = ref<HTMLElement | null>(null)
@@ -425,6 +428,11 @@ async function togglePreviewTabs() {
   Settings.saveDebounced(150)
 }
 
+const advTarget = shallowRef<HTMLElement | null>(null)
+provide(ADV_KEY, advTarget)
+function onAdvBody(el: HTMLElement): void {
+  advTarget.value = el
+}
 onMounted(() => {
   SetupPage.registerEl('settings_tabs', el.value)
   SetupPage.registerEl('settings_new_tab_position', newTabPosEl.value)

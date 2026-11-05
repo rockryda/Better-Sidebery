@@ -8,7 +8,7 @@
     :opts="Settings.getOpts('dndOutside')"
     :note="translate('settings.settings.dnd_outside_note')"
     @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     ToggleField(
       label="settings.dnd_tab_act"
       v-model:value="Settings.state.dndTabAct"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import AdvancedFold from '../../components/advanced-fold.vue'
+import AdvancedItems from '../../components/advanced-items.vue'
 import { onMounted, ref } from 'vue'
 import { translate } from 'src/dict'
 import { Settings } from 'src/services/settings'

@@ -1,13 +1,7 @@
 import { Container, BackupData, PanelConfig } from 'src/types'
 import * as SetupPageActions from 'src/services/setup-page.actions'
 
-export type SetupPageView =
-  | 'settings'
-  | 'menu_editor'
-  | 'styles_editor'
-  | 'snapshots'
-  | 'storage'
-  | 'keybindings'
+export type SetupPageView = 'settings' | 'snapshots' | 'storage'
 
 export interface SetupPageNavOption {
   active: boolean
@@ -38,8 +32,8 @@ export interface SetupPageState {
 
 export const nav: SetupPageNavOption[] = [
   { active: false, name: 'settings', lvl: 0 },
-  { active: false, name: 'settings_general', lvl: 1 },
   { active: false, name: 'settings_sidebar', lvl: 1 },
+  { active: false, name: 'settings_general', lvl: 2 },
   { active: false, name: 'settings_nav', lvl: 2 },
   { active: false, name: 'settings_search', lvl: 2 },
   { active: false, name: 'settings_appearance', lvl: 2 },
@@ -51,22 +45,15 @@ export const nav: SetupPageNavOption[] = [
   { active: false, name: 'settings_tabs_preview', lvl: 2 },
   { active: false, name: 'settings_group', lvl: 2 },
   { active: false, name: 'settings_containers', lvl: 2 },
-  { active: false, name: 'settings_mouse', lvl: 1 },
+  { active: false, name: 'settings_controls', lvl: 1 },
+  { active: false, name: 'settings_mouse', lvl: 2 },
   { active: false, name: 'settings_menu', lvl: 2 },
   { active: false, name: 'settings_dnd', lvl: 2 },
-  { active: false, name: 'settings_bookmarks', lvl: 1 },
+  { active: false, name: 'settings_bookmarks', lvl: 2 },
   { active: false, name: 'settings_history', lvl: 2 },
   { active: false, name: 'settings_data', lvl: 1 },
   { active: false, name: 'settings_snapshots', lvl: 2 },
-  { active: false, name: 'settings_help', lvl: 1 },
-  { active: false, name: 'keybindings', lvl: 0 },
-  { active: false, name: 'menu_editor', lvl: 0 },
-  { active: false, name: 'menu_editor_tabs', lvl: 1 },
-  { active: false, name: 'menu_editor_tabs_panel', lvl: 1 },
-  { active: false, name: 'menu_editor_bookmarks', lvl: 1 },
-  { active: false, name: 'menu_editor_bookmarks_panel', lvl: 1 },
-  { active: false, name: 'styles_editor', lvl: 0 },
-  { active: false, name: 'snapshots', lvl: 0 },
+  { active: false, name: 'settings_help', lvl: 2 },
 ]
 
 export const SetupPage = {
@@ -74,7 +61,7 @@ export const SetupPage = {
     nav,
     activeView: 'settings',
     activeSection: 'settings_general',
-    settingsPage: 'settings_general',
+    settingsPage: 'settings_sidebar',
     selectedContainer: null,
     selectedPanelConfig: null,
     detailsText: '',

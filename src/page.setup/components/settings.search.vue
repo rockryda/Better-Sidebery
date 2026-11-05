@@ -7,7 +7,7 @@
     v-model:value="Settings.state.searchBarMode"
     :opts="Settings.getOpts('searchBarMode')"
     @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     SelectField(
       label="settings.search_panel_switch"
       optLabel="settings.search_panel_switch_"

@@ -1,12 +1,11 @@
 <template lang="pug">
-section(ref="el")
-  h2 {{translate('settings.bookmarks_title')}}
-  span.header-shadow
+.wrapper(ref="el")
+  .sub-title: .text {{translate('settings.bookmarks_title')}}
   ToggleField(
     label="settings.load_bookmarks_on_demand"
     v-model:value="Settings.state.loadBookmarksOnDemand"
     @update:value="Settings.saveDebounced(150)")
-  AdvancedFold(title="Advanced")
+  AdvancedItems
     SelectField(
       label="settings.warn_on_multi_bookmark_delete"
       optLabel="settings.warn_on_multi_bookmark_delete_"
@@ -32,12 +31,10 @@ section(ref="el")
         .progress-errors {{state.fetchingBookmarksFavsErrors}} {{translate('settings.fetch_bookmarks_favs_errors')}}
       .btn(v-if="state.fetchingBookmarksFavs" @click="stopFetchingBookmarksFavicons") {{translate('settings.fetch_bookmarks_favs_stop')}}
     .btn(v-if="!state.fetchingBookmarksFavs" @click="fetchBookmarksFavicons") {{translate('settings.fetch_bookmarks_favs')}}
-  HistorySection
 </template>
 
 <script lang="ts" setup>
-import HistorySection from './settings.history.vue'
-import AdvancedFold from '../../components/advanced-fold.vue'
+import AdvancedItems from '../../components/advanced-items.vue'
 import { ref, reactive, onMounted, CSSProperties, computed } from 'vue'
 import { Bookmark, Stored, InstanceType } from 'src/types'
 import * as Utils from 'src/utils'

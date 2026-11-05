@@ -87,26 +87,6 @@ export async function updateActiveView(): Promise<void> {
   if (hash === 'history') return goToPerm('history')
   if (hash === 'bookmarks') return goToPerm('bookmarks')
 
-  if (hash.startsWith('menu_editor')) {
-    setTimeout(
-      () => els[hash]?.scrollIntoView(scrollSectionConf),
-      SetupPage.reactive.activeView === 'menu_editor' ? 0 : 250
-    )
-
-    document.title = 'Sidebery / Menu Editor'
-    SetupPage.reactive.activeView = 'menu_editor'
-    SetupPage.reactive.permissions = false
-    return
-  }
-
-  if (hash.startsWith('styles_editor')) {
-    document.title = 'Sidebery / Styles Editor'
-    SetupPage.reactive.activeView = 'styles_editor'
-    SetupPage.reactive.activeSection = 'styles_editor'
-    SetupPage.reactive.permissions = false
-    return
-  }
-
   if (hash.startsWith('snapshots')) {
     document.title = 'Sidebery / Snapshots'
     SetupPage.reactive.activeView = 'snapshots'
@@ -119,14 +99,6 @@ export async function updateActiveView(): Promise<void> {
     document.title = 'Sidebery / Storage'
     SetupPage.reactive.activeView = 'storage'
     SetupPage.reactive.activeSection = 'storage'
-    SetupPage.reactive.permissions = false
-    return
-  }
-
-  if (hash.startsWith('keybindings')) {
-    document.title = 'Sidebery / Keybindings'
-    SetupPage.reactive.activeView = 'keybindings'
-    SetupPage.reactive.activeSection = 'keybindings'
     SetupPage.reactive.permissions = false
     return
   }

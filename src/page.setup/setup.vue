@@ -14,11 +14,8 @@
   transition(name="view" mode="out-in")
     keep-alive
       SettingsView(v-if="SetupPage.reactive.activeView === 'settings'")
-      MenuEditorView(v-else-if="SetupPage.reactive.activeView === 'menu_editor'")
-      StylesEditorView(v-else-if="SetupPage.reactive.activeView === 'styles_editor'")
       SnapshotsView(v-else-if="SetupPage.reactive.activeView === 'snapshots'")
       StorageView(v-else-if="SetupPage.reactive.activeView === 'storage'")
-      KeybindingsView(v-else)
   
   Transition(name="popup"): BookmarksPopup(v-if="Bookmarks.reactive.popup")
   Transition(name="popup"): NewTabShortcutsPopup(v-if="Popups.reactive.newTabShortcutsPopup")
@@ -38,11 +35,8 @@ import { SetupPage } from 'src/services/setup-page'
 import { Bookmarks } from 'src/services/bookmarks'
 import { Styles } from 'src/services/styles'
 import SettingsView from './components/settings.vue'
-import MenuEditorView from './components/menu-editor.vue'
-import StylesEditorView from './components/styles-editor.vue'
 import SnapshotsView from './components/snapshots.vue'
 import StorageView from './components/storage.vue'
-import KeybindingsView from './components/keybindings.vue'
 import BookmarksPopup from 'src/components/popup.bookmarks.vue'
 import NewTabShortcutsPopup from 'src/components/popup.new-tab-shortcuts.vue'
 import TabMoveRulesPopup from 'src/components/popup.tab-move-rules.vue'
