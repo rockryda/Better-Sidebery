@@ -9,6 +9,7 @@ div.wrapper(
   .sub-title: .text {{translate('settings.nav_title')}}
   SelectField(
     label="settings.nav_bar_layout"
+    :live="true"
     optLabel="settings.nav_bar_layout_"
     v-model:value="Settings.state.navBarLayout"
     :opts="Settings.getOpts('navBarLayout')"
@@ -28,6 +29,7 @@ div.wrapper(
       @update:value="Settings.saveDebounced(150)")
   ToggleField(
     label="settings.nav_btn_count"
+    :live="true"
     v-model:value="Settings.state.navBtnCount"
     @update:value="Settings.saveDebounced(150)")
   InfoField(label="settings.bottom_bar")

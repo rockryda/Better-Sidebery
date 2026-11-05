@@ -9,6 +9,7 @@
     @update:value="Settings.saveDebounced(150)")
   ToggleField(
     label="settings.animations"
+    :live="true"
     v-model:value="Settings.state.animations"
     @update:value="Settings.saveDebounced(150)")
   SelectField(
@@ -19,12 +20,14 @@
     @update:value="Settings.saveDebounced(150)")
   SelectField(
     label="settings.density"
+    :live="true"
     optLabel="settings.density_"
     v-model:value="Settings.state.density"
     :opts="Settings.getOpts('density')"
     @update:value="Settings.saveDebounced(150)")
   SelectField(
     label="settings.switch_color_scheme"
+    :live="true"
     optLabel="settings.color_scheme_"
     v-model:value="Settings.state.colorScheme"
     :opts="Settings.getOpts('colorScheme')"

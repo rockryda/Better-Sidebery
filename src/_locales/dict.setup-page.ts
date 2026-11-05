@@ -563,6 +563,30 @@ export const setupPageTranslations: Translations = {
   'settings.nav_settings_data': { en: 'Data & Backup' },
   'settings.controls_title': { en: 'Controls & Panels' },
   'settings.nav_settings_controls': { en: 'Controls & Panels' },
+  'settings.preview_title': { en: 'Live preview' },
+  'settings.preview_note': {
+    en: 'Settings marked ◐ change this preview. Hover the sidebar in Auto to see it open.',
+  },
+  'settings.preview_legend': {
+    en: 'Sample tabs. The real sidebar mode is set with its toggle button.',
+  },
+  'settings.preview_legend_live': {
+    en: 'This is your real sidebar, read-only: clicks are blocked and nothing is saved. The real sidebar mode is set with its toggle button.',
+  },
+  'settings.preview_new_tab': { en: 'New tab' },
+  'settings.preview_mode_auto': { en: 'Auto' },
+  'settings.preview_mode_full': { en: 'Full' },
+  'settings.preview_mode_collapsed': { en: 'Collapsed' },
+  'settings.preview_state_editing': { en: 'Editing a draft: this preview is interactive' },
+  'settings.preview_state_locked': { en: 'Locked: in sync with your sidebar' },
+  'settings.preview_legend_editing': {
+    en: 'You can try the preview: hover, expand groups, open menus. Nothing here changes your real tabs or sidebar. Save to apply the changes to your sidebar.',
+  },
+  'settings.draft_msg': { en: 'Unsaved changes. Only the preview shows them.' },
+  'settings.draft_discard': { en: 'Discard' },
+  'settings.draft_save': { en: 'Save changes' },
+  'settings.draft_saved': { en: 'Saved. Your sidebar is updated.' },
+  'settings.preview_resize': { en: 'Drag to resize, double-click to reset' },
   'settings.nav_settings': {
     en: 'Settings',
     de: 'Einstellungen',

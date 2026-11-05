@@ -25,6 +25,7 @@ async function main(): Promise<void> {
   Logs.setInstanceType(InstanceType.setup)
 
   Settings.state = reactive(Settings.state)
+  Settings.draft = reactive(Settings.draft)
   Containers.reactive = reactive(Containers.reactive)
   Windows.reactive = reactive(Windows.reactive)
   Favicons.initFavicons(reactive)
@@ -47,7 +48,10 @@ async function main(): Promise<void> {
 
   await Promise.all([
     Windows.loadWindowInfo(),
-    Settings.loadSettings().then(() => Styles.initColorScheme()),
+    Settings.loadSettings().then(() => {
+      Styles.initColorScheme()
+      Settings.startDraft()
+    }),
     Containers.load(),
     Keybindings.loadKeybindings(),
     Info.loadVersionInfo(),

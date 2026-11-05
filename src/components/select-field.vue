@@ -7,7 +7,7 @@
   @contextmenu.stop.prevent
   @blur="onBlur")
   .body
-    .label {{translate(props.label)}}
+    .label {{(props.live ? '◐ ' : '') + translate(props.label)}}
     SelectInput(
       ref="inputComponent"
       :label="props.optLabel"
@@ -39,6 +39,7 @@ interface SelectFieldProps {
   value: InputOption | InputOption[]
   label: string
   inactive?: boolean
+  live?: boolean
   optLabel?: string
   opts: readonly InputOption[]
   color?: string

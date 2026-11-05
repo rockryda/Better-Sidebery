@@ -1,4 +1,5 @@
 import * as Logs from 'src/services/logs'
+import { IS_PREVIEW, previewMode } from 'src/services/preview-guard'
 
 export type CollapseMode = 'auto' | 'full' | 'collapsed'
 
@@ -72,6 +73,12 @@ export const CollapseModeService = {
   },
 
   init(): void {
+    if (IS_PREVIEW) {
+      // Preview: mode comes from the URL, nothing is saved and the real panel is not touched
+      this.mode = previewMode()
+      this.applyDOM(this.mode)
+      return
+    }
     let currentMode: CollapseMode = 'auto'
     let needsPanelSync = false
     if (typeof window !== 'undefined') {

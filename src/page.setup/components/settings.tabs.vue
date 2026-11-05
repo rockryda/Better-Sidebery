@@ -10,6 +10,7 @@ section(ref="el")
     @update:value="Settings.saveDebounced(150)")
   SelectField(
     label="settings.tab_rm_btn"
+    :live="true"
     optLabel="settings.tab_rm_btn_"
     v-model:value="Settings.state.tabRmBtn"
     :folded="true"
@@ -23,6 +24,7 @@ section(ref="el")
     @update:value="Settings.saveDebounced(150)")
   ToggleField(
     label="settings.show_new_tab_btns"
+    :live="true"
     v-model:value="Settings.state.showNewTabBtns"
     @update:value="Settings.saveDebounced(150)")
   .sub-fields
@@ -133,12 +135,14 @@ section(ref="el")
     SelectField.-no-separator(
       v-model:value="Settings.state.pinnedTabsPosition"
       label="settings.pinned_tabs_position"
+      :live="true"
       optLabel="settings.pinned_tabs_position_"
       :opts="Settings.getOpts('pinnedTabsPosition')"
       :folded="true"
       @update:value="Settings.saveDebounced(150)")
     ToggleField(
       label="settings.pinned_tabs_list"
+      :live="true"
       :inactive="Settings.state.pinnedTabsPosition !== 'panel' && Settings.state.pinnedTabsPosition!== 'top'"
       v-model:value="Settings.state.pinnedTabsList"
       @update:value="Settings.saveDebounced(150)")
@@ -152,6 +156,7 @@ section(ref="el")
     .sub-title: .text {{translate('settings.nav_settings_tabs_tree')}}
     ToggleField.-no-separator(
       label="settings.tabs_tree_layout"
+      :live="true"
       v-model:value="Settings.state.tabsTree"
       @update:value="Settings.saveDebounced(150)")
     SelectField(
@@ -237,6 +242,7 @@ section(ref="el")
     .sub-title: .text {{translate('settings.nav_settings_tabs_colorization')}}
     ToggleField.-no-separator(
       label="settings.colorize_tabs"
+      :live="true"
       v-model:value="Settings.state.colorizeTabs"
       @update:value="Settings.saveDebounced(150)")
     .sub-fields

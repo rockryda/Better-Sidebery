@@ -60,6 +60,13 @@ export const state = {
   previewConnection: undefined as ConnectionInfo | undefined,
 }
 
+let _passive = false
+
+/** Passive instances (the settings-page preview) never connect to or listen for other instances */
+export function setPassive(passive: boolean): void {
+  _passive = passive
+}
+
 export function setInstanceType(type: InstanceType): void {
   _localType = type
 }
@@ -115,6 +122,7 @@ export function connectTo(
   dstWinId = NOID,
   dstTabId = NOID
 ): browser.runtime.Port | undefined {
+  if (_passive) return
   const srcType = _localType
   const srcWinId = _localWinId
   const srcTabId = _localTabId
@@ -723,10 +731,12 @@ function onSendMsg<T extends InstanceType, A extends keyof Actions>(msg: Message
 }
 
 export function setupConnectionListener(): void {
+  if (_passive) return
   browser.runtime.onConnect.addListener(onConnect)
 }
 
 export function setupGlobalMessageListener(): void {
+  if (_passive) return
   browser.runtime.onMessage.addListener(onSendMsg)
 }
 

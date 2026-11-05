@@ -41,7 +41,65 @@ export async function loadSettings(): Promise<void> {
   Search.parseShortcuts()
 }
 
+// ---
+// -- Draft mode (settings page)
+// -
+// While the settings page is open, edits stay in a draft: they change Settings.state of this
+// page (and the read-only sidebar preview) but are not written to storage, so the real sidebar
+// does not change until the user saves.
+
+/** Draft state of the settings page */
+export const draft = { enabled: false, dirty: false }
+let draftBaseline = ''
+let committing = false
+let draftTimeout: number | undefined
+
+function draftSnapshot(): string {
+  const clone = Utils.cloneObject(Settings.state)
+  return JSON.stringify(Utils.recreateNormalizedObject(clone, DEFAULT_SETTINGS))
+}
+
+/** Start tracking changes against the current (saved) settings */
+export function startDraft(): void {
+  Settings.draft.enabled = true
+  draftBaseline = draftSnapshot()
+  Settings.draft.dirty = false
+}
+
+function refreshDraftState(): void {
+  clearTimeout(draftTimeout)
+  draftTimeout = setTimeout(() => {
+    Settings.draft.dirty = Settings.draft.enabled && draftSnapshot() !== draftBaseline
+  }, 50)
+}
+
+/** Write the draft to storage: this is what changes the real sidebar */
+export async function commitDraft(): Promise<void> {
+  clearTimeout(draftTimeout)
+  committing = true
+  try {
+    await saveSettings()
+  } finally {
+    committing = false
+  }
+  draftBaseline = draftSnapshot()
+  Settings.draft.dirty = false
+}
+
+/** Throw the draft away and go back to the saved settings */
+export function discardDraft(): void {
+  clearTimeout(draftTimeout)
+  if (!draftBaseline) return
+  updateSettingsFg(JSON.parse(draftBaseline) as SettingsState)
+  Settings.draft.dirty = false
+}
+
 export async function saveSettings(): Promise<void> {
+  if (Settings.draft.enabled && !committing) {
+    refreshDraftState()
+    return
+  }
+
   const clone = Utils.cloneObject(Settings.state)
   const settings = Utils.recreateNormalizedObject(clone, DEFAULT_SETTINGS)
   await Store.set({ settings })
@@ -51,6 +109,10 @@ export async function saveSettings(): Promise<void> {
 
 let saveSettingsTimeout: number | undefined
 export function saveDebounced(delay = 500): void {
+  if (Settings.draft.enabled) {
+    refreshDraftState()
+    return
+  }
   clearTimeout(saveSettingsTimeout)
   saveSettingsTimeout = setTimeout(() => {
     Settings.saveSettings()
@@ -64,7 +126,14 @@ async function saveSettingsToSync(settings?: SettingsState): Promise<void> {
 
 export function setupSettingsChangeListener(): void {
   if (Info.isBg) Store.onKeyChange('settings', updateSettingsBg)
-  else Store.onKeyChange('settings', updateSettingsFg)
+  else {
+    Store.onKeyChange('settings', (settings?: SettingsState | null) => {
+      // Unsaved edits on the settings page win over changes made elsewhere
+      if (Settings.draft.enabled && Settings.draft.dirty) return
+      updateSettingsFg(settings)
+      if (Settings.draft.enabled) startDraft()
+    })
+  }
 }
 
 export function updateSettingsBg(settings?: SettingsState | null): void {

@@ -236,14 +236,12 @@ function onMouseDown(e: MouseEvent): void {
     }
 
     // Clicking a group/stack opens or closes it (the small chevron stays available too).
-    // Rail and group pages: toggle only. Stacks with a real page: toggle and still activate.
-    if (tab.reactive.isParent && !tab.pinned) {
-      Tabs.toggleBranch(tab.id)
-      if (isRail() || tab.reactive.isGroup) {
-        railToggled = true
-        Selection.resetSelection()
-        return
-      }
+    // The toggle itself happens on mouse up, so starting a drag never re-renders the tab under
+    // the pointer. Rail and group pages: toggle only, no activation.
+    if (tab.reactive.isParent && !tab.pinned && (isRail() || tab.reactive.isGroup)) {
+      railToggled = true
+      Selection.resetSelection()
+      return
     }
 
     if (Selection.isSet() && !tab.sel) Selection.resetSelection()
@@ -344,12 +342,15 @@ function onMouseUp(e: MouseEvent): void {
 
   if (railToggled) {
     railToggled = false
+    if (e.button === 0 && sameTarget) Tabs.toggleBranch(tab.id)
     return
   }
 
   if (e.button === 0) {
     const withoutMods = !e.ctrlKey && !e.shiftKey
     if (sameTarget) {
+      // Stacks with a real page: a click also opens or closes the branch
+      if (withoutMods && tab.reactive.isParent && !tab.pinned) Tabs.toggleBranch(tab.id)
       if (withoutMods) Selection.resetSelection()
       if (Settings.state.activateOnMouseUp && withoutMods) activate()
       if (
@@ -454,6 +455,7 @@ function onDoubleClick(): void {
 }
 
 function onDragStart(e: DragEvent): void {
+  railToggled = false
   if (Mouse.isLocked()) {
     Mouse.resetClickLock()
     e.stopPropagation()

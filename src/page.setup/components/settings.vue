@@ -1,5 +1,6 @@
 <template lang="pug">
 .Settings(ref="rootEl" @scroll.passive="onScroll")
+  SettingsPreview
   .settings-search
     input(
       type="search"
@@ -12,6 +13,7 @@
   ControlsSection(v-show="show('settings_controls')")
   DataSection(v-show="show('settings_data')")
   FooterSection
+  SettingsSaveBar
 
   .btw: p v{{Info.reactive.addonVer}}
 
@@ -24,10 +26,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onActivated } from 'vue'
+import { ref, watch, nextTick, onActivated, onMounted, onBeforeUnmount } from 'vue'
 import { settingsFilter } from '../settings-filter'
 import { SetupPage } from 'src/services/setup-page'
+import { Settings } from 'src/services/settings'
 import { Info } from 'src/services/info'
+import SettingsPreview from './settings.preview.vue'
+import SettingsSaveBar from './settings.savebar.vue'
 import SidebarSection from './settings.sidebar.vue'
 import TabsSection from './settings.tabs.vue'
 import ControlsSection from './settings.controls.vue'
@@ -66,6 +71,15 @@ watch(
 
 // Restore prev scroll position
 let scrollY = 0
+// Warn before leaving with unsaved edits
+onMounted(() => window.addEventListener('beforeunload', onBeforeUnload))
+onBeforeUnmount(() => window.removeEventListener('beforeunload', onBeforeUnload))
+function onBeforeUnload(e: BeforeUnloadEvent): void {
+  if (!Settings.draft.dirty) return
+  e.preventDefault()
+  e.returnValue = ''
+}
+
 onActivated(() => {
   if (scrollY && rootEl.value) rootEl.value.scrollTop = scrollY
 })

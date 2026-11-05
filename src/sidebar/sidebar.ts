@@ -1,6 +1,7 @@
+import { IS_PREVIEW } from 'src/services/preview-guard'
 import * as Utils from 'src/utils'
 import { createApp, reactive, shallowReactive } from 'vue'
-import { InstanceType } from 'src/types'
+import { InstanceType, SettingsState } from 'src/types'
 import * as IPC from 'src/services/ipc'
 import * as Logs from 'src/services/logs'
 import * as Popups from 'src/services/popups'
@@ -29,9 +30,24 @@ import { initSidebarResize } from 'src/services/sidebar-resize'
 import { updateWebReqHandlers } from 'src/services/web-req.fg'
 import { initUpgrading, showUpgradingScreen } from 'src/services/upgrading'
 
+// Settings page preview: draft settings arrive here instead of from storage
+let previewReady = false
+let pendingPreviewSettings: SettingsState | null = null
+if (IS_PREVIEW) {
+  window.addEventListener('message', e => {
+    if (e.origin !== location.origin || e.data?.type !== 'bs-preview-settings') return
+    const settings = e.data.settings as SettingsState | undefined
+    if (!settings) return
+    if (previewReady) Settings.updateSettingsFg(settings)
+    else pendingPreviewSettings = settings
+  })
+}
+
 async function main(): Promise<void> {
   Info.setInstanceType(InstanceType.sidebar)
   IPC.setInstanceType(InstanceType.sidebar)
+  // Preview inside the settings page: read-only, no connection to other instances
+  if (IS_PREVIEW) IPC.setPassive(true)
   Logs.setInstanceType(InstanceType.sidebar)
   CollapseModeService.init()
 
@@ -132,21 +148,23 @@ async function main(): Promise<void> {
   if (Sidebar.hasBookmarks && initBookmarks) Bookmarks.load()
   if (Sidebar.hasHistory && initHistory) History.load()
 
-  updateWebReqHandlers()
+  if (!IS_PREVIEW) updateWebReqHandlers()
 
   Menu.loadCtxMenu()
-  Menu.setupListeners()
+  if (!IS_PREVIEW) Menu.setupListeners()
 
   Styles.setupListeners()
 
   Favicons.loadFavicons()
 
   Keybindings.loadKeybindings()
-  Keybindings.setupListeners()
+  if (!IS_PREVIEW) Keybindings.setupListeners()
 
   Search.init()
-  Windows.updWindowPreface()
-  initSidebarResize()
+  if (!IS_PREVIEW) {
+    Windows.updWindowPreface()
+    initSidebarResize()
+  }
 
   if (Settings.state.updateSidebarTitle) Sidebar.updateSidebarTitle(0)
 
@@ -162,5 +180,10 @@ async function main(): Promise<void> {
   if (Settings.state.previewTabs) Preview.resetMode()
 
   Logs.info(`Init end: ${performance.now() - ts}ms`)
+
+  if (IS_PREVIEW) {
+    previewReady = true
+    if (pendingPreviewSettings) Settings.updateSettingsFg(pendingPreviewSettings)
+  }
 }
 main()

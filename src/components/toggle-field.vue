@@ -1,7 +1,7 @@
 <template lang="pug">
 .ToggleField(:data-inactive="props.inactive" @click="toggle")
   .body
-    .label(:style="{ color: props.color }") {{translate(props.label)}}
+    .label(:style="{ color: props.color }") {{(props.live ? '◐ ' : '') + translate(props.label)}}
     ToggleInput.input(:value="props.value")
   .note(v-if="props.note") {{props.note}}
   slot
@@ -15,6 +15,7 @@ interface ToggleFieldProps {
   value: boolean | null | undefined
   label: string
   inactive?: boolean
+  live?: boolean
   field?: boolean
   color?: string
   note?: string
