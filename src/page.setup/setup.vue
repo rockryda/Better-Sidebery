@@ -5,9 +5,9 @@
   :data-sticky-bookmarks="Settings.state.pinOpenedBookmarksFolder")
   .nav
     div(
-      v-for="opt in SetupPage.reactive.nav"
+      v-for="opt in visibleNav"
       :class="'sub-'.repeat(opt.lvl) + 'option'"
-      :data-active="opt.name === (opt.lvl > 0 ? SetupPage.reactive.activeSection : SetupPage.reactive.activeView)"
+      :data-active="isNavActive(opt)"
       @click="navigateTo(opt.name)")
       .body {{translate(`settings.nav_${opt.name}`)}}
 
@@ -52,6 +52,23 @@ import UpgradeScreen from 'src/components/upgrade-screen.vue'
 import Details from './components/settings.details.vue'
 import * as Popups from 'src/services/popups'
 import { reactiveUpgrading } from 'src/services/upgrading'
+
+// Level-2 settings entries are only listed for the settings page that is open
+const visibleNav = computed(() =>
+  SetupPage.reactive.nav.filter(opt => {
+    if (opt.lvl !== 2 || !opt.name.startsWith('settings_')) return true
+    return SetupPage.getSettingsPage(opt.name) === SetupPage.reactive.settingsPage
+  })
+)
+
+function isNavActive(opt: { name: string; lvl: number }): boolean {
+  const r = SetupPage.reactive
+  if (opt.lvl === 0) return opt.name === r.activeView
+  if (opt.name === r.activeSection) return true
+  // Level-1 settings entry stays highlighted while one of its sub-sections is active
+  return r.activeView === 'settings' && opt.lvl === 1 && opt.name === r.settingsPage
+    && SetupPage.getSettingsPage(r.activeSection) === opt.name
+}
 
 const animations = computed(() => (Settings.state.animations ? 'fast' : 'none'))
 

@@ -1,13 +1,12 @@
 <template lang="pug">
-section(
+div.wrapper(
   ref="el"
   :data-dnd="!!dndItemId"
   @dragenter.prevent.stop="onDragEnter"
   @dragover.prevent.stop=""
   @drop.stop="onDrop"
   @dragend="onDragEnd")
-  h2 {{translate('settings.nav_title')}}
-  span.header-shadow
+  .sub-title: .text {{translate('settings.nav_title')}}
   SelectField(
     label="settings.nav_bar_layout"
     optLabel="settings.nav_bar_layout_"
@@ -31,19 +30,20 @@ section(
     label="settings.nav_btn_count"
     v-model:value="Settings.state.navBtnCount"
     @update:value="Settings.saveDebounced(150)")
-  ToggleField(
-    label="settings.hide_empty_panels"
-    v-model:value="Settings.state.hideEmptyPanels"
-    @update:value="Settings.saveDebounced(150)")
-  ToggleField(
-      label="settings.hide_discarded_tab_panels"
-      v-model:value="Settings.state.hideDiscardedTabPanels"
+  AdvancedFold(title="Advanced")
+    ToggleField(
+      label="settings.hide_empty_panels"
+      v-model:value="Settings.state.hideEmptyPanels"
       @update:value="Settings.saveDebounced(150)")
-  NumField.-inline(
-    label="settings.nav_switch_panels_delay"
-    v-model:value="Settings.state.navSwitchPanelsDelay"
-    :or="128"
-    @update:value="Settings.saveDebounced(500)")
+    ToggleField(
+        label="settings.hide_discarded_tab_panels"
+        v-model:value="Settings.state.hideDiscardedTabPanels"
+        @update:value="Settings.saveDebounced(150)")
+    NumField.-inline(
+      label="settings.nav_switch_panels_delay"
+      v-model:value="Settings.state.navSwitchPanelsDelay"
+      :or="128"
+      @update:value="Settings.saveDebounced(500)")
   
   InfoField(label="settings.bottom_bar")
   .sub-fields
@@ -145,6 +145,7 @@ section(
 </template>
 
 <script lang="ts" setup>
+import AdvancedFold from '../../components/advanced-fold.vue'
 import { computed, ref, onMounted } from 'vue'
 import * as Utils from 'src/utils'
 import * as Popups from 'src/services/popups'

@@ -1,17 +1,6 @@
 <template lang="pug">
-section(ref="el")
-  h2
-    span {{translate('settings.snapshots_title')}}
-    .title-note   ({{state.snapshotsLen}}: ~{{state.snapshotsSize}} / 10 mb)
-  span.header-shadow
-  ToggleField(
-    label="settings.snap_notify"
-    v-model:value="Settings.state.snapNotify"
-    @update:value="Settings.saveDebounced(150)")
-  ToggleField(
-    label="settings.snap_exclude_private"
-    v-model:value="Settings.state.snapExcludePrivate"
-    @update:value="Settings.saveDebounced(150)")
+.wrapper(ref="el")
+  .sub-title: .text {{translate('settings.snapshots_title')}}  ({{state.snapshotsLen}}: ~{{state.snapshotsSize}} / 10 mb)
   NumField(
     label="settings.snap_interval"
     unitLabel="settings.snap_interval_"
@@ -21,34 +10,6 @@ section(ref="el")
     :unitOpts="SETTINGS_OPTIONS.snapIntervalUnit"
     @update:value="Settings.saveDebounced(500)"
     @update:unit="Settings.saveDebounced(150)")
-  ToggleField(
-    label="settings.snap_export_md_tree"
-    v-model:value="Settings.state.snapMdFullTree"
-    :note="translate('settings.snap_export_md_tree_note')"
-    @update:value="Settings.saveDebounced(150)")
-
-  ToggleField(
-    label="settings.snap_auto_export"
-    :value="Settings.state.snapAutoExport"
-    @update:value="toggleAutoExport")
-  .sub-fields
-    SelectField(
-      label="settings.snap_auto_export_type"
-      optLabel="settings.snap_auto_export_type_"
-      v-model:value="Settings.state.snapAutoExportType"
-      :inactive="!Settings.state.snapAutoExport"
-      :opts="Settings.getOpts('snapAutoExportType')"
-      :folded="false"
-      @update:value="Settings.saveDebounced(150)")
-    TextField.-wide(
-      label="settings.snap_export_path"
-      :or="translate('settings.snap_export_path_ph')"
-      :inactive="!Settings.state.snapAutoExport"
-      :line="true"
-      :note="translate('settings.snap_export_path_note')"
-      v-model:value="Settings.state.snapAutoExportPath"
-      @update:value="Settings.saveDebounced(500)")
-
   NumField(
     label="settings.snap_limit"
     unitLabel="settings.snap_limit_"
@@ -63,9 +24,47 @@ section(ref="el")
   .ctrls
     .btn(@click="SetupPage.switchView('snapshots')") {{translate('settings.snapshots_view_label')}}
     .btn(@click="createSnapshot") {{translate('settings.make_snapshot')}}
+  AdvancedFold(title="Advanced")
+    ToggleField(
+      label="settings.snap_notify"
+      v-model:value="Settings.state.snapNotify"
+      @update:value="Settings.saveDebounced(150)")
+    ToggleField(
+      label="settings.snap_exclude_private"
+      v-model:value="Settings.state.snapExcludePrivate"
+      @update:value="Settings.saveDebounced(150)")
+    ToggleField(
+      label="settings.snap_export_md_tree"
+      v-model:value="Settings.state.snapMdFullTree"
+      :note="translate('settings.snap_export_md_tree_note')"
+      @update:value="Settings.saveDebounced(150)")
+
+    ToggleField(
+      label="settings.snap_auto_export"
+      :value="Settings.state.snapAutoExport"
+      @update:value="toggleAutoExport")
+    .sub-fields
+      SelectField(
+        label="settings.snap_auto_export_type"
+        optLabel="settings.snap_auto_export_type_"
+        v-model:value="Settings.state.snapAutoExportType"
+        :inactive="!Settings.state.snapAutoExport"
+        :opts="Settings.getOpts('snapAutoExportType')"
+        :folded="false"
+        @update:value="Settings.saveDebounced(150)")
+      TextField.-wide(
+        label="settings.snap_export_path"
+        :or="translate('settings.snap_export_path_ph')"
+        :inactive="!Settings.state.snapAutoExport"
+        :line="true"
+        :note="translate('settings.snap_export_path_note')"
+        v-model:value="Settings.state.snapAutoExportPath"
+        @update:value="Settings.saveDebounced(500)")
+
 </template>
 
 <script lang="ts" setup>
+import AdvancedFold from '../../components/advanced-fold.vue'
 import { ref, reactive, onMounted } from 'vue'
 import { translate } from 'src/dict'
 import { SETTINGS_OPTIONS } from 'src/defaults'

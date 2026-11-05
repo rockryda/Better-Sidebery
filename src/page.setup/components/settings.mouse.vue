@@ -52,77 +52,79 @@ section(ref="el")
       :allowNegative="true"
       :note="translate('settings.scroll_through_tabs_scroll_area_note')"
       @update:value="Settings.saveDebounced(500)")
-  ToggleField(
-    label="settings.auto_menu_multi_sel"
-    v-model:value="Settings.state.autoMenuMultiSel"
-    :note="translate('settings.auto_menu_multi_sel_note')"
-    @update:value="Settings.saveDebounced(150)")
-  NumField.-inline(
-    label="settings.long_click_delay"
-    unitLabel="settings.long_click_delay_"
-    v-model:value="Settings.state.longClickDelay"
-    :or="300"
-    @update:value="Settings.saveDebounced(500)")
-  ToggleField(
-    label="settings.wheel_threshold"
-    v-model:value="Settings.state.wheelThreshold"
-    @update:value="Settings.saveDebounced(150)")
-  .sub-fields
+  AdvancedFold(title="Advanced")
+    ToggleField(
+      label="settings.auto_menu_multi_sel"
+      v-model:value="Settings.state.autoMenuMultiSel"
+      :note="translate('settings.auto_menu_multi_sel_note')"
+      @update:value="Settings.saveDebounced(150)")
     NumField.-inline(
-      label="settings.wheel_threshold_y"
-      v-model:value="Settings.state.wheelThresholdY"
-      :inactive="!Settings.state.wheelThreshold"
-      :or="60"
+      label="settings.long_click_delay"
+      unitLabel="settings.long_click_delay_"
+      v-model:value="Settings.state.longClickDelay"
+      :or="300"
       @update:value="Settings.saveDebounced(500)")
     ToggleField(
-      label="settings.wheel_accumulation_y"
-      v-model:value="Settings.state.wheelAccumulationY"
-      :inactive="!Settings.state.wheelThreshold"
+      label="settings.wheel_threshold"
+      v-model:value="Settings.state.wheelThreshold"
       @update:value="Settings.saveDebounced(150)")
-    NumField.-inline(
-      label="settings.wheel_threshold_x"
-      v-model:value="Settings.state.wheelThresholdX"
-      :inactive="!Settings.state.wheelThreshold"
-      :or="10"
-      @update:value="Settings.saveDebounced(500)")
-    ToggleField.-no-separator(
-      label="settings.wheel_accumulation_x"
-      v-model:value="Settings.state.wheelAccumulationX"
-      :inactive="!Settings.state.wheelThreshold"
-      @update:value="Settings.saveDebounced(150)")
+    .sub-fields
+      NumField.-inline(
+        label="settings.wheel_threshold_y"
+        v-model:value="Settings.state.wheelThresholdY"
+        :inactive="!Settings.state.wheelThreshold"
+        :or="60"
+        @update:value="Settings.saveDebounced(500)")
+      ToggleField(
+        label="settings.wheel_accumulation_y"
+        v-model:value="Settings.state.wheelAccumulationY"
+        :inactive="!Settings.state.wheelThreshold"
+        @update:value="Settings.saveDebounced(150)")
+      NumField.-inline(
+        label="settings.wheel_threshold_x"
+        v-model:value="Settings.state.wheelThresholdX"
+        :inactive="!Settings.state.wheelThreshold"
+        :or="10"
+        @update:value="Settings.saveDebounced(500)")
+      ToggleField.-no-separator(
+        label="settings.wheel_accumulation_x"
+        v-model:value="Settings.state.wheelAccumulationX"
+        :inactive="!Settings.state.wheelThreshold"
+        @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="navEl")
     .sub-title: .text {{translate('settings.nav_settings_mouse_nav')}}
-    SelectField.-no-separator(
-      label="settings.nav_act_tabs_panel_left_click"
-      optLabel="settings.nav_act_tabs_panel_left_click_"
-      v-model:value="Settings.state.navActTabsPanelLeftClickAction"
-      :folded="true"
-      :opts="Settings.getOpts('navActTabsPanelLeftClickAction')"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.nav_act_bookmarks_panel_left_click"
-      optLabel="settings.nav_act_bookmarks_panel_left_click_"
-      v-model:value="Settings.state.navActBookmarksPanelLeftClickAction"
-      :opts="Settings.getOpts('navActBookmarksPanelLeftClickAction')"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.nav_tabs_panel_mid_click"
-      optLabel="settings.nav_tabs_panel_mid_click_"
-      v-model:value="Settings.state.navTabsPanelMidClickAction"
-      :opts="Settings.getOpts('navTabsPanelMidClickAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.nav_bookmarks_panel_mid_click"
-      optLabel="settings.nav_bookmarks_panel_mid_click_"
-      v-model:value="Settings.state.navBookmarksPanelMidClickAction"
-      :opts="Settings.getOpts('navBookmarksPanelMidClickAction')"
-      @update:value="Settings.saveDebounced(150)")
-    ToggleField.-last(
-      label="settings.nav_switch_panels_wheel"
-      v-model:value="Settings.state.navSwitchPanelsWheel"
-      @update:value="Settings.saveDebounced(150)")
+    AdvancedFold(title="Navigation bar actions")
+      SelectField.-no-separator(
+        label="settings.nav_act_tabs_panel_left_click"
+        optLabel="settings.nav_act_tabs_panel_left_click_"
+        v-model:value="Settings.state.navActTabsPanelLeftClickAction"
+        :folded="true"
+        :opts="Settings.getOpts('navActTabsPanelLeftClickAction')"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.nav_act_bookmarks_panel_left_click"
+        optLabel="settings.nav_act_bookmarks_panel_left_click_"
+        v-model:value="Settings.state.navActBookmarksPanelLeftClickAction"
+        :opts="Settings.getOpts('navActBookmarksPanelLeftClickAction')"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.nav_tabs_panel_mid_click"
+        optLabel="settings.nav_tabs_panel_mid_click_"
+        v-model:value="Settings.state.navTabsPanelMidClickAction"
+        :opts="Settings.getOpts('navTabsPanelMidClickAction')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.nav_bookmarks_panel_mid_click"
+        optLabel="settings.nav_bookmarks_panel_mid_click_"
+        v-model:value="Settings.state.navBookmarksPanelMidClickAction"
+        :opts="Settings.getOpts('navBookmarksPanelMidClickAction')"
+        @update:value="Settings.saveDebounced(150)")
+      ToggleField.-last(
+        label="settings.nav_switch_panels_wheel"
+        v-model:value="Settings.state.navSwitchPanelsWheel"
+        @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="tabsEl")
     .sub-title: .text {{translate('settings.nav_settings_mouse_tabs')}}
@@ -133,38 +135,6 @@ section(ref="el")
       :opts="Settings.getOpts('tabDoubleClick')"
       :folded="true"
       @update:value="onTabDoubleClickUpdate")
-    ToggleField(
-      label="settings.tabs_second_click_act_prev"
-      v-model:value="Settings.state.tabsSecondClickActPrev"
-      @update:value="onTabsSecondClickActPrevUpdate")
-    .sub-fields
-      ToggleField(
-        label="settings.tabs_second_click_act_prev_panel_only"
-        v-model:value="Settings.state.tabsSecondClickActPrevPanelOnly"
-        :inactive="!Settings.state.tabsSecondClickActPrev"
-        @update:value="Settings.saveDebounced(150)")
-    ToggleField(
-      label="settings.activate_on_mouseup"
-      v-model:value="Settings.state.activateOnMouseUp"
-      @update:value="onActivateOnMouseUpUpdate")
-    ToggleField(
-      label="settings.shift_selection_from_active"
-      v-model:value="Settings.state.shiftSelAct"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.tab_long_left_click"
-      optLabel="settings.tab_action_"
-      v-model:value="Settings.state.tabLongLeftClick"
-      :opts="Settings.getOpts('tabLongLeftClick')"
-      :folded="true"
-      @update:value="onTabLongLeftClickUpdate")
-    SelectField(
-      label="settings.tab_long_right_click"
-      optLabel="settings.tab_action_"
-      v-model:value="Settings.state.tabLongRightClick"
-      :opts="Settings.getOpts('tabLongRightClick')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
     SelectField(
       label="settings.tab_middle_click"
       optLabel="settings.tab_action_"
@@ -193,152 +163,194 @@ section(ref="el")
         :inactive="Settings.state.tabMiddleClick !== 'close'"
         :note="translate('settings.multiple_middle_close_note')"
         @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.tab_close_middle_click"
-      optLabel="settings.tab_action_"
-      v-model:value="Settings.state.tabCloseMiddleClick"
-      :opts="Settings.getOpts('tabCloseMiddleClick')"
-      @update:value="Settings.saveDebounced(150)")
+    AdvancedFold(title="More tab actions")
+      ToggleField(
+        label="settings.tabs_second_click_act_prev"
+        v-model:value="Settings.state.tabsSecondClickActPrev"
+        @update:value="onTabsSecondClickActPrevUpdate")
+      .sub-fields
+        ToggleField(
+          label="settings.tabs_second_click_act_prev_panel_only"
+          v-model:value="Settings.state.tabsSecondClickActPrevPanelOnly"
+          :inactive="!Settings.state.tabsSecondClickActPrev"
+          @update:value="Settings.saveDebounced(150)")
+      ToggleField(
+        label="settings.activate_on_mouseup"
+        v-model:value="Settings.state.activateOnMouseUp"
+        @update:value="onActivateOnMouseUpUpdate")
+      ToggleField(
+        label="settings.shift_selection_from_active"
+        v-model:value="Settings.state.shiftSelAct"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.tab_long_left_click"
+        optLabel="settings.tab_action_"
+        v-model:value="Settings.state.tabLongLeftClick"
+        :opts="Settings.getOpts('tabLongLeftClick')"
+        :folded="true"
+        @update:value="onTabLongLeftClickUpdate")
+      SelectField(
+        label="settings.tab_long_right_click"
+        optLabel="settings.tab_action_"
+        v-model:value="Settings.state.tabLongRightClick"
+        :opts="Settings.getOpts('tabLongRightClick')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.tab_close_middle_click"
+        optLabel="settings.tab_action_"
+        v-model:value="Settings.state.tabCloseMiddleClick"
+        :opts="Settings.getOpts('tabCloseMiddleClick')"
+        @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="tabsPanelEl")
     .sub-title: .text {{translate('settings.nav_settings_mouse_tabs_panel')}}
-    SelectField.-no-separator(
-      label="settings.tabs_panel_left_click_action"
-      optLabel="settings.tabs_panel_action_"
-      v-model:value="Settings.state.tabsPanelLeftClickAction"
-      :opts="Settings.getOpts('tabsPanelLeftClickAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.tabs_panel_double_click_action"
-      optLabel="settings.tabs_panel_action_"
-      v-model:value="Settings.state.tabsPanelDoubleClickAction"
-      :inactive="Settings.state.tabsPanelLeftClickAction !== 'none'"
-      :opts="Settings.getOpts('tabsPanelDoubleClickAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.tabs_panel_right_click_action"
-      optLabel="settings.tabs_panel_action_"
-      v-model:value="Settings.state.tabsPanelRightClickAction"
-      :opts="Settings.getOpts('tabsPanelRightClickAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.tabs_panel_middle_click_action"
-      optLabel="settings.tabs_panel_action_"
-      v-model:value="Settings.state.tabsPanelMiddleClickAction"
-      :opts="Settings.getOpts('tabsPanelMiddleClickAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
+    AdvancedFold(title="Panel actions")
+      SelectField.-no-separator(
+        label="settings.tabs_panel_left_click_action"
+        optLabel="settings.tabs_panel_action_"
+        v-model:value="Settings.state.tabsPanelLeftClickAction"
+        :opts="Settings.getOpts('tabsPanelLeftClickAction')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.tabs_panel_double_click_action"
+        optLabel="settings.tabs_panel_action_"
+        v-model:value="Settings.state.tabsPanelDoubleClickAction"
+        :inactive="Settings.state.tabsPanelLeftClickAction !== 'none'"
+        :opts="Settings.getOpts('tabsPanelDoubleClickAction')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.tabs_panel_right_click_action"
+        optLabel="settings.tabs_panel_action_"
+        v-model:value="Settings.state.tabsPanelRightClickAction"
+        :opts="Settings.getOpts('tabsPanelRightClickAction')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
+      SelectField(
+        label="settings.tabs_panel_middle_click_action"
+        optLabel="settings.tabs_panel_action_"
+        v-model:value="Settings.state.tabsPanelMiddleClickAction"
+        :opts="Settings.getOpts('tabsPanelMiddleClickAction')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="ntbEl")
     .sub-title: .text {{translate('settings.nav_settings_mouse_new_tab_button')}}
-    SelectField.-no-separator(
-      label="settings.mouse.new_tab_middle_click_action"
-      optLabel="settings.mouse.new_tab_action_"
-      v-model:value="Settings.state.newTabMiddleClickAction"
-      :opts="Settings.getOpts('newTabAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
+    AdvancedFold(title="New tab button actions")
+      SelectField.-no-separator(
+        label="settings.mouse.new_tab_middle_click_action"
+        optLabel="settings.mouse.new_tab_action_"
+        v-model:value="Settings.state.newTabMiddleClickAction"
+        :opts="Settings.getOpts('newTabAction')"
+        :folded="true"
+        @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="bookmarksEl")
     .sub-title: .text {{translate('settings.nav_settings_mouse_bookmarks')}}
-    SelectField.-no-separator(
-      label="settings.mouse.bookmarks.left_click_action"
-      optLabel="settings.mouse.bh.left_click_action_"
-      v-model:value="Settings.state.bookmarksLeftClickAction"
-      :opts="Settings.getOpts('bookmarksLeftClickAction')"
-      :folded="false"
-      @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.mouse.bh.new_tab_activate"
-        v-model:value="Settings.state.bookmarksLeftClickActivate"
-        :inactive="Settings.state.bookmarksLeftClickAction !== 'open_in_new'"
-        @update:value="Settings.saveDebounced(150)")
-      SelectField(
-        label="settings.mouse.bh.new_tab_pos"
-        optLabel="settings.mouse.bh.new_tab_pos_"
-        v-model:value="Settings.state.bookmarksLeftClickPos"
-        :inactive="Settings.state.bookmarksLeftClickAction !== 'open_in_new'"
-        :opts="Settings.getOpts('bookmarksNewTabPos')"
+    AdvancedFold(title="Bookmark actions")
+      SelectField.-no-separator(
+        label="settings.mouse.bookmarks.left_click_action"
+        optLabel="settings.mouse.bh.left_click_action_"
+        v-model:value="Settings.state.bookmarksLeftClickAction"
+        :opts="Settings.getOpts('bookmarksLeftClickAction')"
         :folded="false"
         @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.mouse.bookmarks.mid_click_action"
-      optLabel="settings.mouse.bookmarks.mid_click_action_"
-      v-model:value="Settings.state.bookmarksMidClickAction"
-      :opts="Settings.getOpts('bookmarksMidClickAction')"
-      :folded="true"
-      @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.mouse.bh.new_tab_activate"
-        v-model:value="Settings.state.bookmarksMidClickActivate"
-        :inactive="Settings.state.bookmarksMidClickAction !== 'open_in_new'"
-        @update:value="Settings.saveDebounced(150)")
-      ToggleField(
-        label="settings.mouse.bookmarks.new_tab_rm"
-        v-model:value="Settings.state.bookmarksMidClickRemove"
-        :inactive="Settings.state.bookmarksMidClickAction !== 'open_in_new'"
-        @update:value="Settings.saveDebounced(150)")
+      .sub-fields
+        ToggleField(
+          label="settings.mouse.bh.new_tab_activate"
+          v-model:value="Settings.state.bookmarksLeftClickActivate"
+          :inactive="Settings.state.bookmarksLeftClickAction !== 'open_in_new'"
+          @update:value="Settings.saveDebounced(150)")
+        SelectField(
+          label="settings.mouse.bh.new_tab_pos"
+          optLabel="settings.mouse.bh.new_tab_pos_"
+          v-model:value="Settings.state.bookmarksLeftClickPos"
+          :inactive="Settings.state.bookmarksLeftClickAction !== 'open_in_new'"
+          :opts="Settings.getOpts('bookmarksNewTabPos')"
+          :folded="false"
+          @update:value="Settings.saveDebounced(150)")
       SelectField(
-        label="settings.mouse.bh.new_tab_pos"
-        optLabel="settings.mouse.bh.new_tab_pos_"
-        v-model:value="Settings.state.bookmarksMidClickPos"
-        :inactive="Settings.state.bookmarksMidClickAction !== 'open_in_new'"
-        :opts="Settings.getOpts('bookmarksNewTabPos')"
-        :folded="false"
+        label="settings.mouse.bookmarks.mid_click_action"
+        optLabel="settings.mouse.bookmarks.mid_click_action_"
+        v-model:value="Settings.state.bookmarksMidClickAction"
+        :opts="Settings.getOpts('bookmarksMidClickAction')"
+        :folded="true"
         @update:value="Settings.saveDebounced(150)")
+      .sub-fields
+        ToggleField(
+          label="settings.mouse.bh.new_tab_activate"
+          v-model:value="Settings.state.bookmarksMidClickActivate"
+          :inactive="Settings.state.bookmarksMidClickAction !== 'open_in_new'"
+          @update:value="Settings.saveDebounced(150)")
+        ToggleField(
+          label="settings.mouse.bookmarks.new_tab_rm"
+          v-model:value="Settings.state.bookmarksMidClickRemove"
+          :inactive="Settings.state.bookmarksMidClickAction !== 'open_in_new'"
+          @update:value="Settings.saveDebounced(150)")
+        SelectField(
+          label="settings.mouse.bh.new_tab_pos"
+          optLabel="settings.mouse.bh.new_tab_pos_"
+          v-model:value="Settings.state.bookmarksMidClickPos"
+          :inactive="Settings.state.bookmarksMidClickAction !== 'open_in_new'"
+          :opts="Settings.getOpts('bookmarksNewTabPos')"
+          :folded="false"
+          @update:value="Settings.saveDebounced(150)")
 
   .wrapper(ref="historyEl")
     .sub-title: .text {{translate('settings.nav_settings_mouse_history')}}
-    SelectField.-no-separator(
-      label="settings.mouse.history.left_click_action"
-      optLabel="settings.mouse.bh.left_click_action_"
-      v-model:value="Settings.state.historyLeftClickAction"
-      :opts="Settings.getOpts('historyLeftClickAction')"
-      :folded="false"
-      @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.mouse.bh.new_tab_activate"
-        v-model:value="Settings.state.historyLeftClickActivate"
-        :inactive="Settings.state.historyLeftClickAction !== 'open_in_new'"
-        @update:value="Settings.saveDebounced(150)")
-      SelectField(
-        label="settings.mouse.bh.new_tab_pos"
-        optLabel="settings.mouse.bh.new_tab_pos_"
-        v-model:value="Settings.state.historyLeftClickPos"
-        :inactive="Settings.state.historyLeftClickAction !== 'open_in_new'"
-        :opts="Settings.getOpts('historyNewTabPos')"
+    AdvancedFold(title="History actions")
+      SelectField.-no-separator(
+        label="settings.mouse.history.left_click_action"
+        optLabel="settings.mouse.bh.left_click_action_"
+        v-model:value="Settings.state.historyLeftClickAction"
+        :opts="Settings.getOpts('historyLeftClickAction')"
         :folded="false"
         @update:value="Settings.saveDebounced(150)")
-    SelectField(
-      label="settings.mouse.history.mid_click_action"
-      optLabel="settings.mouse.history.mid_click_action_"
-      v-model:value="Settings.state.historyMidClickAction"
-      :opts="Settings.getOpts('historyMidClickAction')"
-      :folded="false"
-      @update:value="Settings.saveDebounced(150)")
-    .sub-fields
-      ToggleField(
-        label="settings.mouse.bh.new_tab_activate"
-        v-model:value="Settings.state.historyMidClickActivate"
-        :inactive="Settings.state.historyMidClickAction !== 'open_in_new'"
-        @update:value="Settings.saveDebounced(150)")
+      .sub-fields
+        ToggleField(
+          label="settings.mouse.bh.new_tab_activate"
+          v-model:value="Settings.state.historyLeftClickActivate"
+          :inactive="Settings.state.historyLeftClickAction !== 'open_in_new'"
+          @update:value="Settings.saveDebounced(150)")
+        SelectField(
+          label="settings.mouse.bh.new_tab_pos"
+          optLabel="settings.mouse.bh.new_tab_pos_"
+          v-model:value="Settings.state.historyLeftClickPos"
+          :inactive="Settings.state.historyLeftClickAction !== 'open_in_new'"
+          :opts="Settings.getOpts('historyNewTabPos')"
+          :folded="false"
+          @update:value="Settings.saveDebounced(150)")
       SelectField(
-        label="settings.mouse.bh.new_tab_pos"
-        optLabel="settings.mouse.bh.new_tab_pos_"
-        v-model:value="Settings.state.historyMidClickPos"
-        :inactive="Settings.state.historyMidClickAction !== 'open_in_new'"
-        :opts="Settings.getOpts('historyNewTabPos')"
+        label="settings.mouse.history.mid_click_action"
+        optLabel="settings.mouse.history.mid_click_action_"
+        v-model:value="Settings.state.historyMidClickAction"
+        :opts="Settings.getOpts('historyMidClickAction')"
         :folded="false"
         @update:value="Settings.saveDebounced(150)")
+      .sub-fields
+        ToggleField(
+          label="settings.mouse.bh.new_tab_activate"
+          v-model:value="Settings.state.historyMidClickActivate"
+          :inactive="Settings.state.historyMidClickAction !== 'open_in_new'"
+          @update:value="Settings.saveDebounced(150)")
+        SelectField(
+          label="settings.mouse.bh.new_tab_pos"
+          optLabel="settings.mouse.bh.new_tab_pos_"
+          v-model:value="Settings.state.historyMidClickPos"
+          :inactive="Settings.state.historyMidClickAction !== 'open_in_new'"
+          :opts="Settings.getOpts('historyNewTabPos')"
+          :folded="false"
+          @update:value="Settings.saveDebounced(150)")
+  MenuSection
+  DndSection
 </template>
 
 <script lang="ts" setup>
+import MenuSection from './settings.menu.vue'
+import DndSection from './settings.dnd.vue'
+import AdvancedFold from '../../components/advanced-fold.vue'
 import { ref, onMounted } from 'vue'
 import { translate } from 'src/dict'
 import { Settings } from 'src/services/settings'

@@ -557,6 +557,10 @@ export const setupPageTranslations: Translations = {
   // ---
   // -- Settings
   // -
+  'settings.sidebar_title': { en: 'Sidebar & Appearance' },
+  'settings.nav_settings_sidebar': { en: 'Sidebar & Appearance' },
+  'settings.data_title': { en: 'Snapshots & Sync' },
+  'settings.nav_settings_data': { en: 'Snapshots & Sync' },
   'settings.nav_settings': {
     en: 'Settings',
     de: 'Einstellungen',
@@ -655,7 +659,7 @@ export const setupPageTranslations: Translations = {
     ja: '検索',
   },
   'settings.nav_settings_tabs': {
-    en: 'Tabs',
+    en: 'Tabs & Groups',
     hu: 'Lapok',
     pl: 'Karty',
     ru: 'Вкладки',
@@ -725,7 +729,7 @@ export const setupPageTranslations: Translations = {
   },
 
   'settings.nav_settings_bookmarks': {
-    en: 'Bookmarks',
+    en: 'Bookmarks & History',
     de: 'Lesezeichen',
     hu: 'Könyvjelzők',
     pl: 'Zakładki',
@@ -755,7 +759,7 @@ export const setupPageTranslations: Translations = {
     ja: '外観',
   },
   'settings.nav_settings_mouse': {
-    en: 'Mouse',
+    en: 'Mouse & Controls',
     de: 'Maus',
     hu: 'Egér',
     pl: 'Mysz',
@@ -844,7 +848,7 @@ export const setupPageTranslations: Translations = {
     ja: '同期',
   },
   'settings.nav_settings_help': {
-    en: 'Help',
+    en: 'Backup & Help',
     de: 'Hilfe',
     hu: 'Segítség',
     pl: 'Pomoc',
@@ -2215,7 +2219,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 
   // - Tabs
   'settings.tabs_title': {
-    en: 'Tabs',
+    en: 'Tabs & Groups',
     hu: 'Lapok',
     pl: 'Karty',
     ru: 'Вкладки',
@@ -3643,7 +3647,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 
   // - Bookmarks
   'settings.bookmarks_title': {
-    en: 'Bookmarks',
+    en: 'Bookmarks & History',
     de: 'Lesezeichen',
     hu: 'Könyvjelzők',
     pl: 'Zakładki',
@@ -4117,7 +4121,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 
   // - Mouse
   'settings.mouse_title': {
-    en: 'Mouse',
+    en: 'Mouse & Controls',
     de: 'Maus',
     hu: 'Egér',
     pl: 'Mysz',
@@ -5681,7 +5685,7 @@ Przykłady: "*", "ctrl+$", "ctrl+alt+g"`,
 
   // - Help
   'settings.help_title': {
-    en: 'Help',
+    en: 'Backup & Help',
     de: 'Hilfe',
     hu: 'Segítség',
     pl: 'Pomoc',

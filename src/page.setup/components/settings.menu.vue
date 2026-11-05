@@ -1,7 +1,6 @@
 <template lang="pug">
-section(ref="el")
-  h2 {{translate('settings.ctx_menu_title')}}
-  span.header-shadow
+.wrapper(ref="el")
+  .sub-title: .text {{translate('settings.ctx_menu_title')}}
   ToggleField(
     label="settings.ctx_menu_native"
     v-model:value="Settings.state.ctxMenuNative"

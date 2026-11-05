@@ -500,3 +500,62 @@
     margin: 0
     top: 8px
     right: 12px
+
+// Collapsible "Advanced" block (rarely used settings)
+.Settings .AdvancedFold
+  position: relative
+  margin: 18px 0 6px
+  border-radius: 8px
+  border: 1px solid var(--settings-border, rgba(128, 128, 128, .28))
+
+.Settings .AdvancedFold > .fold-head
+  display: flex
+  align-items: center
+  gap: 8px
+  padding: 8px 12px
+  font-size: rem(14)
+  font-weight: 600
+  color: var(--toolbar-fg)
+  cursor: pointer
+  user-select: none
+  opacity: .85
+
+.Settings .AdvancedFold > .fold-head:hover
+  opacity: 1
+  background-color: rgba(128, 128, 128, .1)
+
+.Settings .AdvancedFold .chev
+  width: 12px
+  text-align: center
+
+.Settings .AdvancedFold .fold-hint
+  margin-left: auto
+  font-size: rem(12)
+  font-weight: 400
+  opacity: .6
+
+.Settings .AdvancedFold > .fold-body
+  padding: 0 8px 8px
+  border-top: 1px solid var(--settings-border, rgba(128, 128, 128, .2))
+
+// Group title inside a merged section
+.Settings .settings-search
+  position: relative
+  display: flex
+  justify-content: center
+  padding: 10px 8px 6px
+  background-color: var(--frame-bg)
+
+.Settings .settings-search input
+  width: 100%
+  max-width: 640px
+  padding: 7px 12px
+  border-radius: 8px
+  border: 1px solid rgba(128, 128, 128, .35)
+  background-color: rgba(128, 128, 128, .1)
+  color: var(--toolbar-fg)
+  font-size: rem(14)
+  outline: none
+
+.Settings .settings-search input:focus
+  border-color: var(--toolbar-fg)

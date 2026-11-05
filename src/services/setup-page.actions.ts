@@ -131,6 +131,10 @@ export async function updateActiveView(): Promise<void> {
     return
   }
 
+  // Settings are split into pages: open the one that contains the target section
+  const settingsPage = getSettingsPage(hash)
+  if (settingsPage) SetupPage.reactive.settingsPage = settingsPage
+
   await waitForInit()
 
   setTimeout(
@@ -179,6 +183,21 @@ export function switchView(name: string): void {
 /**
  * Register element for scroll navigation
  */
+/**
+ * Settings page (top-level section) a nav entry belongs to: itself for level-1 entries, the
+ * closest previous level-1 "settings_*" entry for level-2 ones.
+ */
+export function getSettingsPage(name: string): string | undefined {
+  const nav = SetupPage.reactive.nav
+  const idx = nav.findIndex(o => o.name === name)
+  if (idx === -1 || !name.startsWith('settings_')) return undefined
+  for (let i = idx; i >= 0; i--) {
+    const opt = nav[i]
+    if (opt && opt.lvl === 1 && opt.name.startsWith('settings_')) return opt.name
+  }
+  return undefined
+}
+
 export function registerEl(name: string, el: HTMLElement | null): void {
   if (!el) return
   els[name] = el
@@ -196,6 +215,7 @@ export function updateActiveSection(scrollTop: number): void {
 
     el = els[opt.name]
     if (!el || !opt.name.startsWith(actView)) continue
+    if (el.offsetParent === null) continue // on another (hidden) settings page
 
     let offsetTop = el.offsetTop - 8
     if (opt.lvl === 2 && el.parentNode) {

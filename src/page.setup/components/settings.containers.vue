@@ -1,7 +1,6 @@
 <template lang="pug">
-section(ref="el")
-  h2 {{translate('settings.containers_title')}}
-  span.header-shadow
+.wrapper(ref="el")
+  .sub-title: .text {{translate('settings.containers_title')}}
   ToggleField(
     label="settings.containers_sort_by_name"
     v-model:value="Settings.state.containersSortByName"

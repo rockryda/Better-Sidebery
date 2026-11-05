@@ -3,41 +3,21 @@ section(ref="el")
   h2 {{translate('settings.general_title')}}
   span.header-shadow
 
-  .sub-fields(style="margin-bottom: 18px; padding: 16px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
-    .label(style="font-size: 15px; font-weight: 600; color: #22c55e; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;")
-      span 🚀
-      span Auto-Expand, Hover Rail & Zen Mode Setup
-
-    .note(style="font-size: 12px; line-height: 1.6; opacity: 0.9; margin-bottom: 12px;")
-      | To enable <b>docking to a 48px icon rail</b>, <b>auto-expanding to 260px on hover</b> (zero page reflow), <b>Floorp Zen Mode edge-reveal</b>, and hiding the top tab strip, install the companion styles:
-
-    .ctrls(style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;")
+  .sub-fields(style="margin-bottom: 18px; padding: 14px 16px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.28); border-radius: 8px;")
+    .label(style="font-size: 14px; font-weight: 600; color: #22c55e; margin-bottom: 6px;") Companion setup (Floorp / Firefox)
+    .note(style="font-size: 12px; line-height: 1.5; opacity: 0.9; margin-bottom: 10px;")
+      | Optional: adds the 48px icon rail, hover-expand, drag-to-resize and Zen mode. Copy the command, run it in Terminal, then restart the browser.
+    .ctrls(style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;")
       .btn(
         @click="copySetupScript"
-        style="background: #22c55e; color: #0f172a; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 6px; border: none;")
-        span {{ scriptMsg || '📋 Copy 1-Click Setup Command' }}
-      code(style="font-size: 11px; opacity: 0.9; user-select: all; background: rgba(0,0,0,0.35); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;") curl -fsSL https://raw.githubusercontent.com/rockryda/Better-Sidebery/Master/floorp/install.sh | bash
-
-    .note(style="font-size: 11px; opacity: 0.7; margin-bottom: 14px;")
-      | *Click to copy, paste into Terminal, and press Enter. Then completely restart your browser (Cmd + Q).*
-
-    .sub-fields(style="padding: 12px 14px; background: rgba(0, 0, 0, 0.25); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08);")
-      .label(style="font-size: 13px; font-weight: 600; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;")
-        span ⚡
-        span Recommended for all Firefox Browsers
-      .note(style="font-size: 11.5px; line-height: 1.6; opacity: 0.9; margin-bottom: 8px;")
-        | Highly recommended to avoid having better Sidebery and Firefox native tab bar running at the same time:
-        br
-        | • <b>Hide tabs on Horizontal Tab Bar</b>
-        br
-        | • <b>Collapse Tree Style Tab</b> (under Tab Bar Style)
-      .ctrls(style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;")
-        .btn(
-          @click="openFloorpDesignSettings"
-          style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #f4f4f5; font-size: 11px; font-weight: 500; cursor: pointer; padding: 5px 12px; border-radius: 4px;")
-          span {{ statusMsg || '📋 Copy about:hub URL & Open Tab' }}
-        code(style="font-size: 10.5px; opacity: 0.85; user-select: all; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;") about:hub#/features/design
-
+        style="background: #22c55e; color: #0f172a; font-weight: 600; cursor: pointer; padding: 6px 14px; border-radius: 6px;")
+        span {{ scriptMsg || 'Copy setup command' }}
+      .btn(
+        @click="openFloorpDesignSettings"
+        style="cursor: pointer; padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(128,128,128,.5);")
+        span {{ statusMsg || 'Open Floorp tab settings' }}
+    .note(style="font-size: 11.5px; line-height: 1.5; opacity: 0.75; margin-top: 8px;")
+      | Also turn on "Hide tabs on Horizontal Tab Bar" and "Collapse Tree Style Tab" in Floorp so the native tab bar doesn't run alongside Sidebery.
   ToggleField(
     label="settings.native_scrollbars"
     v-model:value="Settings.state.nativeScrollbars"
